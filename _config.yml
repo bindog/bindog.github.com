@@ -15,6 +15,7 @@ author :
   email : bindog@outlook.com
   github : bindog
   twitter : bindog
+  douban : 91968988
   weibo : 2466275964
 
 # The production_url is only used when full-domain names are needed
@@ -90,7 +91,7 @@ JB :
   # Set 'provider' to false to turn analytics off globally.
   #        
   analytics :
-    provider : google 
+    provider : false 
     google : 
         tracking_id : 'UA-123-12'
     getclicky :
@@ -120,5 +121,7 @@ JB :
   #   ./_includes/custom/[HELPER]
   # where [HELPER] is the name of the helper you are overriding.
 
+
+img_url: /assets/images
 
 paginate: 5
