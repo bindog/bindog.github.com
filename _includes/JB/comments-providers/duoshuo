@@ -1,16 +1,8 @@
-<div class="ds-recent-comments" {% if page.id %}data-thread-key="{{ page.id }}"{% endif %}  data-title="{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}" data-url="{{ page.url }}"></div>
-
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<div id="bm_comments"></div>
 <script type="text/javascript">
-var duoshuoQuery = {short_name:"bindog"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- 多说公共JS代码 end -->
-
+    (function(){
+        var script = document.createElement('script'); script.type = "text/javascript";
+        script.src = "http://baye.me/script?key=a3c932b800ee11e49c75123143074826";
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    })();
+</script>
