@@ -79,8 +79,8 @@ JB :
   # Set 'provider' to false to turn commenting off globally.
   #
   comments :
-    provider : duoshuo
-    duoshuo :
+    provider : uyan
+    uyan :
       short_name : bindog
 
    
