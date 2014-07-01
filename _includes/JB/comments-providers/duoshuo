@@ -1,3 +1,5 @@
-<!-- 多说评论框 start -->
-	<div class="ds-thread" ></div>
-<!-- 多说评论框 end -->
+<!-- Duoshuo Comment BEGIN -->
+    <div id="comments">
+        <div class="ds-thread" {% if page.id %}data-thread-key="{{ page.id }}"{% endif %}  data-title="{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}"></div>
+    </div>
+<!-- Duoshuo Comment END -->
