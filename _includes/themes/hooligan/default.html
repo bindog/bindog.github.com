@@ -59,14 +59,9 @@
             </ul>
             <ul class="nav pull-right social visible-desktop">
               <li class="divider-vertical"></li>
-              <li>
-                <a href="/atom.xml" target="_blank">
-                  <img class="social-icon" src="{{ site.img_url }}/icons/rss.png" alt="Rss">
-                </a>
-              </li>
               {% if site.author.email %}
 				<li>
-                  <a href="mailto:{{ site.author.email }}" class="zocial email icon" target="_blank">
+                  <a href="mailto:{{ site.author.email }}" class="zocial gmail icon" target="_blank">
                     <span class="hidden-desktop">Email</span>
                   </a>
                 </li>
@@ -87,7 +82,7 @@
               {% endif %}
 			  {% if site.author.weibo %}
                 <li>
-                  <a href="https://weibo.com/{{ site.author.weibo }}" class="zocial weibo icon" target="_blank">
+                  <a href="https://weibo.com/u/{{ site.author.weibo }}" class="zocial weibo icon" target="_blank">
                     <span class="hidden-desktop">Weibo</span>
                   </a>
                 </li>
