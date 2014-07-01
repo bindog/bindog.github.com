@@ -24,7 +24,6 @@ h1, h2, h3, h4, h5, h6 {
   color: #999;
   text-rendering: optimizelegibility;
   font-family: "Verdana","Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-  /*font-family: 'Pontano Sans', sans-serif;*/
 }
 
 /* line 35, ../_sass/_base.scss */
@@ -297,7 +296,7 @@ div.content div#page-index {
 .zocial.rss:focus,
 .zocial.rss:hover {
   color:#fb9d3a !important;
-}  
+}
 
 /* Layout */
 /* line 2, ../_sass/_responsive.scss */
@@ -406,4 +405,222 @@ div.sidebar section img.icon {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
+}
+
+/* post */
+.post-wrapper {
+  border-radius: 10px;
+  padding: 20px;
+  margin: 0 10px;
+  box-shadow: 0 3px 10px #000;
+}
+
+.post-tag {
+  color: #bbb;
+  background-color: #444;
+}
+
+.post-category {
+  line-height: 25px;
+  color: #bbb;
+  background-color: #444;
+}
+
+.entry {
+  font-size: 12pt;
+}
+
+.entry-meta {
+  font-size: 11pt;
+}
+
+/* social icons */
+.social-icon {
+  width: 24px;
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+}
+
+.social-icon:hover {
+  box-shadow: #fff 0 0 8px;
+  -webkit-box-shadow: #fff 0 0 8px;
+  -moz-box-shadow: #fff 0 0 8px;
+}
+
+/* sidebar widget */
+.widget {
+  box-shadow: 0 3px 10px #000;
+  margin-bottom: 15px;
+}
+
+.widget .widget-title {
+  padding: 9px 15px;
+  line-height: 1;
+  background-color: #3a3a3a;
+  border-bottom: 1px solid #333;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  border-radius: 5px 5px 0 0;
+}
+
+.widget .widget-content {
+  padding: 14px;
+  background-color: #444;
+  -webkit-border-radius: 0 0 3px 3px;
+  -moz-border-radius: 0 0 3px 3px;
+  border-radius: 0 0 3px 3px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  background-clip: padding-box;
+}
+
+/* categories in post page */
+.category_box {
+  list-style: none;
+  margin: 0;
+  padding: 5px 0;
+}
+
+/* more link */
+.more-link:hover {
+  color: #4cb4e8;
+}
+
+/* sidebar comments */
+.disqus-comment-sec #dsq-combo-widget.grey #dsq-combo-content .dsq-combo-box {
+  background: none;
+}
+
+.disqus-comment-sec #dsq-combo-widget.grey #dsq-combo-content .dsq-combo-box li {
+  border-bottom: 1px solid #666;
+}
+
+.disqus-comment-sec #dsq-combo-widget.grey #dsq-combo-tabs li {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  border: 1px solid #888;
+  background: none;
+}
+
+.disqus-comment-sec #dsq-combo-widget.grey #dsq-combo-tabs li.dsq-active {
+  background: #888;
+}
+
+/* line-height of ul in post entry */
+.entry > ul > li, .page-content > .post-content > ul > li {
+  line-height: 25px;
+}
+
+/* pagination */
+.paginate {
+  text-align: center;
+}
+
+.paginate ul {
+  display: inline-block;
+  list-style: none;
+}
+
+.paginate ul li {
+  display: inline;
+}
+
+.paginate li a {
+  display: block;
+  float: left;
+  text-decoration: none;
+  padding: 6px 11px;
+  margin-right: 6px;
+  border-radius: 3px;
+  color: #fff;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+  border: 1px solid #43505e;
+  background: #556270;
+  background: -moz-linear-gradient(top, #556270 0%, #444d57 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#556270), color-stop(100%,#444d57));
+  background: -webkit-linear-gradient(top, #556270 0%,#444d57 100%);
+  background: -o-linear-gradient(top, #556270 0%,#444d57 100%);
+  background: -ms-linear-gradient(top, #556270 0%,#444d57 100%);
+  background: linear-gradient(to bottom, #556270 0%,#444d57 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#556270', endColorstr='#444d57',GradientType=0 );
+  -moz-box-shadow: inset 0 3px 0px -2px rgba(255, 255, 255, .3);
+  -webkit-box-shadow: inset 0 3px 0px -2px rgba(255, 255, 255, .3);
+  box-shadow: inset 0 3px 0px -2px rgba(255, 255, 255, .3);
+}
+.paginate li a:hover {
+  background: #556270;
+  background: -moz-linear-gradient(top, #556270 0%, #5b6774 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#556270), color-stop(100%,#5b6774));
+  background: -webkit-linear-gradient(top, #556270 0%,#5b6774 100%);
+  background: -o-linear-gradient(top, #556270 0%,#5b6774 100%);
+  background: -ms-linear-gradient(top, #556270 0%,#5b6774 100%);
+  background: linear-gradient(to bottom, #556270 0%,#5b6774 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#556270', endColorstr='#5b6774',GradientType=0 );
+}
+.paginate li a:active {
+  background: #414952;
+  background: -moz-linear-gradient(top, #414952 0%, #555e68 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#414952), color-stop(100%,#555e68));
+  background: -webkit-linear-gradient(top, #414952 0%,#555e68 100%);
+  background: -o-linear-gradient(top, #414952 0%,#555e68 100%);
+  background: -ms-linear-gradient(top, #414952 0%,#555e68 100%);
+  background: linear-gradient(to bottom, #414952 0%,#555e68 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#414952', endColorstr='#555e68',GradientType=0 );
+}
+
+.paginate li.single, .paginate li.current {
+  display: block;
+  float: left;
+  text-decoration: none;
+  padding: 6px 11px;
+  margin-right: 6px;
+  border-radius: 3px;
+  color: #fff;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+  border: 1px solid #4d4d4d;
+  background: #444;
+  -moz-box-shadow: inset 0 3px 0px -2px rgba(255, 255, 255, .3);
+  -webkit-box-shadow: inset 0 3px 0px -2px rgba(255, 255, 255, .3);
+  box-shadow: inset 0 3px 0px -2px rgba(255, 255, 255, .3);
+}
+
+/* for google search */
+.page-header #google-search {
+  width: 250px;
+  margin-top: -55px;
+}
+
+.page-header .gsc-results-wrapper-overlay {
+  text-shadow: none;
+}
+
+/* responsive */
+@media all and (max-width: 800px) {
+  .page-header #google-search, .sidebar.span4, .post-sidebar.span4 {
+    display: none;
+  }
+  .post-wrapper {
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+  }
+}
+
+/* post font size */
+.post-content {
+  font-size: 17px;
+}
+
+.post-content strong {
+  font-size: 18px;
+}
+
+code {
+  font-size: 11pt;
+  margin-right: 3px;
+  margin-left: 3px;
+  word-break: break-all;
 }
