@@ -1,14 +1,14 @@
 <div class="page-header">
   <h1>
-    {{ page.title }} 
+    {{ page.title }}
     {% if page.tagline %}
       <small>{{ page.tagline }}</small>
     {% endif %}
   </h1>
 </div>
 
-<div class="row">
-  <div class="span8">
+<div class="row page-content">
+  <div class="span8 post-content">
     {{ content }}
     <hr>
     <div class="pagination btn-group">
@@ -27,28 +27,38 @@
     <hr>
     {% include JB/comments %}
   </div>
-  
-  <div class="span4">
-    <section>
-      <h4>Published</h4>
+
+  <div class="span4 post-sidebar">
+    <section class="author-sec">
+      <h3>Author</h3>
+      <div class="author"><span>{{ page.author }}</span></div>
+    </section>
+    <section class="pulish-date-sec">
+      <h3>Published</h3>
       <div class="date"><span>{{ page.date | date_to_long_string }}</span></div>
     </section>
-    {% if page.category %}
-      <section>
-        <h4>Category</h4>
-        <span class="category">
-          {{ page.category }}
-        </span>
+    {% unless page.categories == empty %}
+      <section class="categories-sec">
+        <h3>Categories</h3>
+        <ul class="category_box">
+          {% for category in page.categories %}
+            <li>
+              <a href="/categories.html#{{ category }}-ref" target="_blank">
+                <span>{{ category }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
       </section>
-    {% endif %}     
+    {% endunless %}
     {% unless page.tags == empty %}
-      <section>
-        <h4>Tags</h4>
+      <section class="tags-sec">
+        <h3>Tags</h3>
         <ul class="tag_box">
           {% assign tags_list = page.tags %}
           {% include JB/tags_list %}
         </ul>
       </section>
-    {% endunless %}         
+    {% endunless %}
   </div>
 </div>
