@@ -80,17 +80,24 @@ tags:
 ##**获取代理服务地址过程**
 刚才那段`pac`脚本中最重要的内容当然是代理服务器的地址了，那么好奇的小伙伴们一定想知道红杏插件是从哪里获取这个地址的呢？如果是固化在代码里面的话岂不是可以知道红杏插件所有代理服务器的地址（包括传说中VIP用户专享的代理服务器），当然这只不过是我们一厢情愿的YY，除非程序员的脑子进水了，不然怎么可能把这么重要的秘密写在程序里，而且万一哪天服务器宕机或者换地址了，岂不是要重写程序？所以可以肯定代理服务器的地址一定是动态获取的。通过**反复的阅读代码和调试**，终于找到了这个关键代码段，下面简述一下过程。
 
-首先，在`js\app.js`中发现了
-`SERVER = 'ddparis.com';
-API_URL = "wss://" + SERVER + ":443/red/extension";`
-这样两行代码，猜测可能和获取一些参数有关。注意`wss://`，这个应该称之为安全的`WebSocket`协议,与这相对应的是`ws://`（类似`http://`和`https://`的关系），关于`WebSocket`的知识可以参考[维基百科的解释](http://zh.wikipedia.org/wiki/WebSocket)，简单来说就是一种客户端和服务器快速交互数据的方式。`WebSocket`一旦建立连接，服务器便可直接向客户端发送消息，与传统的`HTTP`请求/响应式的协议相比有很大优势。
+首先，在`js\app.js`中发现了这样两行代码
 
-然后，在`js\services\server.js`中发现了
-`client = RedSockClient.create(API_URL);`
+{% highlight js %}
+SERVER = 'ddparis.com';
+API_URL = "wss://" + SERVER + ":443/red/extension";
+{% endhighlight %}
 
-最后在`js\services\RedSockClient.js`中发现了如下代码段
+猜测可能和获取一些参数有关。注意`wss://`，这个应该称之为安全的`WebSocket`协议,与这相对应的是`ws://`（类似`http://`和`https://`的关系），关于`WebSocket`的知识可以参考[维基百科的解释](http://zh.wikipedia.org/wiki/WebSocket)，简单来说就是一种客户端和服务器快速交互数据的方式。`WebSocket`一旦建立连接，服务器便可直接向客户端发送消息，与传统的`HTTP`请求/响应式的协议相比有很大优势。
 
-[代码段占位]()
+接着，我在`js\services\server.js`中发现了这样一行代码
+
+{% highlight js %}
+client = RedSockClient.create(API_URL);
+{% endhighlight %}
+
+这行代码将线索指向了`js\services\RedSockClient.js`这个文件，从名字能大概能猜出是和服务器通信相关的，其中有如下代码段
+
+<script src="https://gist.github.com/bindog/c2536c3109d9b124d93d.js"> </script>
 
 这里我采用了一个笨方法`alert()`进行调试，得到如下结果
 
@@ -101,13 +108,15 @@ API_URL = "wss://" + SERVER + ":443/red/extension";`
 #0x03 红杏的破解
 人总是在追求完美的路上不断成长的，看着刺眼的非VIP心里还是有那么一点不舒坦的，事实上通过前一个部分对红杏原理的分析，可以有N种方法破解红杏，当然也只是针对其功能限制的破解，想要拿到VIP服务器的地址可以掏10块钱买一个月的VIP，然后按照前面的方法就可以获取到了(-_-)
 
-限于篇幅，这里提供一种最简单的办法，在`js\services\userManager.js`中找到如下代码
-![代码占位]
-其中`data`是服务器通过`WebSocket`协议发送给红杏的，其格式如下
+限于篇幅，这里提供一种最简单的办法。在前一个部分的`js\services\RedSockClient.js`中，有`name=_ref[2]`，刚才我们说了`_ref[2]`为`proxies`的情况。当`_ref[2]`的值为`profile`时，`data`的字符串形式如下
 
 ![data图片](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-07-04_092819_zps08522c28.png)
 
-是不是又看到了前文提到的`level`？结合代码和`data`的格式我们可以知道红杏是如何判定用户身份的，破解也非常容易，在`return`语句前加一句`$rootScope.user.role = ROLES.VIP`就行了。重新加载插件后你就可以发现讨厌的非VIP用户已经没有了，也可以开启“一直模式”和编辑科学上网列表了
+是不是又看到了前文提到的`level`？再看`js\services\userManager.js`中的如下代码段
+
+<script src="https://gist.github.com/bindog/f759d4e3fc47595ae4fb.js"> </script>
+
+结合代码和`data`的格式我们可以知道红杏是如何判定用户身份的，破解也非常容易，在`return`语句前加一句`$rootScope.user.role = ROLES.VIP`就行了。重新加载插件后你就可以发现讨厌的非VIP用户已经没有了，也可以开启“一直模式”和编辑科学上网列表了
 
 ![破解成功图](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-07-04_081232_zps2245a040.png)
 
