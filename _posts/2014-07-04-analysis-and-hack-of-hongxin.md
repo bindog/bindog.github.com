@@ -73,7 +73,7 @@ tags:
 
 其实看到`chrome.proxy.settings.set`就知道这肯定和代理设置相关了，在谷歌上一搜就找到一篇关于[开发Chrome代理扩展程序](http://lmk123.duapp.com/chrome/extensions/proxy.html)的文档，里面说的非常详细。注意后面的`generatePacScript`函数，其生成了一段`pac`脚本（关于`pac`脚本的知识刚才的那篇文档里也有涉及），其实就是一段简单的程序，告诉浏览器访问哪些网址的时候用什么代理。这段`pac`脚本就是红杏的“秘密”，如下
 
-{% highlight js %}
+{% highlight js linenos%}
 function FindProxyForURL(url, host) {
 	var D = "DIRECT";
 	var p = 'HTTPS javascud.com:443;HTTPS imiao7.com:443';
@@ -90,15 +90,15 @@ function FindProxyForURL(url, host) {
 	if (dnsDomainIs(host, '127.0.0.1')) return D;
 	if (dnsDomainIs(host, 'localhost')) return D;
 	if (dnsDomainIs(host, 'ddparis.com')) return D;
-	var node = {"net":{"akamaihd":1,"facebook":1,"fbcdn":1,"cloudfront":1,"sstatic":1,"doubleclick":1,"2mdn":1},"com":{"facebook":1,"twitter":1,"twimg":1,"google":1,"googleusercontent":1,"googleapis":1,"gstatic":1,"gmail":1,"tumblr":1,"appspot":1,"amazonaws":{"s3":1},"blogspot":1,"blogger":1,"mediafire":1,"googlevideo":1,"wordpress":1,"vimeo":1,"googlesyndication":1,"ggpht":1,"imgur":1,"googleadservices":1,"cloudflare":1,"deghhj":1},"co":{"t":1},"hk":{"com":{"google":1}},"in":{"honx":1},"ly":{"bit":1},"be":{"youtu":1}}; 
+	var node = {"net":{"akamaihd":1,"facebook":1,"fbcdn":1,"cloudfront":1,"sstatic":1,"doubleclick":1,"2mdn":1},"com":{"facebook":1,"twitter":1,"twimg":1,"google":1,"googleusercontent":1,"googleapis":1,"gstatic":1,"gmail":1,"tumblr":1,"appspot":1,"amazonaws":{"s3":1},"blogspot":1,"blogger":1,"mediafire":1,"googlevideo":1,"wordpress":1,"vimeo":1,"googlesyndication":1,"ggpht":1,"imgur":1,"googleadservices":1,"cloudflare":1,"deghhj":1},"co":{"t":1},"hk":{"com":{"google":1}},"in":{"honx":1},"ly":{"bit":1},"be":{"youtu":1}};
 	var hostParts = host.toLowerCase().split('.');
-    for (var i = hostParts.length - 1; i >= 0; i--) {
-	    var part = hostParts[i];
-	    node = node[part];
-	    if (node == undefined || node == 1) break;
-    }
-    if (node == 1) return p;
-    return D;
+	for (var i = hostParts.length - 1; i >= 0; i--) {
+		var part = hostParts[i];
+		node = node[part];
+		if (node == undefined || node == 1) break;
+	}
+	if (node == 1) return p;
+	return D;
 }
 {% endhighlight %}
 
