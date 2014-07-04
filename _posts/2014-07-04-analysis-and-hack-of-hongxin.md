@@ -73,39 +73,7 @@ tags:
 
 其实看到`chrome.proxy.settings.set`就知道这肯定和代理设置相关了，在谷歌上一搜就找到一篇关于[开发Chrome代理扩展程序](http://lmk123.duapp.com/chrome/extensions/proxy.html)的文档，里面说的非常详细。注意后面的`generatePacScript`函数，其生成了一段`pac`脚本（关于`pac`脚本的知识刚才的那篇文档里也有涉及），其实就是一段简单的程序，告诉浏览器访问哪些网址的时候用什么代理。这段`pac`脚本就是红杏的“秘密”，如下
 
-{% highlight js %}
-function FindProxyForURL(url, host) {
-	var D = "DIRECT";//直接连接，不使用代理
-	var p = 'HTTPS test1.com:443;HTTPS test2.com:443';//使用代理的方式、主机、端口号
-	
-	/* 下面的代码主要是设置一些规则，像127.0.0.1、localhost这样地址不走代理 */
-	if (shExpMatch(host, '10.[0-9]+.[0-9]+.[0-9]+')) return D;
-	if (shExpMatch(host, '172.[0-9]+.[0-9]+.[0-9]+')) return D;
-	if (shExpMatch(host, '192.168.[0-9]+.[0-9]+')) return D;
-	if (dnsDomainIs(host, 'localhost')) return D;
-	if (url.indexOf('https://www.google.com/complete/search?client=chrome-omni') == 0) return D;
-	if (url.indexOf('http://clients1.google.com/generate_204') == 0) return D;
-	if (url.indexOf('http://chart.apis.google.com/') == 0) return D;
-	if (url.indexOf('http://toolbarqueries.google.com') == 0) return D;
-	if (url.indexOf('_HXPROXY=') >= 0) return D;
-	if (dnsDomainIs(host, '0.0.0.0')) return D;
-	if (dnsDomainIs(host, '127.0.0.1')) return D;
-	if (dnsDomainIs(host, 'localhost')) return D;
-	if (dnsDomainIs(host, 'ddparis.com')) return D;
-	
-	/* 下面的代码就是红杏的访问控制了，当你访问google.com、twitter.com这样的域名时就会自动
-	用代理 */
-	var node = {"net":{"akamaihd":1,"facebook":1,"fbcdn":1,"cloudfront":1,"sstatic":1,"doubleclick":1,"2mdn":1},"com":{"facebook":1,"twitter":1,"twimg":1,"google":1,"googleusercontent":1,"googleapis":1,"gstatic":1,"gmail":1,"tumblr":1,"appspot":1,"amazonaws":{"s3":1},"blogspot":1,"blogger":1,"mediafire":1,"googlevideo":1,"wordpress":1,"vimeo":1,"googlesyndication":1,"ggpht":1,"imgur":1,"googleadservices":1,"cloudflare":1,"deghhj":1},"co":{"t":1},"hk":{"com":{"google":1}},"in":{"honx":1},"ly":{"bit":1},"be":{"youtu":1}};
-	var hostParts = host.toLowerCase().split('.');
-	for (var i = hostParts.length - 1; i >= 0; i--) {
-		var part = hostParts[i];
-		node = node[part];
-		if (node == undefined || node == 1) break;
-	}
-	if (node == 1) return p;
-	return D;
-}
-{% endhighlight %}
+<script src="https://gist.github.com/bindog/3d34bb38d48f59550a96.js"> </script>
 
 事实上我们把这段脚本保存下来，使用另一款`Chrome`扩展`SwitchySharp`，并将这段脚本导入到`SwitchySharp`中同样可以实现代理功能！不过在访问一些非`HTTPS`的域名如`http://scholar.google.com`时会出问题（暂时还不清楚原因-_-），但是像`https://www.google.com`或者`https://twitter.com`这样的域名是没有问题的~
 
