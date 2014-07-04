@@ -69,7 +69,7 @@ tags:
 
 还原完代码后，我们怎样从这么多js文件中找到与代理过程相关的那个文件呢？一般来说，文件名很大程度上反映了它的功能（程序员都这么干，除非你跟自己过不去或者和团队的人过不去）,所以我们直接搜`proxy`，在`js\services\`目录下找到了一个`proxyManager.js`，直觉告诉我们就是它了！代码有大概400多行，这里我贴几段比较重要的代码段
 
-<script src="https://gist.github.com/anonymous/46c4fafff4f0b9c6bf77.js"> </script>
+<script src="https://gist.github.com/bindog/8523971ed42eba49364c.js"> </script>
 
 其实看到`chrome.proxy.settings.set`就知道这肯定和代理设置相关了，在谷歌上一搜就找到一篇关于[开发Chrome代理扩展程序](http://lmk123.duapp.com/chrome/extensions/proxy.html)的文档，里面说的非常详细。注意后面的`generatePacScript`函数，其生成了一段`pac`脚本（关于`pac`脚本的知识刚才的那篇文档里也有涉及），其实就是一段简单的程序，告诉浏览器访问哪些网址的时候用什么代理。这段`pac`脚本就是红杏的“秘密”，如下
 
