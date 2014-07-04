@@ -75,8 +75,9 @@ tags:
 
 {% highlight js linenos%}
 function FindProxyForURL(url, host) {
-	var D = "DIRECT";
-	var p = 'HTTPS javascud.com:443;HTTPS imiao7.com:443';
+	var D = "DIRECT";//直接连接，不使用代理
+	var p = 'HTTPS test1.com:443;HTTPS test2.com:443';//使用代理的方式、主机、端口号
+	/* 下面的代码主要是设置一些规则，像127.0.0.1、localhost这样地址不走代理 */
 	if (shExpMatch(host, '10.[0-9]+.[0-9]+.[0-9]+')) return D;
 	if (shExpMatch(host, '172.[0-9]+.[0-9]+.[0-9]+')) return D;
 	if (shExpMatch(host, '192.168.[0-9]+.[0-9]+')) return D;
@@ -90,6 +91,7 @@ function FindProxyForURL(url, host) {
 	if (dnsDomainIs(host, '127.0.0.1')) return D;
 	if (dnsDomainIs(host, 'localhost')) return D;
 	if (dnsDomainIs(host, 'ddparis.com')) return D;
+	/* 下面的代码就是红杏的访问控制了，当你访问google.com、twitter.com这样的域名时就会自动启用代理 */
 	var node = {"net":{"akamaihd":1,"facebook":1,"fbcdn":1,"cloudfront":1,"sstatic":1,"doubleclick":1,"2mdn":1},"com":{"facebook":1,"twitter":1,"twimg":1,"google":1,"googleusercontent":1,"googleapis":1,"gstatic":1,"gmail":1,"tumblr":1,"appspot":1,"amazonaws":{"s3":1},"blogspot":1,"blogger":1,"mediafire":1,"googlevideo":1,"wordpress":1,"vimeo":1,"googlesyndication":1,"ggpht":1,"imgur":1,"googleadservices":1,"cloudflare":1,"deghhj":1},"co":{"t":1},"hk":{"com":{"google":1}},"in":{"honx":1},"ly":{"bit":1},"be":{"youtu":1}};
 	var hostParts = host.toLowerCase().split('.');
 	for (var i = hostParts.length - 1; i >= 0; i--) {
