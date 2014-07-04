@@ -52,7 +52,19 @@ tags:
 ![验证用户名和密码的数据包](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-07-04_074816_zps0415e7db.png)
 
 采用的是`HTTPS`协议，因此明文密码也就无所谓了(-_-)，响应如下
-`{"name": "test@test.com", "level": null, "no_password": false, "anonymous": null, "sid": "DA1D666B-20140627-xxxxxx-xxxxxx-xxxxxx", "inviter": "someone@test.com", "until": null}`
+
+{% highlight js %}
+{
+	"name": "test@test.com",
+	"level": null,
+	"no_password": false,
+	"anonymous": null,
+	"sid": "DA1D666B-20140627-xxxxxx-xxxxxx-xxxxxx",
+	"inviter": "someone@test.com",
+	"until": null
+}
+{% endhighlight %}
+
 大部分的`value`看`key`的名字就知道是什么含义，这里解释一下`level`是红杏用来标识用户VIP等级的一个字段，免费用户、包月、包年用户的值是不一样的，后面分析红杏的原理时还会涉及到这个`level`。`sid`是红杏为每一个用户生成的ID号，其中还可以看到注册日期
 ##**代理过程**
 好了，分析完登录过程下面来看看红杏是如何实现代理的，打开一个新的标签页和开发人员工具，进入谷歌首页，可是却发现开发人员工具的`Network`选项卡中只有`google.com`数据包，没有和代理相关的线索
