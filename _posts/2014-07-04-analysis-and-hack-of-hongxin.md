@@ -61,7 +61,7 @@ tags:
 
 其实也没有什么好惊讶的，开发人员工具毕竟不是万能的，主要是供前端工程师使用的，代理的过程对它来说是透明的，我们自然就看不到代理的过程。
 
-那么怎么办呢，`Wireshark`和开发人员工具都无能为力，只能用“逆向”的手段了，之所以打上引号是因为并非真正的逆向。说起逆向，小伙伴们是不是立刻想起了神器`Ollydbg`和`IDA`？不过`CRX`文件的逆向可没有那么复杂，因为这货就是个特殊的`ZIP`文件，把之前下载的`hongxin.crx`改成`hongxin.zip`并解压就得到了下面的这些文件
+那么怎么办呢，`Wireshark`和开发人员工具都无能为力，只能用“逆向”的手段了，之所以打上引号是因为并非真正的逆向。说起逆向，小伙伴们是不是立刻想起了神器`Ollydbg`和`IDA`？不过`crx`文件的逆向可没有那么复杂，因为这货就是个特殊的`zip`文件，把之前下载的`hongxin.crx`改成`hongxin.zip`并解压就得到了下面的这些文件
 
 ![解压后的一些文件](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-07-04_080440_zpsc0f6853c.png)
 
@@ -73,7 +73,34 @@ tags:
 
 其实看到`chrome.proxy.settings.set`就知道这肯定和代理设置相关了，在谷歌上一搜就找到一篇关于[开发Chrome代理扩展程序](http://lmk123.duapp.com/chrome/extensions/proxy.html)的文档，里面说的非常详细。注意后面的`generatePacScript`函数，其生成了一段`pac`脚本（关于`pac`脚本的知识刚才的那篇文档里也有涉及），其实就是一段简单的程序，告诉浏览器访问哪些网址的时候用什么代理。这段`pac`脚本就是红杏的“秘密”，如下
 
-[pac脚本占位]()
+{% highlight js %}
+function FindProxyForURL(url, host) {
+	var D = "DIRECT";
+	var p = 'HTTPS javascud.com:443;HTTPS imiao7.com:443';
+	if (shExpMatch(host, '10.[0-9]+.[0-9]+.[0-9]+')) return D;
+	if (shExpMatch(host, '172.[0-9]+.[0-9]+.[0-9]+')) return D;
+	if (shExpMatch(host, '192.168.[0-9]+.[0-9]+')) return D;
+	if (dnsDomainIs(host, 'localhost')) return D;
+	if (url.indexOf('https://www.google.com/complete/search?client=chrome-omni') == 0) return D;
+	if (url.indexOf('http://clients1.google.com/generate_204') == 0) return D;
+	if (url.indexOf('http://chart.apis.google.com/') == 0) return D;
+	if (url.indexOf('http://toolbarqueries.google.com') == 0) return D;
+	if (url.indexOf('_HXPROXY=') >= 0) return D;
+	if (dnsDomainIs(host, '0.0.0.0')) return D;
+	if (dnsDomainIs(host, '127.0.0.1')) return D;
+	if (dnsDomainIs(host, 'localhost')) return D;
+	if (dnsDomainIs(host, 'ddparis.com')) return D;
+	var node = {"net":{"akamaihd":1,"facebook":1,"fbcdn":1,"cloudfront":1,"sstatic":1,"doubleclick":1,"2mdn":1},"com":{"facebook":1,"twitter":1,"twimg":1,"google":1,"googleusercontent":1,"googleapis":1,"gstatic":1,"gmail":1,"tumblr":1,"appspot":1,"amazonaws":{"s3":1},"blogspot":1,"blogger":1,"mediafire":1,"googlevideo":1,"wordpress":1,"vimeo":1,"googlesyndication":1,"ggpht":1,"imgur":1,"googleadservices":1,"cloudflare":1,"deghhj":1},"co":{"t":1},"hk":{"com":{"google":1}},"in":{"honx":1},"ly":{"bit":1},"be":{"youtu":1}}; 
+	var hostParts = host.toLowerCase().split('.');
+    for (var i = hostParts.length - 1; i >= 0; i--) {
+	    var part = hostParts[i];
+	    node = node[part];
+	    if (node == undefined || node == 1) break;
+    }
+    if (node == 1) return p;
+    return D;
+}
+{% endhighlight %}
 
 事实上我们把这段脚本保存下来，使用另一款`Chrome`扩展`SwitchySharp`，并将这段脚本导入到`SwitchySharp`中同样可以实现代理功能！不过在访问一些非`HTTPS`的域名如`http://scholar.google.com`时会出问题（暂时还不清楚原因-_-），但是像`https://www.google.com`或者`https://twitter.com`这样的域名是没有问题的~
 
