@@ -1,5 +1,5 @@
 ---
-author: bindog
+author: 宾狗
 date: 2014-07-04 00:02+08:00
 layout: post
 title: "科学上网之红杏插件的原理与破解"
@@ -15,7 +15,7 @@ tags:
 众所周知，最近谷歌被封堵的很厉害，什么Gmail啊、谷歌地图啊全都无法使用。当然对我们在校的学生来说，这些用不了我也就忍了，但是谷歌学术用不了你让我怎么搞科(chao)研(xi)，I cannot endure!
 <!--more-->
 
-![大酒神从零Rap之我不能忍](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/endure_zpse3b21efa.png)
+![大酒神从零Rap之我不能忍](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/vlcsnap-2014-07-05-00h44m17s24_zps95c39cba.png)
 
 好在办法总是有的，代理、VPN、GoAgent（最近好像也用不了了），这些东西小伙伴们应该都非常熟悉。但是俗话说的好，“天下没有免费的午餐”，如果你用的是免费的代理或者VPN，那速度简直无法直视，相信这点小伙伴们也深有体会。那么有没有一种配置简单、速度流畅的方法呢，当然有了，这就是今天被拿来开刀的主角——[红杏](http://honx.in/i/U7PWaIKo11ScYOMI)，这货居然还是邀请机制，前面那个链接是我的邀请链接，大家如果付费的话就便宜我了哦(^_^)
 
@@ -33,7 +33,9 @@ tags:
 #0x02 红杏的原理
 
 那么红杏到底是怎么工作的呢，它的原理是什么呢？下面我们先通过`Wireshark`一探红杏背后的秘密。启动`Wireshark`进行抓包，然后用`Chrome`访问Google，在`Wireshark`中得到如下结果
-[Wireshark抓包结果]()
+
+![Wireshark抓包结果](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-07-07_074429_zps58f92b06.png)
+
 熟悉`openSSL`的同学一定对这些数据包不陌生，虽然说`Wireshark`支持对`SSL`协议进行解密，但是前提是你得有服务器的私钥啊，只恨当初openSSL爆出漏洞时没有行动(>_<)
 
 既然没有私钥，显然用Wireshark抓包的方法是行不通了，那么我们换个思路，从`Chrome`浏览器入手，利用`Chrome`自带的开发人员工具进行尝试。
@@ -69,7 +71,7 @@ tags:
 ##**代理过程**
 好了，分析完登录过程下面来看看红杏是如何实现代理的，打开一个新的标签页和开发人员工具，进入谷歌首页，可是却发现开发人员工具的`Network`选项卡中只有`google.com`数据包，没有和代理相关的线索
 
-[没有代理的数据包]()
+![没有代理的数据包](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-07-07_074243_zps3d43c5aa.png)
 
 其实也没有什么好惊讶的，开发人员工具毕竟不是万能的，主要是供前端工程师使用的，代理的过程对它来说是透明的，我们自然就看不到代理的过程。
 
@@ -141,7 +143,7 @@ client = RedSockClient.create(API_URL);
 ##**Chrome插件打包**
 修改完成之后，打包也非常简单，还是刚才那个页面，点击打包扩展程序，选择扩展程序所在根目录，点击打包扩展程序即可，最后会生成一个`crx`文件和一个`pem`文件（私钥文件）
 ##**将自己DIY的插件添加到白名单**
-`Chrome`从33开始，就不在再支持安装第3方插件，不过我们可以直接拖拽刚才生成的`crx`文件到 `chrome://extensions/`来突破安装，但是你会很快发现`google play`可以通过检测，发现你安装的扩展程序不是在应用商店下载的而直接把我们的插件停用，且无法启用，表现为灰色，只能删除。具体解决方案可以点击[这里](http://www.vip5k.com/3000.html)，其中用到了一个`chrome.adm`文件，可以点击[这里下载]()
+`Chrome`从33开始，就不在再支持安装第三方插件，不过我们可以直接拖拽刚才生成的`crx`文件到 `chrome://extensions/`来突破安装，但是很快发现`google play`可以通过检测，发现我们修改过的扩展程序不是在应用商店下载的而直接把插件停用，且无法启用，表现为灰色，只能删除。具体解决方案可以点击[这里](http://www.vip5k.com/3000.html)，其中用到了一个`chrome.adm`文件，可以点击[这里下载](http://dl.vmall.com/c0qh2eahsu)
 #0x05 总结
 看到这里，你是不是也觉得红杏插件没什么神秘的呢？下面我们回顾一下关键点
 >1.  SSL是一个非常安(fan)全(ren)的协议(-_-)
