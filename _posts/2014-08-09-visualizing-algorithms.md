@@ -340,7 +340,7 @@ p.append("button")
 whenFullyVisible(p.node(), click);
 
 function click() {
-  var sample = bestCandidateSampler(width, height, numCandidates, numSamples),
+  var sample = bestCandidateSampler(pwidth, pheight, numCandidates, numSamples),
       timer = ++timerActive;
 
   svg.selectAll("circle").remove();
