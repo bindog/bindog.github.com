@@ -302,11 +302,12 @@ function minHeap(compare) {
     }, callback);
   };
 })();
-
 </script>
+
 #0x00 前言
 最近读到一篇老外的文章[《Visualizing Algorithms》](http://bost.ocks.org/mike/algorithms/)，表示被里面各种算法炫酷的展示亮瞎了眼，一时冲动决定要将这篇文章翻译成中文，但是由于原文较长而且很文艺（我会告诉你们是我的英语太渣了么-\_-），我打算以解读的形式来展示原文而并非翻译，如果感兴趣可以直接看原版。最后我会整合其他一些算法可视化的素材。好了，闲话不多说，Let's begin~
 <!--more-->
+
 #0x01 采样
 首先我们来欣赏一下梵高同学的名画《星空》的一部分
 
@@ -314,7 +315,7 @@ function minHeap(compare) {
 
 var margin = 3,
     width = 770 - margin - margin,
-    height = 372 - margin - margin;
+    height = 360 - margin - margin;
 
 var numSamplesPerFrame = 10,
     numSamples = 2000,
