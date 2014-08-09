@@ -363,131 +363,244 @@ function click() {
 
 测试
 
-<div class="animation" id="best-candidate-explainer"><script>(function() {
+<div class="animation" id="poisson-disc-explainer"><script>(function() {
 
 var width = 770,
-    height = 500;
+    height = 480;
 
-var numCandidates = 10,
-    numSamplesMax = 1000;
+var duration = 500;
 
-var p = d3.select("#best-candidate-explainer")
+var k = 30, // maximum number of samples before rejection
+    radius = width / Math.SQRT1_2 / 20, // 100,
+    radius2 = radius * radius,
+    R = 3 * radius2,
+    cellSize = radius * Math.SQRT1_2,
+    gridWidth = Math.ceil(width / cellSize),
+    gridHeight = Math.ceil(height / cellSize),
+    grid,
+    queue,
+    queueSize;
+
+var arcEmptyAnnulus = d3.svg.arc()
+    .innerRadius(radius)
+    .outerRadius(radius)
+    .startAngle(0)
+    .endAngle(2 * Math.PI)();
+
+var arcAnnulus = d3.svg.arc()
+    .innerRadius(radius)
+    .outerRadius(radius * 2)
+    .startAngle(0)
+    .endAngle(2 * Math.PI)();
+
+var p = d3.select("#poisson-disc-explainer")
     .on("click", click);
 
 var svg = p.append("svg")
     .attr("width", width)
     .attr("height", height);
 
+var gExclusion = svg.append("g")
+    .attr("class", "exclusion");
+
+svg.append("path")
+    .attr("class", "grid")
+    .attr("transform", "translate(.5,.5)")
+    .attr("d", d3.range(cellSize, width, cellSize)
+        .map(function(x) { return "M" + Math.round(x) + ",0V" + height; })
+        .join("")
+      + d3.range(cellSize, height, cellSize)
+        .map(function(y) { return "M0," + Math.round(y) + "H" + width; })
+        .join(""));
+
+var searchAnnulus = svg.append("path")
+    .attr("class", "candidate-annulus");
+
+var gConnection = svg.append("g")
+    .attr("class", "candidate-connection");
+
+var gSample = svg.append("g")
+    .attr("class", "sample");
+
 var gCandidate = svg.append("g")
     .attr("class", "candidate");
-
-var gPoint = svg.append("g")
-    .attr("class", "point");
 
 p.append("button")
     .text("▶ Play");
 
+function far(x, y) {
+  var i = x / cellSize | 0,
+      j = y / cellSize | 0,
+      i0 = Math.max(i - 2, 0),
+      j0 = Math.max(j - 2, 0),
+      i1 = Math.min(i + 3, gridWidth),
+      j1 = Math.min(j + 3, gridHeight);
+
+  for (j = j0; j < j1; ++j) {
+    var o = j * gridWidth;
+    for (i = i0; i < i1; ++i) {
+      if (s = grid[o + i]) {
+        var s,
+            dx = s[0] - x,
+            dy = s[1] - y;
+        if (dx * dx + dy * dy < radius2) {
+          gConnection.append("line")
+              .attr("x1", x)
+              .attr("y1", y)
+              .attr("x2", x)
+              .attr("y2", y)
+            .transition()
+              .duration(duration / 4)
+              .attr("x2", s[0])
+              .attr("y2", s[1]);
+
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+function sample(x, y) {
+  var s = [x, y];
+
+  gExclusion.append("circle")
+      .attr("r", 1e-6)
+      .attr("cx", x)
+      .attr("cy", y)
+    .transition()
+      .duration(duration)
+      .attr("r", radius);
+
+  gSample.append("circle")
+      .datum(s)
+      .attr("class", "sample--active")
+      .attr("r", 1e-6)
+      .attr("cx", x)
+      .attr("cy", y)
+    .transition()
+      .duration(duration)
+      .attr("r", 3);
+
+  queue.push(s);
+  grid[gridWidth * (y / cellSize | 0) + (x / cellSize | 0)] = s;
+  ++queueSize;
+  return s;
+}
+
 beforeVisible(p.node(), click);
 
+function cancel(g) {
+  g
+      .interrupt()
+    .selectAll("*")
+      .interrupt()
+      .remove();
+}
+
 function click() {
-  var numSamples = 1;
+  grid = new Array(gridWidth * gridHeight);
+  queue = [];
+  queueSize = 0;
 
-  var quadtree = d3.geom.quadtree()
-      .extent([[0, 0], [width, height]])
-      ([[Math.random() * width, Math.random() * height]]);
+  searchAnnulus.interrupt();
 
-  gCandidate.selectAll("*")
-      .interrupt()
-      .remove();
-
-  gPoint.selectAll("*")
-      .interrupt()
-      .remove();
-
-  gPoint.append("circle")
-      .attr("r", 3.5)
-      .attr("cx", quadtree.point[0])
-      .attr("cy", quadtree.point[1]);
+  gExclusion.call(cancel);
+  gConnection.call(cancel);
+  gSample.call(cancel);
+  gCandidate.call(cancel);
 
   p
       .classed("animation--playing", true);
 
-  (function nextPoint() {
-    var i = 0,
-        maxDistance = -Infinity,
-        bestCandidate = null;
+  sample(Math.random() * width, Math.random() * height);
 
-    (function nextCandidate() {
-      if (++i > numCandidates) {
-        gCandidate.selectAll("*").transition()
-            .style("opacity", 0)
-            .remove();
+  (function selectActive() {
+    var i = Math.random() * queueSize | 0,
+        s = queue[i],
+        j = 0;
 
-        gPoint.append("circle")
-            .attr("r", 3.5)
-            .attr("cx", bestCandidate.__data__[0])
-            .attr("cy", bestCandidate.__data__[1]);
+    gCandidate
+        .style("opacity", null);
 
-        quadtree.add(bestCandidate.__data__);
+    gConnection
+        .style("opacity", null);
 
-        if (++numSamples < numSamplesMax) beforeVisible(p.node(), nextPoint);
-        else p.classed("animation--playing", false);
+    searchAnnulus
+        .style("opacity", null)
+        .style("stroke-opacity", 0)
+        .attr("transform", "translate(" + s + ")")
+        .attr("d", arcEmptyAnnulus)
+      .transition()
+        .duration(duration)
+        .attr("d", arcAnnulus)
+        .style("stroke-opacity", 1)
+        .each("end", generateCandidate);
 
-        return;
+    var sampleActive = gSample.selectAll("circle")
+      .filter(function(d) { return d === s; });
+
+    function generateCandidate() {
+      if (++j > k) return rejectActive();
+
+      var a = 2 * Math.PI * Math.random(),
+          r = Math.sqrt(Math.random() * R + radius2),
+          x = s[0] + r * Math.cos(a),
+          y = s[1] + r * Math.sin(a);
+
+      // Reject candidates that are outside the allowed extent.
+      if (0 > x || x >= width || 0 > y || y >= height) return generateCandidate();
+
+      // If this is an acceptable candidate, create a new sample;
+      // otherwise, generate a new candidate.
+      gCandidate.append("circle")
+          .attr("r", 1e-6)
+          .attr("cx", x)
+          .attr("cy", y)
+        .transition()
+          .duration(duration / 4)
+          .attr("r", 3.75)
+          .each("end", far(x, y) ? acceptCandidate : generateCandidate);
+
+      function acceptCandidate() {
+        sample(x, y);
+        nextActive();
       }
+    }
 
-      var x = Math.random() * width,
-          y = Math.random() * height,
-          closest = quadtree.find(x, y),
-          dx = closest[0] - x,
-          dy = closest[1] - y,
-          distance = Math.sqrt(dx * dx + dy * dy);
+    function rejectActive() {
+      queue[i] = queue[--queueSize];
+      queue.length = queueSize;
 
-      var g = gCandidate.insert("g", "*")
-          .datum([x, y])
-          .attr("class", "candidate--current");
+      sampleActive
+          .classed("sample--active", false);
 
-      g.append("circle")
-          .attr("class", "search")
-          .attr("r", 3.5)
-          .attr("cx", x)
-          .attr("cy", y);
+      nextActive();
+    }
 
-      g.append("line")
-          .attr("class", "search")
-          .attr("x1", x)
-          .attr("y1", y)
-          .attr("x2", x)
-          .attr("y2", y);
+    function nextActive() {
+      gCandidate.transition()
+          .duration(duration)
+          .style("opacity", 0)
+        .selectAll("circle")
+          .remove();
 
-      g.append("circle")
-          .attr("class", "point")
-          .attr("r", 3.5)
-          .attr("cx", x)
-          .attr("cy", y);
+      gConnection.transition()
+          .duration(duration)
+          .style("opacity", 0)
+        .selectAll("line")
+          .remove();
 
-      var t = g.transition()
-          .duration(750)
-          .each("end", function() {
-            if (distance > maxDistance) {
-              d3.select(bestCandidate).attr("class", null);
-              d3.select(this.parentNode.appendChild(this)).attr("class", "candidate--best");
-              bestCandidate = this;
-              maxDistance = distance;
-            } else {
-              d3.select(this).attr("class", null);
-            }
-            nextCandidate();
-          });
-
-      t.select("circle.search")
-          .attr("r", distance);
-
-      t.select("line.search")
-          .attr("x2", closest[0])
-          .attr("y2", closest[1]);
-    })();
+      searchAnnulus.transition()
+          .duration(duration)
+          .style("opacity", 0)
+          .each("end", queueSize
+              ? function() { beforeVisible(p.node(), selectActive); }
+              : function() { p.classed("animation--playing", false); });
+    }
   })();
 }
 
-})()</script></div>
+})()</div>
