@@ -311,7 +311,7 @@ function minHeap(compare) {
 #0x01 采样
 首先我们来欣赏一下梵高同学的名画《星空》的一部分
 
-<p class="animation" id="best-candidate-sampling"><script>(function() {
+<div class="animation" id="best-candidate-sampling"><script>(function() {
 
 var margin = 3,
     width = 770 - margin - margin,
@@ -325,12 +325,9 @@ var numSamplesPerFrame = 10,
 var p = d3.select("#best-candidate-sampling")
     .on("click", click);
 
-var pwidth = p.offsetWidth;
-var pheight = p.offsetHeight;
-	
 var svg = p.append("svg")
-    .attr("width", pwidth)
-    .attr("height", pheight)
+    .attr("width", width + margin + margin)
+    .attr("height", height + margin + margin)
   .append("g")
     .attr("transform", "translate(" + margin + "," + margin + ")");
 
@@ -340,7 +337,7 @@ p.append("button")
 whenFullyVisible(p.node(), click);
 
 function click() {
-  var sample = bestCandidateSampler(pwidth, pheight, numCandidates, numSamples),
+  var sample = bestCandidateSampler(width, height, numCandidates, numSamples),
       timer = ++timerActive;
 
   svg.selectAll("circle").remove();
@@ -362,6 +359,6 @@ function click() {
   });
 }
 
-})()</script></p>
+})()</script></div>
 
 测试
