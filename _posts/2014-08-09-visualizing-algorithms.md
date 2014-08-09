@@ -313,8 +313,8 @@ function minHeap(compare) {
 <p class="animation" id="best-candidate-sampling"><script>(function() {
 
 var margin = 3,
-    width = 960 - margin - margin,
-    height = 360 - margin - margin;
+    width = 770 - margin - margin,
+    height = 366 - margin - margin;
 
 var numSamplesPerFrame = 10,
     numSamples = 2000,
