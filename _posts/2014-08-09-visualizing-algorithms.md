@@ -21,10 +21,10 @@ tags:
 }
 
 .animation {
-  position: relative;
+  position: absolute;
   cursor: pointer;
   background-color: white;
-  height: 360;
+  height: 360px;
 }
 
 .animation--playing button {
