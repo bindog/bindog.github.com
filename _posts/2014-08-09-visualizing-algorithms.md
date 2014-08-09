@@ -362,3 +362,132 @@ function click() {
 })()</script></div>
 
 测试
+
+<div class="animation" id="best-candidate-explainer"><script>(function() {
+
+var width = 770,
+    height = 500;
+
+var numCandidates = 10,
+    numSamplesMax = 1000;
+
+var p = d3.select("#best-candidate-explainer")
+    .on("click", click);
+
+var svg = p.append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var gCandidate = svg.append("g")
+    .attr("class", "candidate");
+
+var gPoint = svg.append("g")
+    .attr("class", "point");
+
+p.append("button")
+    .text("▶ Play");
+
+beforeVisible(p.node(), click);
+
+function click() {
+  var numSamples = 1;
+
+  var quadtree = d3.geom.quadtree()
+      .extent([[0, 0], [width, height]])
+      ([[Math.random() * width, Math.random() * height]]);
+
+  gCandidate.selectAll("*")
+      .interrupt()
+      .remove();
+
+  gPoint.selectAll("*")
+      .interrupt()
+      .remove();
+
+  gPoint.append("circle")
+      .attr("r", 3.5)
+      .attr("cx", quadtree.point[0])
+      .attr("cy", quadtree.point[1]);
+
+  p
+      .classed("animation--playing", true);
+
+  (function nextPoint() {
+    var i = 0,
+        maxDistance = -Infinity,
+        bestCandidate = null;
+
+    (function nextCandidate() {
+      if (++i > numCandidates) {
+        gCandidate.selectAll("*").transition()
+            .style("opacity", 0)
+            .remove();
+
+        gPoint.append("circle")
+            .attr("r", 3.5)
+            .attr("cx", bestCandidate.__data__[0])
+            .attr("cy", bestCandidate.__data__[1]);
+
+        quadtree.add(bestCandidate.__data__);
+
+        if (++numSamples < numSamplesMax) beforeVisible(p.node(), nextPoint);
+        else p.classed("animation--playing", false);
+
+        return;
+      }
+
+      var x = Math.random() * width,
+          y = Math.random() * height,
+          closest = quadtree.find(x, y),
+          dx = closest[0] - x,
+          dy = closest[1] - y,
+          distance = Math.sqrt(dx * dx + dy * dy);
+
+      var g = gCandidate.insert("g", "*")
+          .datum([x, y])
+          .attr("class", "candidate--current");
+
+      g.append("circle")
+          .attr("class", "search")
+          .attr("r", 3.5)
+          .attr("cx", x)
+          .attr("cy", y);
+
+      g.append("line")
+          .attr("class", "search")
+          .attr("x1", x)
+          .attr("y1", y)
+          .attr("x2", x)
+          .attr("y2", y);
+
+      g.append("circle")
+          .attr("class", "point")
+          .attr("r", 3.5)
+          .attr("cx", x)
+          .attr("cy", y);
+
+      var t = g.transition()
+          .duration(750)
+          .each("end", function() {
+            if (distance > maxDistance) {
+              d3.select(bestCandidate).attr("class", null);
+              d3.select(this.parentNode.appendChild(this)).attr("class", "candidate--best");
+              bestCandidate = this;
+              maxDistance = distance;
+            } else {
+              d3.select(this).attr("class", null);
+            }
+            nextCandidate();
+          });
+
+      t.select("circle.search")
+          .attr("r", distance);
+
+      t.select("line.search")
+          .attr("x2", closest[0])
+          .attr("y2", closest[1]);
+    })();
+  })();
+}
+
+})()</script></div>
