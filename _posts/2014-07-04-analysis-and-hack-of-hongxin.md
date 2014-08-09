@@ -144,6 +144,7 @@ client = RedSockClient.create(API_URL);
 修改完成之后，打包也非常简单，还是刚才那个页面，点击打包扩展程序，选择扩展程序所在根目录，点击打包扩展程序即可，最后会生成一个`crx`文件和一个`pem`文件（私钥文件）
 ##**将自己DIY的插件添加到白名单**
 `Chrome`从33开始，就不在再支持安装第三方插件，不过我们可以直接拖拽刚才生成的`crx`文件到 `chrome://extensions/`来突破安装，但是很快发现`google play`可以通过检测，发现我们修改过的扩展程序不是在应用商店下载的而直接把插件停用，且无法启用，表现为灰色，只能删除。具体解决方案可以点击[这里](http://www.vip5k.com/3000.html)，其中用到了一个`chrome.adm`文件，可以点击[这里下载](http://dl.vmall.com/c0qh2eahsu)
+
 #0x05 总结
 看到这里，你是不是也觉得红杏插件没什么神秘的呢？下面我们回顾一下关键点
 >1.  SSL是一个非常安(fan)全(ren)的协议(-_-)
@@ -151,6 +152,7 @@ client = RedSockClient.create(API_URL);
 >3. PAC脚本可以用于配置浏览器的代理，IE和火狐也支持哦~
 
 其他一些东西，像`HTML5`、`Local Storage`、`WebSocket`还是很有意思的，小伙伴们有兴趣可以多关注一下~
+
 #0XFF 扩展阅读
 下面是与本文相关的一些文章，值得一读
 * [HTTP代理与SPDY协议](http://blog.jobbole.com/42763/)
