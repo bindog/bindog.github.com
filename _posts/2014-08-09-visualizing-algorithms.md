@@ -314,7 +314,7 @@ function minHeap(compare) {
 
 var margin = 3,
     width = 770 - margin - margin,
-    height = 366 - margin - margin;
+    height = 372 - margin - margin;
 
 var numSamplesPerFrame = 10,
     numSamples = 2000,
