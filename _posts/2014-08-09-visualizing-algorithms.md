@@ -24,7 +24,6 @@ tags:
   position: relative;
   cursor: pointer;
   background-color: white;
-  height: 360px;
 }
 
 .animation--playing button {
@@ -326,9 +325,12 @@ var numSamplesPerFrame = 10,
 var p = d3.select("#best-candidate-sampling")
     .on("click", click);
 
+var pwidth = p.offsetWidth;
+var pheight = p.offsetHeight;
+	
 var svg = p.append("svg")
-    .attr("width", width + margin + margin)
-    .attr("height", height + margin + margin)
+    .attr("width", pwidth)
+    .attr("height", pheight)
   .append("g")
     .attr("transform", "translate(" + margin + "," + margin + ")");
 
