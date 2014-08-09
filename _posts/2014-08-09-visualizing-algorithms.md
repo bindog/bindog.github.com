@@ -21,7 +21,7 @@ tags:
 }
 
 .animation {
-  position: absolute;
+  position: relative;
   cursor: pointer;
   background-color: white;
   height: 360px;
