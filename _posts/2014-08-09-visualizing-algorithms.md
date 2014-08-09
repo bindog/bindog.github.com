@@ -356,5 +356,5 @@ function click() {
   });
 }
 
-})()</script>
+})()</script></p>
 测试
