@@ -24,6 +24,7 @@ tags:
   position: relative;
   cursor: pointer;
   background-color: white
+  height: 360
 }
 
 .animation--playing button {
