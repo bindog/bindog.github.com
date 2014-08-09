@@ -23,6 +23,7 @@ tags:
 .animation {
   position: relative;
   cursor: pointer;
+  background-color: white
 }
 
 .animation--playing button {
@@ -309,7 +310,7 @@ function minHeap(compare) {
 #0x01 采样
 首先我们来欣赏一下梵高同学的名画《星空》的一部分
 
-<div class="animation" id="best-candidate-sampling"><script>(function() {
+<p class="animation" id="best-candidate-sampling"><script>(function() {
 
 var margin = 3,
     width = 960 - margin - margin,
@@ -357,5 +358,6 @@ function click() {
   });
 }
 
-})()</script></div>
+})()</script></p>
+
 测试
