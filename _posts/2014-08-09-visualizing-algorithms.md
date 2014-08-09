@@ -311,7 +311,7 @@ function minHeap(compare) {
 #0x01 采样
 首先我们来欣赏一下梵高同学的名画《星空》的一部分
 
-<p class="animation" id="best-candidate-sampling"><script>(function() {
+<div class="animation" id="best-candidate-sampling"><script>(function() {
 
 var margin = 3,
     width = 770 - margin - margin,
@@ -359,6 +359,6 @@ function click() {
   });
 }
 
-})()</script></p>
+})()</script></div>
 
 测试
