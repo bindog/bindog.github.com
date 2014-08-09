@@ -363,6 +363,45 @@ function click() {
 
 测试
 
+<style>
+
+#poisson-disc-explainer svg {
+  border: solid 1px #ccc;
+}
+
+#poisson-disc-explainer .grid {
+  stroke: #777;
+  stroke-opacity: .35;
+}
+
+#poisson-disc-explainer .exclusion {
+  fill: #ddd;
+}
+
+#poisson-disc-explainer .candidate-connection,
+#poisson-disc-explainer .candidate {
+  fill: #fff;
+  stroke: #000;
+}
+
+#poisson-disc-explainer .candidate-annulus {
+  fill: #000;
+  fill-opacity: .25;
+  stroke: #000;
+}
+
+#poisson-disc-explainer .sample {
+  fill: #000;
+}
+
+#poisson-disc-explainer .sample--active {
+  fill: #f00;
+  stroke: #f00;
+  stroke-width: 2px;
+}
+
+</style>
+
 <div class="animation" id="poisson-disc-explainer"><script>(function() {
 
 var width = 770,
