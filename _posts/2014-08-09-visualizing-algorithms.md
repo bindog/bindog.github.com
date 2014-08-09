@@ -603,4 +603,4 @@ function click() {
   })();
 }
 
-})()</div>
+})()</script></div>
