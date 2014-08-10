@@ -435,15 +435,10 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 说了这么多，如果你也想学习算法可视化，可以从这个用`C#`实现的[排序算法可视化](http://www.codeproject.com/articles/132757/visualization-and-comparison-of-sorting-algorithms)开始，有源码哦~它的效果也挺不错的，大概是这个样子
 
 >冒泡排序
-
 >![冒泡排序](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/Bubble_Sort_zps2005195b.gif)
-
 >插入排序
-
 >![插入排序](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/Insertion_Sort_zps05879f48.gif)
-
 >快速排序
-
 >![快速排序](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/Quick_Sort_zps0abcb2fb.gif)
 
 #0x06 后记
