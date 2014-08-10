@@ -394,6 +394,7 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 当然这并不是一件容易的事情，首先我们对算法的理解需要更加深入和透彻，否则不可能想出那些神奇的展现方式。其次就是我们的美工水平和前端编程能力，我看了一下原作者网页中可视化实现的一些代码，涉及到`CSS`、`javascript`和`HTML5`（尤其是`svg`标签和`canvas`标签的使用）等很多内容，这些没有深厚的功底是做不到的。
 
 我这里再把原文中列出的一些其他算法可视化方面的资源放在这里
+
 ##排序
 >[Aldo Cortesi’s sorting visualizations](http://sortvis.org/visualisations.html)
 >[sorting-algorithms.com](http://www.sorting-algorithms.com/)
@@ -401,6 +402,7 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 >[Sorting Visualizer](http://www.aarondufour.com/)
 
 个人比较喜欢最后一个~
+
 ##光影效果
 >[2D visibility](http://www.redblobgames.com/articles/visibility/)
 >[2D visibility and shadow effects](http://ncase.me/sight-and-light/)
@@ -431,11 +433,17 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 不得不承认老外比我们领先太多了，不仅仅是技术上的领先，更多的是想法和思维上的领先。记得前一段时间刷微博的时候看到罗马尼亚人民是怎样教算法的，他们的计算机学院编排了排序算法的教学舞蹈~详情请戳[让程序员抓狂的排序算法教学视频](http://www.vaikan.com/sort-dance/)
 
 说了这么多，如果你也想学习算法可视化，可以从这个用`C#`实现的[排序算法可视化](http://www.codeproject.com/articles/132757/visualization-and-comparison-of-sorting-algorithms)开始，有源码哦~它的效果也挺不错的，大概是这个样子
+
 >冒泡排序
+
 >![冒泡排序](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/Bubble_Sort_zps2005195b.gif)
+
 >插入排序
+
 >![插入排序](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/Insertion_Sort_zps05879f48.gif)
+
 >快速排序
+
 >![快速排序](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/Quick_Sort_zps0abcb2fb.gif)
 
 #0x06 后记
