@@ -26,123 +26,365 @@ function uniformRandomSampler(width,height,numSamplesMax){var numSamples=0;retur
 #0x01 采样
 首先我们来欣赏一下梵高同学的名画《星空》的一部分
 
-[Best-candidate 效果]()
+![星空](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/starry-night-detail_zps35f7215a.jpg)
+
+关于光是怎样在人的视网膜上成像涉及到物理和生物的一些知识，这里我们不作讨论。但是其中有很重要的一个过程就是人眼把连续的光信号变成了离散的信号，并将其反馈给大脑。这个过程就称为**采样**
+
+采样在计算机图形学中扮演着非常重要的角色。即使是简单的调整图像大小也要用到采样。因此如何进行采样就显得十分重要，一方面要保证采样点要均匀分布，另一方面要避免采样点重复或产生规律（否则会产生[混叠](http://zh.wikipedia.org/wiki/%E6%B7%B7%E7%96%8A)）。人的视网膜在采样上做的非常出色，看下面这张视网膜在显微镜下的图，图中的较大的视锥细胞探测颜色，较小的视杆细胞对弱光较为敏感
+
+![视网膜](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/retinal-cone-mosaic_zps03166cc2.jpg)
+
+这些细胞稠密且均匀的分布在视网膜上，而且它们之间的相对位置是无规律的。我们称之为泊松圆盘分布，因为任意细胞间的最小距离总是一定的
+
+但是构造一个泊松圆盘分布并不容易，我们先来看看米切尔最佳候选算法(Mitchell’s best-candidate algorithm)，它是泊松圆盘分布的一个近似，方便起见，我们就称之为`best-candidate`算法吧~
 
 <div class="animation" id="best-candidate-sampling"><script>!function(){function t(){var t=bestCandidateSampler(e,n,l,i),a=++c;s.selectAll("circle").remove(),d.classed("animation--playing",!0),d3.timer(function(){if(c!==a)return!0;for(var e=0;r>e;++e){var n=t();if(!n)return d.classed("animation--playing",!1),!0;s.append("circle").attr("cx",n[0]).attr("cy",n[1]).attr("r",1e-6).transition().attr("r",2)}})}var a=3,e=770-a-a,n=360-a-a,r=10,i=2e3,l=10,c=0,d=d3.select("#best-candidate-sampling").on("click",t),s=d.append("svg").attr("width",e+a+a).attr("height",n+a+a).append("g").attr("transform","translate("+a+","+a+")");d.append("button").text("▶ Play"),whenFullyVisible(d.node(),t)}();</script></div>
 
-[Best-candidate 原理]()
+从图上来看`best-candidate`算法形成的采样点还算令人满意，至少随机性是不错。不过缺点也很明显，有的区域采样点非常多（过采样），而有的区域则较稀疏（欠采样）。当然即使这样也是相当不错的，因为这个算法易于实现
+
+我们来看看这个算法的原理
 
 <style>#best-candidate-explainer svg{border:solid 1px #ccc}#best-candidate-explainer .candidate .point{fill:#ccc;transition:fill 250ms linear}#best-candidate-explainer .candidate .search{fill:none;stroke:#ccc;transition:stroke 250ms linear,stroke-width 250ms linear}#best-candidate-explainer .candidate--best .point{fill:#f00}#best-candidate-explainer .candidate--best .search{stroke:#f00;stroke-width:1.5px}</style>
 
 <div class="animation" id="best-candidate-explainer"><script>!function(){function t(){var t=1,i=d3.geom.quadtree().extent([[0,0],[a,e]])([[Math.random()*a,Math.random()*e]]);s.selectAll("*").interrupt().remove(),l.selectAll("*").interrupt().remove(),l.append("circle").attr("r",3.5).attr("cx",i.point[0]).attr("cy",i.point[1]),c.classed("animation--playing",!0),function d(){var o=0,p=-1/0,h=null;!function u(){if(++o>r)return s.selectAll("*").transition().style("opacity",0).remove(),l.append("circle").attr("r",3.5).attr("cx",h.__data__[0]).attr("cy",h.__data__[1]),i.add(h.__data__),void(++t<n?beforeVisible(c.node(),d):c.classed("animation--playing",!1));var y=Math.random()*a,_=Math.random()*e,m=i.find(y,_),v=m[0]-y,x=m[1]-_,f=Math.sqrt(v*v+x*x),g=s.insert("g","*").datum([y,_]).attr("class","candidate--current");g.append("circle").attr("class","search").attr("r",3.5).attr("cx",y).attr("cy",_),g.append("line").attr("class","search").attr("x1",y).attr("y1",_).attr("x2",y).attr("y2",_),g.append("circle").attr("class","point").attr("r",3.5).attr("cx",y).attr("cy",_);var b=g.transition().duration(750).each("end",function(){f>p?(d3.select(h).attr("class",null),d3.select(this.parentNode.appendChild(this)).attr("class","candidate--best"),h=this,p=f):d3.select(this).attr("class",null),u()});b.select("circle.search").attr("r",f),b.select("line.search").attr("x2",m[0]).attr("y2",m[1])}()}()}var a=770,e=500,r=10,n=1e3,c=d3.select("#best-candidate-explainer").on("click",t),i=c.append("svg").attr("width",a).attr("height",e),s=i.append("g").attr("class","candidate"),l=i.append("g").attr("class","point");c.append("button").text("▶ Play"),beforeVisible(c.node(),t)}();</script></div>
 
-[Uniform random 效果]()
+`best-candidate`算法，顾名思义，是从一堆候选采样点中选取一个最佳采样点。首先，生成固定数量（上图中为10）的候选采样点，用灰色表示，每一个候选采样点是在采样区域随机生成的。然后寻找最佳候选采样点，用红色表示。什么是最佳候选采样点呢？就是**距离已固定的采样点（黑色表示）最远的那个点**。这么说大家可能还是不太明白，其实就是把已固定的采样点整体看成一个集合，候选采样点与这个集合中每一个元素都有一个距离，我们把最小的那个距离定义为该候选采样点到已固定采样点的距离
+
+从图上来说就是对每一个灰点（候选采样点），寻找离它最近的黑点（已固定的采样点），在它们之间划一条线，线的长度就是它们的距离。红点（最佳候选采样点）就是在当前所有灰点中这个距离最大的那个点。当这一轮结束这后，把红点标为黑点（把最佳候选采样点作为已固定的采样点），然后进行下一轮的选取，如此循环下去
+
+下面是实现代码
+
+{% highlight js %}
+function sample() {
+  var bestCandidate, bestDistance = 0;
+  for (var i = 0; i < numCandidates; ++i) {
+    var c = [Math.random() * width, Math.random() * height],
+        d = distance(findClosest(samples, c), c);
+    if (d > bestDistance) {
+      bestDistance = d;
+      bestCandidate = c;
+    }
+  }
+  return bestCandidate;
+}
+{% endhighlight %}
+
+其中`numCandidates`表示一次生成的候选采样点个数，`numCandidates`越小，算法运行速度越快。相反，`numCandidates`越大，算法运行速度越慢，但是采样质量越高
+
+`distance`函数也非常简单，如下所示
+
+{% highlight js %}
+function distance(a, b) {
+  var dx = a[0] - b[0],
+      dy = a[1] - b[1];
+  return Math.sqrt(dx * dx + dy * dy);
+}
+{% endhighlight %}
+
+`findClosest`函数返回距离当前灰点最近的黑点（距离当前候选采样点最近的已固定采样点）。我们可以用暴力搜索来实现，即遍历所有黑点，计算当前灰点与它们之间的距离，找出最小值。当然也可以采用一些快速的搜索算法，如**四叉树搜索算法**。暴力搜索简单，但是时间复杂度太高。而四叉树搜索算法需要一个前期建立四叉树的过程
+
+下面我们来看看另一种随机采样算法`uniform random`。`uniform random`算法是最简单的一种随机采样的实现，它的效果如下
 
 <div class="animation" id="uniform-random-sampling"><script>!function(){function t(){var t=uniformRandomSampler(n,r,i),a=++l;c.selectAll("circle").remove(),o.classed("animation--playing",!0),d3.timer(function(){if(l!==a)return!0;for(var n=0;e>n;++n){var r=t();if(!r)return o.classed("animation--playing",!1),!0;c.append("circle").attr("cx",r[0]).attr("cy",r[1]).attr("r",1e-6).transition().attr("r",2)}})}var a=3,n=770-a-a,r=360-a-a,e=10,i=2e3,l=0,o=d3.select("#uniform-random-sampling").on("click",t),c=o.append("svg").attr("width",n+a+a).attr("height",r+a+a).append("g").attr("transform","translate("+a+","+a+")");o.append("button").text("▶ Play"),whenFullyVisible(o.node(),t)}();</script></div>
 
-[Poisson-disc 效果]()
+`uniform random`算法虽然简单，但是它的结果实在有点惨不忍睹，采样点重叠，过采样，欠采样等等
+
+那么除了通过采样点的分布规律来鉴别采样质量，还有没有其他方法呢？这里我们可以通过取距离采样点最近的颜色并对采样点所在色块进行着色的方法，也可以使用[沃罗诺伊图](http://zh.wikipedia.org/wiki/%E6%B2%83%E7%BD%97%E8%AF%BA%E4%BC%8A%E5%9B%BE)
+
+先来看看在`uniform random`算法生成的`6667`个采样点下的《星空》是什么样的
+
+![uniform random 星空](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/uniform-random-starry-night_zpsc3aa7d8f.jpg)
+
+效果果然很一般，采样点分布不均导致色块大小不一、细节丢失严重等一系列问题。左下角还有一些粉红色的色块，而原作中是没有这种颜色的
+
+再来看看`best-candidate`算法采样后的《星空》
+
+![best-candidate 星空](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/best-candidate-starry-night_zpsbbaf54f7.jpg)
+
+尽管仍有一些细节丢失等问题，但明显要比上一幅效果要好
+
+我们也可以用沃罗诺伊图更直观的衡量采样质量，通过对每个色块的大小对其进行着色，色块越大颜色越深，色块越小颜色越浅。最佳的采样模式应该有几乎统一的着色，同时又保证不规律的采样点分布。下图是`uniform random`的效果
+
+![uniform random 沃罗诺伊图](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/uniform-random-voronoi_zps5ddfcf29.jpg)
+
+色块之间的差别非常大，原因不再赘述
+`best-candidate`的效果如下
+
+![best-candidate 沃罗诺伊图](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/best-candidate-voronoi_zpsd3cab8d2.jpg)
+
+颜色明显均匀多了
+
+那么有没有什么算法能比`best-candidate`算法效果更好呢？当然有了，这就是我们下面要讨论的Bridson泊松圆盘采样算法，这次可不是近似了哦~先来看看`Poisson-disc`算法的效果
 
 <div class="animation" id="poisson-disc-sampling"><script>!function(){function t(){var t=poissonDiscSampler(n,r,e),a=++l;c.selectAll("circle").remove(),s.classed("animation--playing",!0),d3.timer(function(){if(l!==a)return!0;for(var n=0;i>n;++n){var r=t();if(!r)return s.classed("animation--playing",!1),!0;c.append("circle").attr("cx",r[0]).attr("cy",r[1]).attr("r",1e-6).transition().attr("r",2)}})}var a=3,n=770-a-a,r=360-a-a,i=10,e=10.29,l=0,s=d3.select("#poisson-disc-sampling").on("click",t),c=s.append("svg").attr("width",n+a+a).attr("height",r+a+a).append("g").attr("transform","translate("+a+","+a+")");s.append("button").text("▶ Play"),whenFullyVisible(s.node(),t)}();</script></div>
 
-[Poisson-disc 原理]()
+看起来是不是非常均匀和舒服？它与前面两个算法最大不同在于，它是**充分利用现有采样点逐步生成新的采样点**，而不是在整个采样区域随机生成新的采样点。同时也注意到，任意两个采样点的最小距离都是一定，没有特别靠近的两个点（正如泊松圆盘分布所定义的那样），这些都是由算法的执行过程严格保证的。来看看算法的执行过程
 
 <style>#poisson-disc-explainer svg{border:solid 1px #ccc}#poisson-disc-explainer .grid{stroke:#777;stroke-opacity:.35}#poisson-disc-explainer .exclusion{fill:#ddd}#poisson-disc-explainer .candidate-connection,#poisson-disc-explainer .candidate{fill:#fff;stroke:#000}#poisson-disc-explainer .candidate-annulus{fill:#000;fill-opacity:.25;stroke:#000}#poisson-disc-explainer .sample{fill:#000}#poisson-disc-explainer .sample--active{fill:#f00;stroke:#f00;stroke-width:2px}</style>
 
 <div class="animation" id="poisson-disc-explainer"><script>!function(){function t(t,a){var n=t/y|0,r=a/y|0,i=Math.max(n-2,0),c=Math.max(r-2,0),l=Math.min(n+3,f),o=Math.min(r+3,M);for(r=c;o>r;++r){var d=r*f;for(n=i;l>n;++n)if(u=e[d+n]){var u,h=u[0]-t,m=u[1]-a;if(p>h*h+m*m)return b.append("line").attr("x1",t).attr("y1",a).attr("x2",t).attr("y2",a).transition().duration(s/4).attr("x2",u[0]).attr("y2",u[1]),!1}}return!0}function a(t,a){var n=[t,a];return A.append("circle").attr("r",1e-6).attr("cx",t).attr("cy",a).transition().duration(s).attr("r",u),P.append("circle").datum(n).attr("class","sample--active").attr("r",1e-6).attr("cx",t).attr("cy",a).transition().duration(s).attr("r",3),i.push(n),e[f*(a/y|0)+(t/y|0)]=n,++c,n}function n(t){t.interrupt().selectAll("*").interrupt().remove()}function r(){e=new Array(f*M),i=[],c=0,R.interrupt(),A.call(n),b.call(n),P.call(n),k.call(n),v.classed("animation--playing",!0),a(Math.random()*l,Math.random()*o),function r(){function n(){function r(){a(y,m),u()}if(++M>d)return e();var i=2*Math.PI*Math.random(),c=Math.sqrt(Math.random()*h+p),y=f[0]+c*Math.cos(i),m=f[1]+c*Math.sin(i);return 0>y||y>=l||0>m||m>=o?n():void k.append("circle").attr("r",1e-6).attr("cx",y).attr("cy",m).transition().duration(s/4).attr("r",3.75).each("end",t(y,m)?r:n)}function e(){i[y]=i[--c],i.length=c,x.classed("sample--active",!1),u()}function u(){k.transition().duration(s).style("opacity",0).selectAll("circle").remove(),b.transition().duration(s).style("opacity",0).selectAll("line").remove(),R.transition().duration(s).style("opacity",0).each("end",c?function(){beforeVisible(v.node(),r)}:function(){v.classed("animation--playing",!1)})}var y=Math.random()*c|0,f=i[y],M=0;k.style("opacity",null),b.style("opacity",null),R.style("opacity",null).style("stroke-opacity",0).attr("transform","translate("+f+")").attr("d",m).transition().duration(s).attr("d",g).style("stroke-opacity",1).each("end",n);var x=P.selectAll("circle").filter(function(t){return t===f})}()}var e,i,c,l=770,o=480,s=500,d=30,u=l/Math.SQRT1_2/20,p=u*u,h=3*p,y=u*Math.SQRT1_2,f=Math.ceil(l/y),M=Math.ceil(o/y),m=d3.svg.arc().innerRadius(u).outerRadius(u).startAngle(0).endAngle(2*Math.PI)(),g=d3.svg.arc().innerRadius(u).outerRadius(2*u).startAngle(0).endAngle(2*Math.PI)(),v=d3.select("#poisson-disc-explainer").on("click",r),x=v.append("svg").attr("width",l).attr("height",o),A=x.append("g").attr("class","exclusion");x.append("path").attr("class","grid").attr("transform","translate(.5,.5)").attr("d",d3.range(y,l,y).map(function(t){return"M"+Math.round(t)+",0V"+o}).join("")+d3.range(y,o,y).map(function(t){return"M0,"+Math.round(t)+"H"+l}).join(""));var R=x.append("path").attr("class","candidate-annulus"),b=x.append("g").attr("class","candidate-connection"),P=x.append("g").attr("class","sample"),k=x.append("g").attr("class","candidate");v.append("button").text("▶ Play"),beforeVisible(v.node(),r)}();</script></div>
 
-[Fisher–Yates 过程]()
+我们用红点表示活跃采样点，在每一轮的循环中从所有活跃采样点中随机选取一个点，然后以该点为圆心，分别以`r`和`2r`为半径作两个同心圆，其中`r`为两个采样点之间所允许的最小间距。然后我们在`r`与`2r`之间的环形区域随机生成一些候选采样点（白点），接下来的步骤就是从这些候选采样点中筛选出一个满足条件的采样点了
+
+注意到图中的灰色区域，它们是由已固定的采样点（包括红点和黑点）为圆心，`r`为半径作圆所形成的区域，我们可以称之为“禁区”。如果候选采样点落在灰色区域，那么表明它一定与某个已固定的采样点的距离不足`r`，这是不允许的，因此可以将这样的候选采样点排除掉。当我们找到一个没有落在灰色区域的候选采样点之后，便把它标为红点作为一个新的活跃采样点，原来的活跃采样点不变。如果生成的所有候选采样点都落在灰色区域内，那么就认为在`r`到`2r`的区域内不存在满足最小距离为`r`的点（当然实际情况不一定如此），然后把作为圆心的活跃采样点标为即不活跃采样点（从红点变成黑点）。当所有点都变成黑点之后，算法结束
+
+下图是`Poisson-disc`算法的沃罗诺伊图
+
+![Poisson-disc 沃罗诺伊图](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/poisson-disc-voronoi_zpsd001ab24.jpg)
+
+颜色更加匀称了是不是？
+再看看`Poisson-disc`算法下的星空
+
+![Poisson-disc 星空](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/poisson-disc-starry-night_zps4a390d2b.jpg)
+
+美不胜收！
+
+#0x02 洗牌
+正如扑克的洗牌一样，洗牌算法是对一组元素的随机重排列的过程。一个好的洗牌算法应该是无偏的，即每一种排列都是等可能的
+
+下面我们来看看`Fisher–Yates`洗牌算法，它可是最优洗牌算法哦~它不仅是无偏的，而且时间复杂度是`O(n)`，空间复杂度是`O(1)`，同时也非常容易实现，代码如下
+
+{% highlight js %}
+function shuffle(array) {
+  var n = array.length, t, i;
+  while (n) {
+    i = Math.random() * n-- | 0; // 0 ≤ i < n
+    t = array[n];
+    array[n] = array[i];
+    array[i] = t;
+  }
+  return array;
+}
+{% endhighlight %}
+
+算法的过程见下图
 
 <style>.shuffle .line{stroke:#aaa;stroke-width:1.5px;stroke-linecap:round;transition:all 500ms linear}.shuffle .line--active{stroke:#f00;stroke-width:3px}.shuffle .line--inactive{stroke:#000}</style>
 
 <div id="fisher-yates-shuffle" class="animation shuffle"><script>!function(){function t(){var t=n(i.slice()).reverse(),a=i.slice();d.classed("animation--playing",!0),f.each(function(t,e){t.index=e}).attr("transform",e).attr("class","line").interrupt(),function r(){var n,i=t.pop(),l=i[0],o=i[1];n=a[l],a[l]=a[o],a[o]=n,a[l].index=l,a[o].index=o,d3.selectAll([f[0][a[o].value],f[0][a[l].value]]).attr("class","line line--active").each(function(){this.parentNode.appendChild(this)}).transition().duration(750).attr("transform",e).each("end",function(e,n){d3.select(this).attr("class",n||i[0]===i[1]?"line line--inactive":"line"),(n||i[0]===i[1])&&(t.length?r():d.classed("animation--playing",!1))})}()}function e(t){return"translate("+s(t.index)+","+o+")rotate("+c(t.value)+")"}function n(t){for(var e,n,a=[],i=t.length;i;)n=Math.floor(Math.random()*i--),e=t[i],t[i]=t[n],t[n]=e,a.push([i,n]);return a}var a=120,i=d3.range(a).map(function(t,e){return{value:t,index:e}}),r={top:60,right:60,bottom:60,left:60},l=770-r.left-r.right,o=180-r.top-r.bottom,s=d3.scale.ordinal().domain(d3.range(a)).rangePoints([0,l]),c=d3.scale.linear().domain([0,a-1]).range([-45,45]),d=d3.select("#fisher-yates-shuffle").on("click",t),p=d.append("svg").attr("width",l+r.left+r.right).attr("height",o+r.top+r.bottom).append("g").attr("transform","translate("+r.left+","+r.top+")"),f=p.append("g").selectAll("line").data(i).enter().append("line").attr("class","line line--inactive").attr("transform",e).attr("y2",-o);d.append("button").text("▶ Play"),whenFullyVisible(d.node(),t)}();</script></div>
 
-[random comparator 过程]()
+图中的每一条线代表一个数字，线的倾斜程度代表数的大小，线越往左倾斜表明数越小，反之越往右倾斜表明数越大
+
+从图中可以明显看出，该算法把数组划分为两个部分，右半边是已洗牌区域（用黑线表示），左半边是待洗牌区域（用灰线表示）。每一步从左边的待洗牌区域随机选择一个元素并将其移动到右侧，如此循环下去直到待洗牌区域无数组元素，算法终止
+
+`Fisher–Yates`洗牌算法是一个简单而且正确的算法，但并不是每一个简单的洗牌算法都一定是正确的。我们来看看下面这个错误的洗牌算法
+
+{% highlight js %}
+// DON’T DO THIS!
+function shuffle(array) {
+  return array.sort(function(a, b) {
+    return Math.random() - .5; // ಠ_ಠ
+  });
+}
+{% endhighlight %}
+
+我们先来解释一下代码，`array.sort()`表示对数组进行排序，一般情况下是按照数组中元素的大小（例如整形）或者是按照字典序列（例如字符）来进行排序。当然我们也可以自定义规则，也就是自定义一个`comparator`函数，然后依据返回值来确定待排元素的大小关系，返回值大于`0`表明第一个参数更大，返回值小于`0`表明第二个参数更大，返回值为`0`表明相等。上面的代码中定义了这样的一个`comparator`函数，从数组中随机取两个元素`a`和`b`，然后随机返回`[-0.5,0.5)`之间的一个值，也就是说元素`a`和`b`之间的大小关系是随机的，所以它们之间的顺序也是随机的，这样遍历完整个数组后所有元素的顺序都是随机的
+
+但真的是这样的吗？当然不是，这个算法的有着非常严重的缺陷。首先我们要知道，任意两个元素之间的顺序随机性并不能保证整体的顺序随机性。同时，一个比较器应该满足**传递性**，如果有`a>b`且`b>c`，那么就有`a>c`。而上述代码中的随机比较器破坏了这个特性，导致`array.sort()`的行为是不确定的，所以最后的结果也是不可靠的
+
+那么它的结果到底如何呢？来看看下面这张图
 
 <div id="random-comparator-shuffle" class="animation shuffle" style="-webkit-user-select:none"><script>!function(){function t(){s.classed("animation--playing",!0),p.data(a(d3.range(e)),function(t){return t}).interrupt().transition().attr("transform",n).each("end",function(t,n){n||s.classed("animation--playing",!1)})}function n(t,n){return"translate("+l(n)+","+i+")rotate("+d(t)+")"}function a(t){return t.sort(function(){return Math.random()-.5})}var e=120,r={top:60,right:60,bottom:60,left:60},o=770-r.left-r.right,i=180-r.top-r.bottom,l=d3.scale.ordinal().domain(d3.range(e)).rangePoints([0,o]),d=d3.scale.linear().domain([0,e-1]).range([-45,45]),s=d3.select("#random-comparator-shuffle").on("click",t),c=s.append("svg").attr("width",o+r.left+r.right).attr("height",i+r.top+r.bottom).append("g").attr("transform","translate("+r.left+","+r.top+")"),p=c.append("g").selectAll("line").data(d3.range(e)).enter().append("line").attr("class","line line--inactive").attr("transform",n).attr("y2",-i);s.append("button").text("▶ Play"),beforeVisible(s.node(),t)}();</script></div>
 
-[random comparator matrix diagram chrome]()
+乍一看好像也是随机的啊，但是我们要注意有些东西人眼看起来是随机的，但实际上确并非随机的
 
-<style>.shuffle-bias text{font:10px sans-serif;fill:white}.shuffle-bias .row text{text-anchor:end}.shuffle-bias .column text{text-anchor:start}</style>
+为了更直观的衡量算法的质量，我们换一种方式来进行展示
 
-<div id="random-comparator-chrome-shuffle-bias" class="shuffle-bias"><script>!function(){function t(t,e,a){if(t)return console.error(t);var n=i.selectAll(".row").data(a).enter().append("g").attr("class","row").attr("transform",function(t,e){return"translate(0,"+o(e)+")"});n.selectAll(".cell").data(function(t){return t}).enter().append("rect").style("shape-rendering","crispEdges").attr("class","cell").attr("x",function(t,e){return o(e)}).attr("width",o.rangeBand()).attr("height",o.rangeBand()).style("fill",d),n.append("line").attr("x2",r),n.append("text").attr("x",o(0)-6).attr("y",o.rangeBand()/2).attr("dy",".32em").text(function(t,e){return e});var l=i.selectAll(".column").data(a).enter().append("g").attr("class","column").attr("transform",function(t,e){return"translate("+o(e)+",0)"});l.append("line").attr("x1",-r),l.append("text").attr("x",6-o(0)).attr("y",o.rangeBand()/2).attr("dy",".32em").attr("transform","rotate(-90)").text(function(t,e){return e})}var e={top:20,right:0,bottom:0,left:20},r=720,a=720,n=60,l=1e4,o=d3.scale.ordinal().domain(d3.range(n)).rangeRoundBands([0,r]),d=d3.scale.log().domain([l/n/4,l/n,l/n*4]).interpolate(d3.interpolateCubehelix).range([d3.hsl(-40,1,.2),d3.hsl(60,1,.9),d3.hsl(160,1,.2)]).clamp(!0),s=d3.select("#random-comparator-chrome-shuffle-bias"),i=s.append("svg").attr("width",r+e.left+e.right).attr("height",a+e.top+e.bottom).style("margin-left",-e.left+"px").append("g").attr("transform","translate("+e.left+","+e.top+")"),p="[[70,64,40,19,25,39,31,49,48,93,108,111,149,147,161,158,136,144,99,111,93,113,129,169,198,251,331,407,436,459,478,445,372,310,231,195,166,125,101,126,143,171,167,198,211,251,228,221,175,158,130,105,93,95,85,67,53,75,144,293],[174,153,152,170,172,157,151,151,155,170,173,172,192,189,179,194,180,190,161,150,160,160,156,156,141,139,123,208,237,243,179,120,136,129,117,145,147,159,139,164,142,175,190,210,179,191,204,200,174,159,148,142,162,157,151,145,173,176,179,200],[185,170,135,143,144,137,154,178,153,141,136,191,173,189,217,191,179,135,149,160,173,171,165,162,157,171,156,167,148,149,176,169,181,180,188,168,185,155,202,190,184,164,162,160,157,151,183,168,156,150,123,118,98,83,121,158,185,297,277,232],[104,108,102,165,173,268,295,271,240,204,170,144,153,132,103,150,163,145,162,151,127,136,143,124,169,153,174,173,180,196,175,190,190,192,190,177,167,198,172,196,156,154,175,176,161,156,155,130,137,134,123,141,107,130,147,178,238,210,225,142],[346,337,272,190,100,80,66,61,91,117,157,162,168,178,199,181,180,200,180,165,164,146,151,162,135,144,194,168,178,186,197,175,160,200,178,177,198,159,182,158,162,162,135,107,133,150,152,133,173,152,164,163,150,155,162,198,182,197,201,127],[245,232,299,246,137,99,90,84,103,137,167,169,167,159,158,150,187,178,184,182,166,184,163,178,174,154,174,154,165,147,157,158,159,184,160,191,162,157,207,180,158,161,162,153,161,137,140,138,147,180,175,171,183,172,203,209,180,178,134,111],[127,156,233,297,261,173,124,119,147,128,154,147,146,157,135,144,140,155,189,167,207,166,161,198,174,178,176,135,140,149,159,139,170,190,160,162,191,179,199,187,183,147,146,140,129,124,153,186,149,193,156,173,183,188,197,195,202,176,139,122],[91,84,180,239,345,292,208,148,172,157,153,122,142,131,167,134,138,162,160,168,174,183,157,177,173,161,183,160,153,161,139,153,178,166,166,173,153,185,169,162,160,164,162,139,153,143,143,135,158,165,213,167,202,224,194,200,170,143,132,114],[138,129,115,174,205,292,281,208,145,124,145,181,161,115,117,129,152,162,170,177,191,153,191,186,173,169,167,166,155,143,143,145,154,156,182,182,175,171,166,145,163,152,156,130,178,171,128,184,180,174,169,187,218,207,194,181,188,160,132,115],[130,145,133,136,166,233,270,282,210,153,129,119,152,161,146,122,147,139,170,176,171,176,195,171,152,181,161,167,152,148,128,155,144,166,165,188,170,161,158,183,165,146,162,151,167,168,171,177,185,157,187,237,201,195,187,154,174,132,138,135],[156,137,127,137,171,189,229,303,305,199,161,124,90,104,117,179,178,152,161,152,171,164,167,182,187,163,153,153,162,131,174,135,157,144,165,157,160,166,167,176,193,173,180,158,193,176,150,185,170,179,180,180,194,188,185,142,137,150,142,140],[141,135,147,146,122,154,192,228,306,296,219,145,96,97,87,154,125,178,187,152,182,169,162,168,177,170,201,173,146,157,154,169,170,151,173,174,142,152,180,179,191,187,156,151,186,151,151,165,161,177,188,187,183,174,176,152,165,149,151,143],[150,154,150,144,160,158,157,185,223,278,286,214,158,119,102,116,129,145,167,174,155,180,179,161,167,151,160,152,168,147,148,152,149,174,129,151,167,173,171,174,175,175,187,175,178,169,173,168,170,173,174,184,172,192,167,186,151,150,154,150],[146,148,157,142,162,167,170,120,163,227,274,322,216,161,131,119,105,141,167,160,142,173,161,160,133,173,130,177,164,160,163,154,161,126,153,169,172,164,178,156,184,172,167,184,161,168,174,191,172,156,183,202,171,198,179,149,158,143,139,182],[171,184,146,146,147,161,143,159,122,151,153,249,309,243,156,134,118,116,124,174,176,160,141,160,157,177,148,158,158,149,173,157,145,146,164,152,153,183,176,166,170,178,193,218,170,185,172,179,173,159,182,177,163,181,164,158,143,165,172,193],[180,190,163,148,147,167,162,171,134,131,138,169,260,310,244,156,150,128,122,121,130,150,168,157,143,156,156,165,153,128,147,162,180,167,181,173,191,135,153,179,177,174,156,187,174,161,160,198,150,188,184,185,173,164,203,182,142,138,161,178],[213,210,182,166,147,165,147,155,158,134,146,143,198,269,297,253,218,144,146,138,131,143,163,146,152,107,107,127,138,172,136,156,167,142,163,158,147,148,153,173,172,174,191,172,173,179,215,162,190,185,166,192,161,160,158,161,163,146,152,170],[189,199,169,158,159,188,152,167,148,159,134,149,174,192,269,279,206,186,158,151,159,156,162,149,167,124,137,137,127,136,148,155,150,185,163,168,174,176,168,187,170,175,174,151,165,143,149,191,147,170,189,163,191,175,169,163,159,154,147,141],[191,197,187,165,169,175,153,184,182,153,127,143,126,147,192,250,306,219,183,149,132,152,141,146,143,156,129,147,153,124,153,142,136,163,164,189,170,169,181,178,176,171,182,163,183,170,171,158,170,167,169,194,174,171,147,151,172,158,152,135],[186,179,183,166,176,147,157,170,181,164,160,155,151,137,163,171,248,276,233,175,147,151,116,146,164,157,127,132,153,155,150,157,161,174,169,157,179,165,178,176,158,170,168,169,154,170,136,155,171,160,180,180,171,171,160,183,174,137,172,169],[200,197,166,191,164,165,180,153,169,157,178,116,128,142,133,131,178,291,299,246,170,144,136,109,149,150,139,128,143,149,138,142,142,174,179,159,181,191,181,193,176,172,179,165,159,144,141,165,146,171,152,187,195,169,190,183,179,172,127,147],[168,207,199,176,171,170,168,166,170,154,181,145,136,138,143,132,113,167,242,317,237,192,143,129,141,131,161,150,138,141,148,175,173,180,171,149,160,166,155,160,161,182,179,158,166,153,165,158,159,177,155,185,183,163,161,195,158,184,145,150],[177,158,163,210,206,159,161,173,181,176,171,140,125,139,145,136,143,139,145,217,299,243,203,154,132,117,124,137,152,173,156,150,133,135,147,166,173,183,171,179,168,187,161,178,171,186,145,164,169,185,181,179,168,170,172,187,165,168,140,165],[167,181,178,193,183,168,171,157,156,190,192,173,123,130,146,129,125,139,133,168,203,307,282,207,147,129,133,130,132,135,155,147,134,161,168,163,164,170,173,183,162,196,171,168,135,151,164,150,163,137,170,174,173,169,175,184,190,177,192,174],[178,191,198,188,167,197,184,159,191,208,164,155,173,149,122,103,132,141,130,136,181,215,281,264,218,152,117,124,110,146,133,139,135,177,152,173,166,149,166,164,181,157,193,165,186,148,160,147,163,164,138,158,173,183,183,157,178,195,180,163],[186,175,184,186,204,170,174,156,148,167,181,168,189,145,170,134,124,139,117,120,140,165,196,263,266,207,197,104,110,123,145,168,138,136,169,171,169,180,143,169,192,179,180,173,184,171,167,152,139,163,166,154,179,151,166,183,176,170,209,150],[165,169,198,190,193,161,167,174,164,170,217,185,155,175,164,138,122,136,134,153,133,154,165,194,265,267,210,140,105,123,112,125,145,132,147,158,167,156,148,180,173,172,198,188,180,180,162,158,165,186,134,171,159,164,172,176,164,168,190,184],[168,173,159,176,187,179,160,176,145,165,155,191,185,174,159,159,149,140,137,105,139,120,129,164,200,271,287,202,158,108,109,118,151,131,164,157,155,158,145,164,174,185,205,187,201,216,196,148,163,168,167,145,138,148,158,152,185,195,206,191],[175,188,169,171,162,165,158,165,144,155,193,203,174,193,189,195,152,158,140,135,108,139,111,119,146,194,245,277,220,146,121,127,130,124,142,151,138,148,154,176,178,179,195,191,204,198,183,168,161,161,178,148,159,153,156,139,153,206,178,212],[183,165,165,162,154,170,159,118,153,167,165,193,184,204,224,205,175,144,148,146,145,149,147,133,118,133,194,249,279,196,147,117,119,135,125,155,153,158,133,165,128,174,211,213,245,205,202,165,164,138,132,141,136,155,160,142,161,188,194,212],[118,132,89,65,45,68,89,88,112,129,167,222,276,314,291,317,288,263,255,191,184,170,171,193,243,270,305,325,362,345,374,324,261,236,180,125,107,85,83,82,82,117,102,151,134,162,153,143,126,105,84,61,61,84,49,40,38,56,101,207],[154,166,166,175,149,166,154,133,145,151,161,171,192,203,218,227,197,177,188,175,153,151,146,143,137,123,132,143,203,217,241,175,129,97,123,107,174,161,154,159,158,171,171,188,192,191,190,171,176,181,171,118,163,163,156,152,164,192,199,197],[189,180,161,148,151,172,178,155,169,142,154,165,169,202,202,195,184,201,186,164,145,157,157,144,145,165,122,134,140,201,220,247,167,150,110,120,149,153,149,139,170,144,141,182,195,172,182,180,176,181,146,153,141,149,184,167,170,193,186,207],[179,191,183,163,164,158,171,166,153,150,121,140,141,178,165,205,208,193,174,175,171,169,147,164,170,130,126,117,122,171,224,253,223,148,133,138,141,149,156,148,158,144,138,150,186,187,206,179,166,181,156,161,169,166,162,156,167,210,175,205],[194,179,165,165,173,179,166,191,142,170,161,156,148,161,184,186,179,192,188,191,151,155,161,148,146,150,153,126,118,114,160,218,252,216,149,139,127,160,139,154,130,164,142,125,192,177,187,190,190,173,178,155,140,152,169,172,186,196,193,183],[160,175,187,169,163,157,184,170,163,176,169,154,175,166,184,166,175,177,203,173,181,169,170,150,160,146,139,139,109,139,111,128,237,262,235,170,139,115,134,139,160,152,150,145,147,180,173,195,188,172,156,168,168,180,146,186,174,174,183,185],[194,158,196,174,181,179,161,195,173,160,157,155,161,159,154,155,160,180,203,170,182,199,135,146,145,169,136,154,146,128,122,145,157,223,291,230,179,170,118,120,130,139,146,128,151,147,187,167,172,180,177,195,174,155,180,195,175,168,159,155],[131,172,160,172,163,175,181,148,162,157,156,160,164,171,152,170,196,186,185,189,176,180,153,179,188,151,161,151,129,137,137,124,129,155,226,263,228,208,138,119,131,163,148,133,133,140,143,168,160,191,197,167,194,176,187,209,191,178,147,162],[155,155,175,194,186,171,180,157,170,165,178,153,158,154,150,156,144,162,183,198,202,184,192,170,168,173,152,146,153,124,135,136,131,121,167,246,285,243,205,175,130,111,113,129,141,143,158,158,176,205,160,172,169,154,170,194,181,166,162,156],[171,155,179,170,171,157,136,172,163,166,166,170,157,145,169,156,176,193,182,197,196,168,176,164,160,165,144,157,150,107,121,144,143,130,140,149,214,308,281,222,159,123,121,123,142,124,149,175,155,180,183,188,159,173,187,174,207,166,183,139],[159,152,162,159,170,159,170,196,188,169,172,162,165,162,164,156,181,177,158,205,176,157,200,188,159,185,143,152,134,145,129,135,119,135,159,135,159,223,301,277,201,144,118,125,113,144,144,160,174,155,169,165,180,182,152,194,167,184,173,159],[193,178,160,170,170,169,161,188,171,144,160,172,172,154,177,142,178,186,173,185,156,165,176,155,166,153,162,141,156,162,124,135,150,156,136,140,133,156,228,267,315,227,154,130,124,100,141,130,154,186,176,178,162,159,165,171,196,163,167,182],[179,184,162,145,164,186,172,151,171,185,193,180,199,152,159,170,173,179,177,162,170,150,164,169,174,148,156,179,142,161,156,143,140,136,142,145,140,141,153,207,284,287,211,170,125,123,120,164,165,156,164,187,144,154,156,164,174,153,174,166],[158,173,179,157,183,169,181,175,186,190,179,183,184,177,177,178,170,166,158,188,176,174,157,133,167,163,151,150,153,149,139,140,133,121,133,155,139,146,144,157,200,237,333,229,153,153,124,127,155,141,191,162,158,160,148,153,164,164,186,171],[173,164,162,152,137,162,155,169,185,162,201,195,179,165,159,191,176,164,155,174,170,152,174,166,164,156,140,144,151,179,152,146,139,138,152,134,143,154,123,140,181,224,291,306,242,163,130,134,138,139,171,172,178,162,154,139,140,153,189,197],[163,166,161,150,164,166,199,182,203,185,178,191,158,175,176,170,182,190,145,178,157,174,171,160,162,153,146,158,155,144,144,170,173,120,112,123,154,157,149,112,147,144,202,296,282,219,160,134,144,151,154,150,196,174,175,153,133,151,169,190],[168,120,153,167,136,156,195,185,178,169,176,185,176,179,161,185,200,156,169,172,176,156,179,147,128,157,148,172,176,149,164,153,159,182,145,138,148,144,170,110,134,153,166,204,271,286,235,168,139,127,146,154,163,179,171,151,148,138,180,200],[149,163,160,144,160,155,173,185,175,202,201,187,152,180,157,170,169,181,157,147,194,169,155,160,156,155,167,158,140,172,142,174,168,172,151,179,162,162,131,119,145,136,139,137,166,298,289,207,136,134,133,153,186,168,181,151,157,143,161,227],[152,167,153,160,163,163,174,189,209,177,184,173,172,171,158,156,156,151,171,164,180,175,185,176,183,171,153,170,157,180,177,166,164,149,163,136,162,184,158,143,143,130,132,122,130,166,257,284,204,144,133,134,165,186,162,178,167,164,144,160],[159,166,165,141,201,165,204,178,185,189,191,167,180,146,146,167,143,147,159,164,188,163,171,184,159,136,131,143,145,144,155,145,134,183,183,147,154,153,171,178,174,160,149,129,101,125,190,246,316,212,197,148,180,198,186,165,174,154,130,136],[138,155,171,194,175,181,160,198,171,173,154,172,180,148,173,142,155,139,157,153,171,187,172,176,171,173,158,154,137,146,146,169,157,191,176,203,190,163,191,159,164,185,154,135,124,109,129,161,259,258,265,200,178,160,149,150,141,162,114,124],[148,156,157,193,198,182,179,176,191,204,180,176,149,151,154,126,160,160,148,146,142,170,179,170,151,159,144,138,177,161,134,145,171,180,210,183,185,174,172,179,142,155,157,183,135,132,120,117,147,224,319,281,197,171,167,153,139,138,136,129],[172,150,163,186,202,189,182,204,165,184,169,154,177,149,141,141,151,159,168,160,169,158,177,195,177,173,175,148,142,143,131,148,151,162,168,208,198,171,167,177,175,140,130,134,159,171,161,133,142,165,216,315,262,227,161,140,128,122,96,119],[166,164,175,188,204,186,189,177,183,171,151,165,167,141,149,134,147,163,165,169,172,170,204,187,188,188,159,150,153,161,158,151,167,168,160,177,186,179,190,157,154,181,136,136,113,117,136,193,159,148,179,189,286,287,231,165,126,104,83,98],[148,185,195,211,191,169,188,174,176,147,154,151,120,164,122,160,167,159,151,157,162,178,163,174,165,174,172,168,188,149,157,153,167,142,144,193,159,167,192,181,169,160,141,152,119,155,123,88,167,192,191,193,243,288,301,221,169,108,86,97],[192,181,208,196,216,181,160,142,147,180,150,155,158,152,159,168,156,144,184,170,182,170,178,195,169,176,188,186,138,164,161,136,186,139,176,153,171,165,188,170,152,150,140,163,118,122,111,117,121,135,142,161,185,202,314,318,241,167,106,45],[184,188,192,186,163,188,169,146,169,164,146,160,151,167,145,170,159,188,178,143,183,177,159,185,172,166,187,139,169,183,171,164,186,170,186,156,170,170,181,171,165,147,168,155,145,121,143,135,150,128,142,118,123,133,155,283,313,230,156,89],[200,187,196,194,178,160,178,173,157,151,157,149,151,183,164,163,157,139,154,163,166,157,169,165,156,168,163,162,159,150,170,161,158,194,168,147,191,188,150,177,179,175,158,170,161,162,162,188,180,156,124,109,79,81,105,161,241,317,273,146],[189,159,180,143,172,148,159,180,177,184,139,146,167,153,186,181,170,134,146,150,160,165,169,145,160,151,166,167,169,178,174,164,169,187,203,209,172,185,185,175,160,157,131,164,182,185,187,178,181,160,101,86,59,45,54,76,157,260,436,325],[65,64,34,29,28,39,38,67,54,79,88,131,149,152,169,171,145,105,83,131,103,117,126,175,193,267,327,362,414,417,430,412,360,307,254,244,146,127,130,119,133,152,175,228,227,260,217,211,184,154,123,117,125,127,81,59,54,69,149,304]]\n";queue(1).defer(beforeVisible,s.node()).defer(d3.json,p).await(t)}();</script><div></div></div>
+一个好的洗牌算法应该保证无偏性，也就是说保证每个元素在洗牌结束后出现在数组的任何位置都是等可能的，概率为`1/n`，其中`n`为数组元素个数。当然准确的计算这个概率有点困难（依赖具体的算法），但是我们可以从统计意义上来计算这个概率。也就是把洗牌算法运行几千次，统计原先在位置`i`的元素在洗牌后出现在位置`j`的次数，然后画在一张图上，如下
 
-[Fisher–Yates matrix diagram]()
+![random comparator matrix diagram chrome](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/random-comparator-chrome-shuffle-bias_zps283b77df.png)
 
-<div id="fisher-yates-shuffle-bias" class="shuffle-bias"><script>!function(){var t={top:20,right:0,bottom:0,left:20},e=720,a=720,r=60,n=1e4,l=d3.scale.ordinal().domain(d3.range(r)).rangeRoundBands([0,e]),d=d3.scale.log().domain([n/r/4,n/r,n/r*4]).interpolate(d3.interpolateCubehelix).range([d3.hsl(-40,1,.2),d3.hsl(60,1,.9),d3.hsl(160,1,.2)]).clamp(!0),o=d3.select("#fisher-yates-shuffle-bias"),s=o.append("svg").attr("width",e+t.left+t.right).attr("height",a+t.top+t.bottom).style("margin-left",-t.left+"px").append("g").attr("transform","translate("+t.left+","+t.top+")");beforeVisible(o.node(),function(){var t=d3.range(r).map(function(){return d3.range(r).map(function(){return 0})});d3.range(n).forEach(function(){var e=d3.range(r);d3.shuffle(e),e.forEach(function(e,a){++t[e][a]})});var a=s.selectAll(".row").data(t).enter().append("g").attr("class","row").attr("transform",function(t,e){return"translate(0,"+l(e)+")"});a.selectAll(".cell").data(function(t){return t}).enter().append("rect").style("shape-rendering","crispEdges").attr("class","cell").attr("x",function(t,e){return l(e)}).attr("width",l.rangeBand()).attr("height",l.rangeBand()).style("fill",d),a.append("line").attr("x2",e),a.append("text").attr("x",l(0)-6).attr("y",l.rangeBand()/2).attr("dy",".32em").text(function(t,e){return e});var o=s.selectAll(".column").data(t).enter().append("g").attr("class","column").attr("transform",function(t,e){return"translate("+l(e)+",0)"});o.append("line").attr("x1",-e),o.append("text").attr("x",6-l(0)).attr("y",l.rangeBand()/2).attr("dy",".32em").attr("transform","rotate(-90)").text(function(t,e){return e})})}();</script></div>
+上图中列表示元素在洗牌前的位置，行表示元素在洗牌后的位置。颜色表示概率，绿色表示正偏，也就是其出现次数高于预期。红色表示负偏，也就是其出现次数低于预期。
 
-[random comparator matrix diagram Firefox]()
+上图是在`Chrome`浏览器下的结果，只能说很一般。注意到在对角线偏下的位置有严重的正偏现象，表明这个算法很容易将一个在位置`i`元素在洗牌后放置到`i+1`或者`i+2`的位置上去，同时也注意到在数组第一个、中间的和最后一个元素也有很多正偏和负偏现象，这个可能和`Chrome`浏览器的具体实现有关
 
-<div id="random-comparator-firefox-shuffle-bias" class="shuffle-bias"><script>!function(){function t(t,e,a){if(t)return console.error(t);var n=i.selectAll(".row").data(a).enter().append("g").attr("class","row").attr("transform",function(t,e){return"translate(0,"+o(e)+")"});n.selectAll(".cell").data(function(t){return t}).enter().append("rect").style("shape-rendering","crispEdges").attr("class","cell").attr("x",function(t,e){return o(e)}).attr("width",o.rangeBand()).attr("height",o.rangeBand()).style("fill",d),n.append("line").attr("x2",r),n.append("text").attr("x",o(0)-6).attr("y",o.rangeBand()/2).attr("dy",".32em").text(function(t,e){return e});var l=i.selectAll(".column").data(a).enter().append("g").attr("class","column").attr("transform",function(t,e){return"translate("+o(e)+",0)"});l.append("line").attr("x1",-r),l.append("text").attr("x",6-o(0)).attr("y",o.rangeBand()/2).attr("dy",".32em").attr("transform","rotate(-90)").text(function(t,e){return e})}var e={top:20,right:0,bottom:0,left:20},r=720,a=720,n=60,l=1e4,o=d3.scale.ordinal().domain(d3.range(n)).rangeRoundBands([0,r]),d=d3.scale.log().domain([l/n/4,l/n,l/n*4]).interpolate(d3.interpolateCubehelix).range([d3.hsl(-40,1,.2),d3.hsl(60,1,.9),d3.hsl(160,1,.2)]).clamp(!0),s=d3.select("#random-comparator-firefox-shuffle-bias"),i=s.append("svg").attr("width",r+e.left+e.right).attr("height",a+e.top+e.bottom).style("margin-left",-e.left+"px").append("g").attr("transform","translate("+e.left+","+e.top+")");queue(1).defer(beforeVisible,s.node()).defer(d3.json,"random-comparator-firefox-shuffle-bias.json").await(t)}();</script></div>
+而`Fisher–Yates`洗牌算法的结果就要好很多
 
-[Quicksort 过程]()
+![Fisher–Yates matrix diagram](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/fisher-yates-shuffle-bias_zpse8b352e7.png)
+
+图中没有明显的规律可循，个别偏差也是因为我们使用的是统计的方法，与算法本身无关
+
+另外值得一提的一点是，随机比较器(random comparator)洗牌算法的结果与浏览器的实现也有很大关系。刚才`Chrome`浏览器的结果已经很糟糕了，我们再来看看`Firefox`下的结果
+
+![random comparator matrix diagram Firefox](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/random-comparator-firefox-shuffle-bias_zpsa5aea260.png)
+
+只能说惨不忍睹！当然这并不意味着`Chrome`比`Firefox`要强，只能说明我们所使用的算法是有问题的，导致其结果是不确定的。而浏览器内部的不同实现更直观的把这个问题暴露出来了
+
+#0x03 排序
+排序呢大家都很熟悉了，我们先来看看耳熟能详的快速排序
 
 <div id="quicksort" class="animation shuffle"><script>!function(){function t(){var t=a(r.slice()).reverse(),e=u.selectAll("line").attr("transform",n).attr("class","line--inactive").interrupt(),i=f.transition().duration(150).each("start",function l(){var a=t.pop();switch(a.type){case"swap":var r=a[0],o=a[1],s=e[0][r],c=e[0][o];e[0][r]=c,e[0][o]=s,i.each(function(){e.transition().attr("transform",n)});break;case"partition":e.attr("class",function(t,n){return n===a.pivot?"line--active":a.left<=n&&n<a.right?"line--inactive":null})}t.length?i=i.transition().each("start",l):i.each("end",function(){e.attr("class","line--inactive")})})}function n(t,n){return"translate("+s(n)+","+o+")rotate("+c(t)+")"}function a(t){function n(n,e,r){var i=t[r];a(r,--e);for(var l=n;e>l;++l)t[l]<i&&a(l,n++);return a(n,e),n}function a(n,a){if(n!==a){var e=t[n];t[n]=t[a],t[a]=e,r.push({type:"swap",0:n,1:a})}}function e(t,a){if(a-1>t){var i=t+a>>1;r.push({type:"partition",left:t,pivot:i,right:a}),i=n(t,a,i),e(t,i),e(i+1,a)}}var r=[];return e(0,t.length),r}var e=120,r=d3.shuffle(d3.range(e)),i={top:60,right:60,bottom:60,left:60},l=770-i.left-i.right,o=180-i.top-i.bottom,s=d3.scale.ordinal().domain(d3.range(e)).rangePoints([0,l]),c=d3.scale.linear().domain([0,e-1]).range([-45,45]),p=d3.select("#quicksort").on("click",t),f=p.append("svg").attr("width",l+i.left+i.right).attr("height",o+i.top+i.bottom).append("g").attr("transform","translate("+i.left+","+i.top+")"),u=f.append("g").attr("class","line");u.selectAll("line").data(r).enter().append("line").attr("class","line--inactive").attr("transform",n).attr("y2",-o),p.append("button").text("▶ Play"),whenFullyVisible(p.node(),t)}();</script></div>
 
-[Quicksort 分步过程]()
+快排的原理这里也不多说了，就是通过在当前待排元素中取一个基准，然后将比该基准小的元素放置其左侧，比基准大的元素放置在其右侧，然后递归进行下去
+
+以下是实现代码
+
+{% highlight js %}
+function quicksort(array, left, right) {
+  if (left < right - 1) {
+    var pivot = left + right >> 1;
+    pivot = partition(array, left, right, pivot);
+    quicksort(array, left, pivot);
+    quicksort(array, pivot + 1, right);
+  }
+}
+
+function partition(array, left, right, pivot) {
+  var pivotValue = array[pivot];
+  swap(array, pivot, --right);
+  for (var i = left; i < right; ++i) {
+    if (array[i] < pivotValue) {
+      swap(array, i, left++);
+    }
+  }
+  swap(array, left, right);
+  return left;
+}
+{% endhighlight %}
+
+当然快排算法有很多版本，上面演示的那个版本是最简单也是最慢的一种，主要用于教学演示，在实际应用中有很多其他优化的方法。例如三数取中（median-of-three）法，即取三个元素先进行排序，将中间数作为基准，一般是取左端、右端和中间三个数，也可以随机抽取。这样做的好处是得到的基准有很大可能会更接近真正的中间数，划分出来的两个部分大小会更加均衡，递归的层数会更少，可以提高算法的效率。另一种优化方法是在当递归进行到一定程度时，也就是当数组元素比较少的时候采用插入排序而不是继续递归下去。
+
+用动画来展示算法虽然有趣直观，但有的时候却可能让我们忽视掉一些细节，而且如果动画太快的话思维就跟不上了。所以我们可以用一种类似漫画的方法来进行展示，突出算法中的关键步骤。
 
 <style>.sort-static svg{float:left;margin-bottom:-10px;background-color:white}.sort-static svg:last-of-type{margin-bottom:10px}.sort-static:after{content:"";clear:left;display:block}</style>
 
 <div id="quicksort-static" class="sort-static shuffle"><script>!function(){function t(t){function n(n,r,a){var i=t[a];e(a,--r);for(var l=n;r>l;++l)t[l]<=i&&e(l,n++);return e(n,r),n}function e(n,e){var r=t[n];t[n]=t[e],t[e]=r}function r(e,i,l){var o=e+i>>1;a[l]||(a[l]=new Array(t.length),a[l].pivots={});for(var s=e;i>s;++s)a[l][s]=t[s];a[l].pivots[o]=1,o=n(e,i,o),o-1>e&&r(e,o,l+1),i-1>o+1&&r(o+1,i,l+1)}var a=[];return t.length>1&&r(0,t.length,0),a}var n=120,e=[7,39,3,77,57,118,27,8,85,14,18,51,71,97,73,116,10,105,94,56,112,6,101,54,42,103,78,98,26,90,19,31,80,81,5,92,79,66,64,49,0,52,63,37,69,34,104,33,44,93,21,15,55,88,38,1,59,23,32,11,4,60,53,45,36,61,17,107,43,62,29,76,25,13,41,91,119,28,22,40,117,30,47,74,86,75,100,9,20,83,96,84,115,70,95,72,110,46,58,48,24,12,109,87,65,114,99,102,106,108,2,82,113,111,67,35,50,68,16,89],r=t(e.slice()),a={top:10,right:30,bottom:10,left:30},i=770-a.left-a.right,l=60-a.top-a.bottom,o=d3.scale.ordinal().domain(d3.range(n)).rangePoints([0,i]),s=d3.scale.linear().domain([0,n-1]).range([-45,45]),c=d3.select("#quicksort-static"),f=c.selectAll("svg").data(r).enter().append("svg").attr("width",i+a.left+a.right).attr("height",l+a.top+a.bottom).append("g").attr("transform","translate("+a.left+","+a.top+")");beforeVisible(c.node(),function(){f.append("g").attr("class","line").selectAll("line").data(function(t){return t}).enter().append("line").attr("transform",function(t,n){return"translate("+o(n)+","+l+")rotate("+s(null==t?n:t)+")"}).attr("class",function(t,n){return null==t?null:n in this.parentNode.__data__.pivots?"line--active":"line--inactive"}).attr("y2",-l)})}();</script></div>
 
-[Quicksort 色带]()
+注意这里左右两个部分的快速排序是并行执行的，红线表示当前划分所使用的基准，在下一层中使用过的基准会标成灰色。
+
+还有另外一种展示方法，用色带来表示元素。色带颜色越深表示元素越大，色带颜色越浅表示元素越小。下面我们用这种方法来展示上述快排算法
 
 <style>#quicksort-quilt .line{fill:none;stroke:#fff;stroke-width:6px;stroke-linecap:round;stroke-linejoin:round}#quicksort-quilt .line-halo{stroke-linecap:butt;stroke-width:8px}</style>
 
 <div id="quicksort-quilt" class="animation"><script>!function(){function e(e){for(var t,n,r,i=e[0],a=i[0],o=i[1],s=[i],l=1,d=e.length;d>l;++l)t=e[l],n=t[0],r=t[1],s.push("V",r-u/2,"M",t),a=n,o=r;return s.join("")}function t(e){for(var t,n,r,i=e[0],a=i[0],o=i[1],s=[i],l=1,d=e.length;d>l;++l)t=e[l],n=t[0],r=t[1],s.push("M",a,",",r-u/2,"L",t),a=n,o=r;return s.join("")}function n(e){function t(t,r,i){var a=e[i];n(i,--r);for(var o=t;r>o;++o)e[o]<=a&&n(o,t++);return n(t,r),t}function n(t,n){if(t!==n){var r=e[t];e[t]=e[n],e[n]=r,i.push([t,n])}}function r(e,n){if(n-1>e){var i=t(e,n,e+n>>1);r(e,i),r(i+1,n)}}var i=[];return r(0,e.length),i}var r=90,i=[10,89,72,53,61,31,27,11,21,77,65,84,82,63,49,76,67,28,26,57,85,75,45,51,36,44,20,81,7,13,41,9,3,71,74,64,86,23,39,4,79,78,8,59,29,55,19,16,60,32,87,37,30,12,42,83,50,35,69,5,15,22,56,25,6,34,38,58,33,68,24,17,80,48,70,46,0,40,1,43,54,52,14,66,47,62,2,18,73,88],a=n(i.slice()),o=i.map(function(e,t){return{value:e,indexes:[{time:0,index:t}]}}),s=d3.scale.cubehelix().domain([0,r-1]).range([d3.hsl(140,.5,.9),d3.hsl(240,.8,.35)]);a.forEach(function(e,t){var n=e[0],r=e[1];o[n].indexes.push({time:t+1,index:r}),o[r].indexes.push({time:t+1,index:n}),t=o[n],o[n]=o[r],o[r]=t}),o.forEach(function(e){e.indexes.push({time:a.length+1,index:e.indexes[e.indexes.length-1].index})});var l={top:5,right:5,bottom:5,left:5},u=20,d=6,c=760,f=(a.length+.5)*u,h=d3.scale.ordinal().domain(d3.range(r)).rangePoints([0,c]),p=d3.svg.line().interpolate(e).x(function(e){return h(e.index)}).y(function(e){return u*e.time}),g=d3.svg.line().interpolate(t).x(function(e){return h(e.index)}).y(function(e){return u*e.time}),v=d3.select("#quicksort-quilt"),x=v.append("svg").attr("width",c+l.left+l.right).attr("height",f+l.top+l.bottom).append("g").attr("transform","translate("+l.left+","+l.top+")");beforeVisible(v.node(),function(){x.append("g").attr("class","line line--straight").selectAll("path").data(o).enter().append("path").style("stroke",function(e){return s(e.value)}).attr("d",function(e){return p(e.indexes)}),x.append("g").attr("class","line line--swap").selectAll("path").data(d3.merge(o.map(function(e){var t=d3.pairs(e.indexes).slice(0,-1);return t.forEach(function(t){t.value=e.value}),t}))).enter().append("path").style("stroke",function(e){return s(e.value)}).attr("d",function(e){return g(e)}).select(function(){return this.parentNode.insertBefore(this.cloneNode(!1),this)}).attr("class","line-halo").style("stroke",null).style("stroke-dasharray",function(){var e=this.getTotalLength();return"0,"+d/2+","+(e-d)+","+d/2})})}();</script></div>
 
-[Mergesort 过程]()
+至此我们演示了三种可视化快速排序算法的方法，动画展示、分步展示、色带展示。这三种方法各有各的优点和缺点，相信大家心里也有数。
+
+看完了快排算法的可视化，我们再来看看归并排序
+
+{% highlight js %}
+function mergesort(array) {
+  var n = array.length, a0 = array, a1 = new Array(n);
+  for (var m = 1; m < n; m <<= 1) {
+    for (var i = 0; i < n; i += m << 1) {
+      var left = i,
+          right = Math.min(i + m, n),
+          end = Math.min(i + (m << 1), n);
+      merge(a0, a1, left, right, end);
+    }
+    array = a0, a0 = a1, a1 = array;
+  }
+}
+
+function merge(a0, a1, left, right, end) {
+  for (var i0 = left, i1 = right; left < end; ++left) {
+    if (i0 < right && (i1 >= end || a0[i0] <= a0[i1])) {
+      a1[left] = a0[i0++];
+    } else {
+      a1[left] = a0[i1++];
+    }
+  }
+}
+{% endhighlight %}
+
+上面是归并排序的代码，效果如下图
 
 <div id="mergesort" class="animation shuffle"><script>!function(){function t(){var t=u.selectAll("line").each(function(t,a){t.array=0,t.index=a}).attr("class","line--inactive").attr("transform",a).interrupt(),i=t[0],l=new Array(r),o=e(n.slice()).reverse();!function s(){var t=o.pop();switch(t.type){case"copy":var e=t[0],r=t[1],n=l[r]=i[e],c=n.__data__;c.index=r,c.array=c.array+1&1,d3.select(n).transition().duration(75).attr("transform",a).each("end",o.length?s:null);break;case"swap":var p=i;i=l,l=p,o.length&&s()}}()}function a(t){return"translate("+s(t.index)+","+(1-1.5*t.array)*o+")rotate("+c(t.value)+")"}function e(t){function a(t,a,r){for(var l=t,o=a,s=t;r>s;++s)a>l&&(o>=r||n[l]<=n[o])?(i[s]=n[l],e.push({type:"copy",0:l++,1:s})):(i[s]=n[o],e.push({type:"copy",0:o++,1:s}))}for(var e=[],r=t.length,n=t,i=new Array(r),l=1;r>l;l<<=1){for(var o=0;r>o;o+=l<<1)a(o,Math.min(o+l,r),Math.min(o+(l<<1),r));e.push({type:"swap"}),t=n,n=i,i=t}return e}var r=120,n=d3.shuffle(d3.range(r)),i={top:60,right:60,bottom:60,left:60},l=770-i.left-i.right,o=180-i.top-i.bottom,s=d3.scale.ordinal().domain(d3.range(r)).rangePoints([0,l]),c=d3.scale.linear().domain([0,r-1]).range([-45,45]),p=d3.select("#mergesort").on("click",t),d=p.append("svg").attr("width",l+i.left+i.right).attr("height",2*o+i.top+i.bottom).append("g").attr("transform","translate("+i.left+","+(i.top+o)+")"),u=d.append("g").attr("class","line");u.selectAll("line").data(n.map(function(t,a){return{value:t,index:a,array:0}})).enter().append("line").attr("class","line--inactive").attr("transform",a).attr("y2",-o),p.append("button").text("▶ Play"),whenFullyVisible(p.node(),t)}();</script></div>
 
-[Mergesort 分步过程]()
+与快速排序不同，归并排序需要用到额外的存储空间，所以在动画中我们用到了两行来进行演示。归并排序的原理也很好理解，就是把两个相邻的有序表归并为一个新的有序表。
+
+关键步骤如下
 
 <div id="mergesort-static" class="sort-static shuffle"><script>!function(){function t(t){function e(t,e,n){for(var a=t,l=e,o=t;n>o;++o)i[o]=r[e>a&&(l>=n||r[a]<=r[l])?a++:l++]}for(var n=[t.slice()],a=t.length,r=t,i=new Array(a),l=1;a>l;l<<=1){for(var o=0;a>o;o+=l<<1)e(o,Math.min(o+l,a),Math.min(o+(l<<1),a));n.push(i.slice()),t=r,r=i,i=t}return n}var e=120,n=d3.shuffle(d3.range(e)),a=t(n.slice()),r={top:10,right:30,bottom:10,left:30},i=770-r.left-r.right,l=60-r.top-r.bottom,o=d3.scale.ordinal().domain(d3.range(e)).rangePoints([0,i]),s=d3.scale.linear().domain([0,e-1]).range([-45,45]),c=d3.select("#mergesort-static"),f=c.selectAll("svg").data(a).enter().append("svg").attr("width",i+r.left+r.right).attr("height",l+r.top+r.bottom).append("g").attr("transform","translate("+r.left+","+r.top+")");beforeVisible(c.node(),function(){f.append("g").attr("class","line").selectAll("line").data(function(t){return t}).enter().append("line").attr("class","line--inactive").attr("transform",function(t,e){return"translate("+o(e)+","+l+")rotate("+s(t)+")"}).attr("y2",-l)})}();</script></div>
 
-[Random traversal 算法]()
+不过我们也不能一味的追求炫丽的视觉效果，因为我们的最终目的是学习和理解算法的本质，而不是仅仅局限在一个数据集上。
+
+这里我们可以通过数据最终的展示形式将算法可视化划分为三个层次
+
+* Level 0/黑盒——这是最简单的一类，就是只展示最终结果，我们看不到算法运行的过程，但是可以判断算法的正确性。用这种形式来展示更有助于我们比较不同算法之间结果。我们也可以将黑盒可视化与其他更深层次的分析方法结合起来，如前面洗牌算法部分用到的展示算法偏差方法。
+* Level 1/灰盒——许多算法是逐渐生成最终结果的，通过观察算法过程中的一些关键步骤有助于我们理解算法的运行过程，而且我们也不需要引入什么新的名词概念，因为中间过程的结构和最终结果的结构是相似的。但是灰盒可视化也会引入更多问题，因为它并没有触及到算法的本质，大家往往搞不清为什么算法的中间过程是这样的。
+* Level 2/白盒——要解答为什么算法是这样运行的我们就要用到白盒可视化了，它展示了算法的详细过程包括那些关键步骤。但是缺点也很明显——读者的负担太重，也就是你的思维可能会跟不上你的眼睛。同时，由于这种方法的中间过程与特定算法耦合的比较紧，也不适用于不同算法之间的比较。
+
+当然想真正理解一个算法还是要阅读它的源码，算法可视只不过是辅助我们理解它的一个手段，而不是万能的银弹。
+
+#0x04 迷宫生成
+我们讨论的最一个问题是迷宫生成，它可能不如前面的洗牌或者排序应用的广泛，但它比较有趣。本节所有算法生成的迷宫本质上是一个二维矩阵网络形式的生成树，也就是说其中没有回路，同时从左下角的起点到迷宫中的每一点都有且仅有一条路径
+
+迷宫生成的原理也比较简单，主要就是用到了生成树的一些算法，如果你对广度优先遍历、深度优先遍历、`Kruskal`算法、`Prim`算法这些不是很熟悉的话强烈建议你先去看看相应的资料。我们先来看看随机遍历
 
 <style>.maze{background-color: black}</style>
 <style>.maze canvas{background:#000}</style>
 
 <div id="random-traversal" class="animation maze"><script>!function(){function n(){var n=++g;M.clearRect(0,0,d,u),M.fillStyle="white",m.classed("animation--playing",!0),a=new Array(x*y),o=[];var e=(y-1)*x;a[e]=0,i(e),o.push({index:e,direction:c}),o.push({index:e,direction:s}),d3.timer(function(){if(n!==g)return!0;for(var i,e=0;++e<10&&!(i=t()););return i&&m.classed("animation--playing",!1)})}function t(){if(null==(n=r(o)))return!0;var n,t,d,u,p=n.index,v=n.direction,g=p+(v===c?-x:v===f?x:v===h?-1:1),m=p%x,w=p/x|0,R=null==a[g];M.fillStyle=R?"white":"black",v===c?(l(g),t=m,d=w-1,u=f):v===f?(l(p),t=m,d=w+1,u=c):v===h?(e(g),t=m-1,d=w,u=s):(e(p),t=m+1,d=w,u=h),R&&(i(g),a[p]|=v,a[g]|=u,M.fillStyle="red",d>0&&null==a[g-x]&&(l(g-x),o.push({index:g,direction:c})),y-1>d&&null==a[g+x]&&(l(g),o.push({index:g,direction:f})),t>0&&null==a[g-1]&&(e(g-1),o.push({index:g,direction:h})),x-1>t&&null==a[g+1]&&(e(g),o.push({index:g,direction:s})))}function i(n){var t=n%x,i=n/x|0;M.fillRect(t*p+(t+1)*v,i*p+(i+1)*v,p,p)}function e(n){var t=n%x,i=n/x|0;M.fillRect((t+1)*(p+v),i*p+(i+1)*v,v,p)}function l(n){var t=n%x,i=n/x|0;M.fillRect(t*p+(t+1)*v,(i+1)*(p+v),p,v)}function r(n){if(n.length){var t,i=n.length,e=Math.random()*i|0;return t=n[e],n[e]=n[i-1],n[i-1]=t,n.pop()}}var a,o,d=770,u=500,c=1,f=2,h=4,s=8,p=6,v=6,x=Math.floor((d-v)/(p+v)),y=Math.floor((u-v)/(p+v)),g=0,m=d3.select("#random-traversal").on("click",n),w=m.append("canvas").attr("width",d).attr("height",u);m.append("button").text("▶ Play"),whenFullyVisible(m.node(),n);var M=w.node().getContext("2d");M.translate(Math.round((d-x*p-(x+1)*v)/2),Math.round((u-y*p-(y+1)*v)/2))}();</script></div>
 
-[Randomized depth-first traversal 算法]()
+算法从左下角开始，每一步从所有可以扩展的点（图中的红点）中随机选择一个进行扩展。注意这个方法看起来可能和广度优先遍历类似，但它们的扩展规则是不一样的。广度优先遍历是严格按照每一层的顺序进行遍历，当前层所有结点遍历完之后才会对下一层进行遍历。
+
+然后是随机深度优先遍历
 
 <div id="randomized-depth-first-traversal" class="animation maze"><script>!function(){function n(){var n=++g;M.clearRect(0,0,d,u),M.fillStyle="white",m.classed("animation--playing",!0),a=new Array(x*y),o=[];var e=(y-1)*x;a[e]=0,i(e),o.push({index:e,direction:c}),o.push({index:e,direction:s}),d3.timer(function(){if(n!==g)return!0;for(var i,e=0;++e<10&&!(i=t()););return i&&m.classed("animation--playing",!1)})}function t(){if(null==(n=o.pop()))return!0;var n,t,d,u,p=n.index,v=n.direction,g=p+(v===c?-x:v===f?x:v===h?-1:1),m=p%x,w=p/x|0,R=null==a[g];if(M.fillStyle=R?"white":"black",v===c?(l(g),t=m,d=w-1,u=f):v===f?(l(p),t=m,d=w+1,u=c):v===h?(e(g),t=m-1,d=w,u=s):(e(p),t=m+1,d=w,u=h),R){i(g),a[p]|=v,a[g]|=u,M.fillStyle="red";var b=0;d>0&&null==a[g-x]&&(l(g-x),o.push({index:g,direction:c}),++b),y-1>d&&null==a[g+x]&&(l(g),o.push({index:g,direction:f}),++b),t>0&&null==a[g-1]&&(e(g-1),o.push({index:g,direction:h}),++b),x-1>t&&null==a[g+1]&&(e(g),o.push({index:g,direction:s}),++b),r(o,o.length-b,o.length)}}function i(n){var t=n%x,i=n/x|0;M.fillRect(t*p+(t+1)*v,i*p+(i+1)*v,p,p)}function e(n){var t=n%x,i=n/x|0;M.fillRect((t+1)*(p+v),i*p+(i+1)*v,v,p)}function l(n){var t=n%x,i=n/x|0;M.fillRect(t*p+(t+1)*v,(i+1)*(p+v),p,v)}function r(n,t,i){for(var e,l,r=i-t;r;)l=Math.random()*r--|0,e=n[r+t],n[r+t]=n[l+t],n[l+t]=e;return n}var a,o,d=770,u=500,c=1,f=2,h=4,s=8,p=6,v=6,x=Math.floor((d-v)/(p+v)),y=Math.floor((u-v)/(p+v)),g=0,m=d3.select("#randomized-depth-first-traversal").on("click",n),w=m.append("canvas").attr("width",d).attr("height",u);m.append("button").text("▶ Play"),whenFullyVisible(m.node(),n);var M=w.node().getContext("2d");M.translate(Math.round((d-x*p-(x+1)*v)/2),Math.round((u-y*p-(y+1)*v)/2))}();</script></div>
 
-[Randomized Prim’s 算法]()
+与刚才的算法不同，随机深度优先遍历总是从当前最长的路径的末端随机选择一个可扩展点进行扩展，如果出现回路或者抵达边界，那么就回溯到最近的一个可扩展分枝。这种算法生成的迷路分枝相对较少，路径也更长更曲折。
+
+`Prim`算法用于构造一棵最小生成树，其边的权重在所有可能的生成树中是最小的。在迷宫生成中，我们可以通过随机指定边的权重，然后就可以使用`Prim`算法构造出迷宫了~
 
 <div id="randomized-prims" class="animation maze"><script>!function(){function n(){var n=++m;x.clearRect(0,0,o,d),x.fillStyle="white",v.classed("animation--playing",!0),r=new Array(w*g),l=minHeap(function(n,t){return n.weight-t.weight});var e=(g-1)*w;r[e]=0,i(e),l.push({index:e,direction:h,weight:Math.random()}),l.push({index:e,direction:f,weight:Math.random()}),d3.timer(function(){if(n!==m)return!0;for(var i,e=0;++e<10&&!(i=t()););return i&&v.classed("animation--playing",!1)})}function t(){if(null==(n=l.pop()))return!0;var n,t,o,d,p=n.index,s=n.direction,m=p+(s===h?-w:s===u?w:s===c?-1:1),v=p%w,M=p/w|0,y=null==r[m];x.fillStyle=y?"white":"black",s===h?(a(m),t=v,o=M-1,d=u):s===u?(a(p),t=v,o=M+1,d=h):s===c?(e(m),t=v-1,o=M,d=f):(e(p),t=v+1,o=M,d=c),y&&(i(m),r[p]|=s,r[m]|=d,x.fillStyle="red",o>0&&null==r[m-w]&&(a(m-w),l.push({index:m,direction:h,weight:Math.random()})),g-1>o&&null==r[m+w]&&(a(m),l.push({index:m,direction:u,weight:Math.random()})),t>0&&null==r[m-1]&&(e(m-1),l.push({index:m,direction:c,weight:Math.random()})),w-1>t&&null==r[m+1]&&(e(m),l.push({index:m,direction:f,weight:Math.random()})))}function i(n){var t=n%w,i=n/w|0;x.fillRect(t*p+(t+1)*s,i*p+(i+1)*s,p,p)}function e(n){var t=n%w,i=n/w|0;x.fillRect((t+1)*(p+s),i*p+(i+1)*s,s,p)}function a(n){var t=n%w,i=n/w|0;x.fillRect(t*p+(t+1)*s,(i+1)*(p+s),p,s)}var r,l,o=770,d=500,h=1,u=2,c=4,f=8,p=6,s=6,w=Math.floor((o-s)/(p+s)),g=Math.floor((d-s)/(p+s)),m=0,v=d3.select("#randomized-prims").on("click",n),M=v.append("canvas").attr("width",o).attr("height",d);v.append("button").text("▶ Play"),whenFullyVisible(v.node(),n);var x=M.node().getContext("2d");x.translate(Math.round((o-w*p-(w+1)*s)/2),Math.round((d-g*p-(g+1)*s)/2))}();</script></div>
 
-[Wilson’s 算法]()
+`Prim`算法每一步都从当前最小权重的边中挑一条添加当前迷宫上，如果形成了回路那么将其丢弃，再选一条权重最小的边。
+
+最后我们再来看一个与众不同的迷宫生成算法
 
 <div id="wilsons" class="animation maze"><script>!function(){function e(){var e=++R;k.clearRect(0,0,s,v),k.fillStyle="white",A.classed("animation--playing",!0),a=new Array(M*b),l=new Array(M*b),f=new Array(M*b),u=void 0,c=void 0,d=void 0;for(var t=0,o=0;b>t;++t)for(var r=M-1;r>=0;--r,++o)l[o]=t*M+r;var h=l.pop();a[h]=0,i(h),k.fillStyle="red",d3.timer(function(){if(e!==R)return!0;for(var t,i=0;++i<10&&!(t=n()););return t&&A.classed("animation--playing",!1)})}function n(){var e;if(null==u){do if(null==(u=l.pop()))return!0;while(a[u]>=0);return f[u]=u,i(u),c=u%M,void(d=u/M|0)}for(;;){if(e=4*Math.random()|0,0===e){if(0>=d)continue;--d,e=u-M}else if(1===e){if(d>=b-1)continue;++d,e=u+M}else if(2===e){if(0>=c)continue;--c,e=u-1}else{if(c>=M-1)continue;++c,e=u+1}break}if(f[e]>=0?t(u,e):(f[e]=u,i(e),e===u-1?o(e):e===u+1?o(u):r(e===u-M?e:u)),a[e]>=0){for(k.save(),k.fillStyle="#fff",i(e);(u=f[e])!==e;)i(u),e===u+1?(a[u]|=w,a[e]|=y,o(u)):e===u-1?(a[u]|=y,a[e]|=w,o(e)):e===u+M?(a[u]|=p,a[e]|=h,r(u)):(a[u]|=h,a[e]|=p,r(e)),f[e]=0/0,e=u;k.restore(),f[e]=0/0,u=null}else u=e}function t(e,n){var t;k.save(),k.globalCompositeOperation="destination-out";do t=f[e],t===e-1?o(t):t===e+1?o(e):r(t===e-M?t:e),i(e),f[e]=0/0,e=t;while(t!==n);k.restore()}function i(e){var n=e%M,t=e/M|0;k.fillRect(n*g+(n+1)*m,t*g+(t+1)*m,g,g)}function o(e){var n=e%M,t=e/M|0;k.fillRect((n+1)*(g+m),t*g+(t+1)*m,m,g)}function r(e){var n=e%M,t=e/M|0;k.fillRect(n*g+(n+1)*m,(t+1)*(g+m),g,m)}var a,l,f,u,c,d,s=770,v=500,h=1,p=2,y=4,w=8,g=6,m=6,M=Math.floor((s-m)/(g+m)),b=Math.floor((v-m)/(g+m)),R=0,A=d3.select("#wilsons").on("click",e),S=A.append("canvas").attr("width",s).attr("height",v);A.append("button").text("▶ Play"),whenFullyVisible(A.node(),e);var k=S.node().getContext("2d");k.translate(Math.round((s-M*g-(M+1)*m)/2),Math.round((v-b*g-(b+1)*m)/2))}();</script></div>
 
-[Random traversal color]()
+`Wilson`算法利用擦圈随机游动(loop-erased random walks)的方法生成了一个均匀随机迷宫，实际上就是一棵均匀支撑树(uniform spanning tree)，具体概念可以参考[维基百科](http://en.wikipedia.org/wiki/Uniform_spanning_tree)
+
+`Wilson`算法每一轮随机指定一个起始点，然后开始随机游走（图中红色部分），直到其与当前迷宫（图中的白色部分）相交，此时将红色部分变为白色，然后开始下一轮随机游走。如果随机游走的过程中红色部分形成了回路，则将所形成回路擦除，然后继续随机游走。
+
+不过`Wilson`算法看起来可能有些无聊，尤其是刚开始的时候，红色部分很难与白色部分相交。但是随着迷宫的规模慢慢扩大，白色部分越来越多时算法运行就较快了。
+
+回顾我们介绍的四种迷宫生成算法，其原理各不相同，但是仅从结果来看，你可能很难分辨它们之间的区别，毕竟都是眼花缭乱的迷宫嘛~那么我们这里提供一种可以从结果看出迷宫结构（准确的说是生成树结构）的可视化方法——染色法。
+
+先来看看随机遍历
 
 <div id="random-traversal-color-maze" class="animation maze"><script>!function(){function t(){R.clearRect(0,0,s,c),R.fillStyle="#fff";for(var t=0,e=0;y>t;++t)for(var i=0;m>i;++i,++e)a(e),o[e]&u&&r(e),o[e]&v&&n(e)}function e(){var e=++w;M.classed("animation--playing",!0),i=0,l=new Array(m*y),f=[(y-1)*m],t(),d3.timer(function(){if(e!==w)return!0;if(!(p=f.length))return M.classed("animation--playing",!1);if(R.fillStyle=floodColor(2*i++),1&i)for(var t=0;p>t;++t)a(f[t]);else{for(var s,c,p,g=[],t=0;p>t;++t)s=f[t],o[s]&v&&!l[c=s+1]&&(l[c]=!0,n(s),g.push(c)),o[s]&h&&!l[c=s-1]&&(l[c]=!0,n(c),g.push(c)),o[s]&u&&!l[c=s+m]&&(l[c]=!0,r(s),g.push(c)),o[s]&d&&!l[c=s-m]&&(l[c]=!0,r(c),g.push(c));f=g}})}function a(t){var e=t%m,a=t/m|0;R.fillRect(e*p+(e+1)*g,a*p+(a+1)*g,p,p)}function n(t){var e=t%m,a=t/m|0;R.fillRect((e+1)*(p+g),a*p+(a+1)*g,g,p)}function r(t){var e=t%m,a=t/m|0;R.fillRect(e*p+(e+1)*g,(a+1)*(p+g),p,g)}var o,i,l,f,s=770,c=500,d=1,u=2,h=4,v=8,p=6,g=6,m=Math.floor((s-g)/(p+g)),y=Math.floor((c-g)/(p+g)),w=0,M=d3.select("#random-traversal-color-maze"),b=M.append("canvas").attr("width",s).attr("height",c);M.append("button").text("▶ Play");var R=b.node().getContext("2d");R.translate(Math.round((s-m*p-(m+1)*g)/2),Math.round((c-y*p-(y+1)*g)/2)),beforeVisible(M.node(),function(){var a=new Worker("/assets/js/generate-random-traversal.js");a.postMessage({width:m,height:y}),a.addEventListener("message",function(n){a.terminate(),o=n.data,t(),M.on("click",e),whenFullyVisible(M.node(),e)})})}();</script></div>
 
-[Random traversal color emphasize ]()
+我们用颜色来表示生成树的深度，这里用到的是一种类似彩虹颜色的层次表示方法，意会就好~
+
+如果我们把黑色的墙去掉并降低视觉噪声，就可以更精细的观察迷宫的结构，如下图
 
 <div id="random-traversal-color-flood" class="animation"><script>!function(){function a(){function a(){for(var a,n,i=[],l=f.length,c=d3.rgb(floodColor(g++)),u=0;l>u;++u)a=f[u]<<2,p.data[a+0]=c.r,p.data[a+1]=c.g,p.data[a+2]=c.b,p.data[a+3]=255;for(var u=0;l>u;++u)a=f[u],t[a]&d&&!h[n=a+1]&&(h[n]=!0,i.push(n)),t[a]&s&&!h[n=a-1]&&(h[n]=!0,i.push(n)),t[a]&o&&!h[n=a+e]&&(h[n]=!0,i.push(n)),t[a]&r&&!h[n=a-e]&&(h[n]=!0,i.push(n));return f=i,!i.length}var c=++i;u.clearRect(0,0,e,n),l.classed("animation--playing",!0);var g=0,h=new Array(e*n),f=[(n-1)*e],p=u.createImageData(e,n);d3.timer(function(){if(c!==i)return!0;for(var t,e=0;1>e&&!(t=a());++e);return u.putImageData(p,0,0),t&&l.classed("animation--playing",!1)})}var t,e=770,n=360,r=1,o=2,s=4,d=8,i=0,l=d3.select("#random-traversal-color-flood"),c=l.append("canvas").attr("width",e).attr("height",n);l.append("button").text("▶ Play");var u=c.node().getContext("2d");whenFullyVisible(l.node(),function(){var r=new Worker("/assets/js/generate-random-traversal.js");r.postMessage({width:e,height:n}),r.addEventListener("message",function(e){r.terminate(),t=e.data,l.on("click",a),a()})})}();</script></div>
 
-[Randomized depth-first traversal color]()
+图中的颜色形成了一层一层的同心圆结构，而且其路径结构也比较单一，没有特别蜿蜒曲折的路径，基本都是沿着一个很小的方向范围前进。当然这与算法的逻辑有很大关系。
+
+随机深度优先遍历则完全不同
 
 <div id="randomized-depth-first-traversal-color-flood" class="animation"><script>!function(){function a(){function a(){for(var a,r,s=[],l=g.length,c=d3.rgb(floodColor(h++)),u=0;l>u;++u)a=g[u]<<2,p.data[a+0]=c.r,p.data[a+1]=c.g,p.data[a+2]=c.b,p.data[a+3]=255;for(var u=0;l>u;++u)a=g[u],t[a]&i&&!f[r=a+1]&&(f[r]=!0,s.push(r)),t[a]&d&&!f[r=a-1]&&(f[r]=!0,s.push(r)),t[a]&o&&!f[r=a+e]&&(f[r]=!0,s.push(r)),t[a]&n&&!f[r=a-e]&&(f[r]=!0,s.push(r));return g=s,!s.length}var c=++s;u.clearRect(0,0,e,r),l.classed("animation--playing",!0);var h=0,f=new Array(e*r),g=[(r-1)*e],p=u.createImageData(e,r);d3.timer(function(){if(c!==s)return!0;for(var t,e=0;50>e&&!(t=a());++e);return u.putImageData(p,0,0),t&&l.classed("animation--playing",!1)})}var t,e=770,r=360,n=1,o=2,d=4,i=8,s=0,l=d3.select("#randomized-depth-first-traversal-color-flood"),c=l.append("canvas").attr("width",e).attr("height",r);l.append("button").text("▶ Play");var u=c.node().getContext("2d");whenFullyVisible(l.node(),function(){var n=new Worker("/assets/js/generate-randomized-depth-first-traversal.js");n.postMessage({width:e,height:r}),n.addEventListener("message",function(e){n.terminate(),t=e.data,l.on("click",a),a()})})}();</script><div></div></div>
 
-[Randomized Prim’s color]()
+随机深度优先遍历的层次结构要比随机遍历深的多，因为是深度优先嘛，这里彩虹的七种颜色显然不够用了，我们已经完全无法看出结果的层次结构了，只是知道它很复杂
+
+再来看随机`Prim`算法
 
 <div id="randomized-prims-color-flood" class="animation"><script>!function(){function a(){function a(){for(var a,n,s=[],l=h.length,c=d3.rgb(floodColor(g++)),u=0;l>u;++u)a=h[u]<<2,f.data[a+0]=c.r,f.data[a+1]=c.g,f.data[a+2]=c.b,f.data[a+3]=255;for(var u=0;l>u;++u)a=h[u],t[a]&d&&!p[n=a+1]&&(p[n]=!0,s.push(n)),t[a]&i&&!p[n=a-1]&&(p[n]=!0,s.push(n)),t[a]&o&&!p[n=a+e]&&(p[n]=!0,s.push(n)),t[a]&r&&!p[n=a-e]&&(p[n]=!0,s.push(n));return h=s,!s.length}var c=++s;u.clearRect(0,0,e,n),l.classed("animation--playing",!0);var g=0,p=new Array(e*n),h=[(n-1)*e],f=u.createImageData(e,n);d3.timer(function(){if(c!==s)return!0;for(var t,e=0;3>e&&!(t=a());++e);return u.putImageData(f,0,0),t&&l.classed("animation--playing",!1)})}var t,e=770,n=360,r=1,o=2,i=4,d=8,s=0,l=d3.select("#randomized-prims-color-flood"),c=l.append("canvas").attr("width",e).attr("height",n);l.append("button").text("▶ Play");var u=c.node().getContext("2d");whenFullyVisible(l.node(),function(){var r=new Worker("/assets/js/generate-randomized-prims.js");r.postMessage({width:e,height:n}),r.addEventListener("message",function(e){r.terminate(),t=e.data,l.on("click",a),a()})})}();</script></div>
 
-[Wilson’s color]()
+虽然看着有那么一点乱，但是还是可以大致看出其它们之间的层次结构。
+
+最后来看`Wilson`算法
 
 <div id="wilsons-color-flood" class="animation"><script>!function(){function a(){function a(){for(var a,n,d=[],l=f.length,c=d3.rgb(floodColor(g++)),u=0;l>u;++u)a=f[u]<<2,p.data[a+0]=c.r,p.data[a+1]=c.g,p.data[a+2]=c.b,p.data[a+3]=255;for(var u=0;l>u;++u)a=f[u],t[a]&i&&!h[n=a+1]&&(h[n]=!0,d.push(n)),t[a]&s&&!h[n=a-1]&&(h[n]=!0,d.push(n)),t[a]&o&&!h[n=a+e]&&(h[n]=!0,d.push(n)),t[a]&r&&!h[n=a-e]&&(h[n]=!0,d.push(n));return f=d,!d.length}var c=++d;u.clearRect(0,0,e,n),l.classed("animation--playing",!0);var g=0,h=new Array(e*n),f=[(n-1)*e],p=u.createImageData(e,n);d3.timer(function(){if(c!==d)return!0;for(var t,e=0;3>e&&!(t=a());++e);return u.putImageData(p,0,0),t&&l.classed("animation--playing",!1)})}var t,e=770,n=360,r=1,o=2,s=4,i=8,d=0,l=d3.select("#wilsons-color-flood"),c=l.append("canvas").attr("width",e).attr("height",n);l.append("button").text("▶ Play");var u=c.node().getContext("2d");whenFullyVisible(l.node(),function(){var r=new Worker("/assets/js/generate-wilsons.js");r.postMessage({width:e,height:n}),r.addEventListener("message",function(e){r.terminate(),t=e.data,l.on("click",a),a()})})}();</script></div>
 
-[Wilson’s spanning trees]()
+看起来是不是和随机`Prim`算法的结果有一点像？但是我们又被眼睛骗了，结果类似并不能说明两个算法类似，这再次印证了可视化并不是万能。
+
+考虑到这些迷宫本质上都是生成树，所以我们干脆直接将把迷宫变成生成树的过程可视化，来看看`Wilson`算法生成的迷宫变成生成树是什么样子
 
 <div id="wilsons-tree" class="animation maze"><script>!function(){function n(){var n=++m;r.forEach(function(n){n[0]=n.y0,n[1]=n.x0});var e=d3.selectAll(r);b.classed("animation--playing",!0),e.interrupt().transition(),e.transition().duration(2500).delay(function(){return 50*this.depth}).ease("quad-in-out").tween("position",function(){var n=this,e=n.y0,t=n.x0,i=n.x-t,r=n.y-e;return function(o){n[0]=e+o*r,n[1]=t+o*i}}),d3.timer(function(){return n!==m?!0:(M.clearRect(-1,-1,c+1,f+1),M.beginPath(),o.forEach(function(n){M.moveTo(n.source[0],n.source[1]),M.lineTo(n.target[0],n.target[1])}),M.stroke(),!o[0].target.__transition__&&b.classed("animation--playing",!1))})}function e(n,e){for(var i,r,o,c,f=t(n,e),s=d3.range(n*e).map(function(){return!1}),h={index:f.length-1,children:[]},p=[h];null!=(i=p.pop());)c=f[i.index],c&l&&!s[o=i.index+1]&&(s[o]=!0,r={index:o,children:[]},i.children.push(r),p.push(r)),c&d&&!s[o=i.index-1]&&(s[o]=!0,r={index:o,children:[]},i.children.push(r),p.push(r)),c&u&&!s[o=i.index+n]&&(s[o]=!0,r={index:o,children:[]},i.children.push(r),p.push(r)),c&a&&!s[o=i.index-n]&&(s[o]=!0,r={index:o,children:[]},i.children.push(r),p.push(r));return h}function t(n,e){function t(){var t,f,s,h;do if(null==(t=o.pop()))return!0;while(r[t]>=0);for(c[t]=t;;){if(s=t%n,h=t/n|0,f=4*Math.random()|0,0===f){if(0>=h)continue;--h,f=t-n}else if(1===f){if(h>=e-1)continue;++h,f=t+n}else if(2===f){if(0>=s)continue;--s,f=t-1}else{if(s>=n-1)continue;++s,f=t+1}if(c[f]>=0?i(t,f):c[f]=t,r[f]>=0){for(;(t=c[f])!==f;)f===t+1?(r[t]|=l,r[f]|=d):f===t-1?(r[t]|=d,r[f]|=l):f===t+n?(r[t]|=u,r[f]|=a):(r[t]|=a,r[f]|=u),c[f]=0/0,f=t;return void(c[f]=0/0)}t=f}}function i(n,e){var t;do t=c[n],c[n]=0/0,n=t;while(t!==e)}var r=new Array(n*e),o=d3.range(n*e),c=new Array(n*e),f=o.pop();for(r[f]=0;!t(););return r}var i,r,o,a=1,u=2,d=4,l=8,c=770,f=500,s=6,h=6,p=Math.floor((c-h)/(s+h)),x=Math.floor((f-h)/(s+h)),y={left:Math.floor((c-p*s-(p+1)*h)/2)+h+s/2+.5,top:Math.floor((f-x*s-(x+1)*h)/2)+h+s/2+.5},g=c-2*y.left,v=f-2*y.top,m=0,w=d3.layout.tree().size([v,g]),b=d3.select("#wilsons-tree"),k=b.append("canvas").attr("width",c).attr("height",f),M=k.node().getContext("2d");M.translate(y.left,y.top),M.strokeStyle="#fff",M.lineWidth=2.5,b.append("button").text("▶ Play"),beforeVisible(b.node(),function(){b.on("click",n),i=e(p,x),r=w.nodes(i),o=w.links(r),d3.select("#wilsons-tree-depth").text(d3.format(",.0d")(d3.max(r,function(n){return n.depth}))),r.forEach(function(n){var e=n.index;n.y0=(p-e%p-1)*(s+h),n.x0=(e/p|0)*(s+h)}),o.sort(function(n,e){return e.source.depth-n.source.depth}),M.beginPath(),o.forEach(function(n){M.moveTo(n.source.y0,n.source.x0),M.lineTo(n.target.y0,n.target.x0)}),M.stroke(),whenFullyVisible(b.node(),n)})}();</script><div></div></div>
 
-[Randomized depth-first traversal spanning trees]()
+将其和随机深度优先遍历比较一下
 
 <style>#randomized-depth-first-tree svg{background:#000}#randomized-depth-first-tree .link{fill:none;stroke:#fff;stroke-linecap:round;stroke-width:2.5px}</style>
 
 <div id="randomized-depth-first-tree"><script>!function(){function e(e,l){for(var o,u,h,a,p=n(e,l),c=d3.range(e*l).map(function(){return!1}),s={index:p.length-1,children:[]},f=[s];null!=(o=f.pop());)a=p[o.index],a&d&&!c[h=o.index+1]&&(c[h]=!0,u={index:h,children:[]},o.children.push(u),f.push(u)),a&i&&!c[h=o.index-1]&&(c[h]=!0,u={index:h,children:[]},o.children.push(u),f.push(u)),a&r&&!c[h=o.index+e]&&(c[h]=!0,u={index:h,children:[]},o.children.push(u),f.push(u)),a&t&&!c[h=o.index-e]&&(c[h]=!0,u={index:h,children:[]},o.children.push(u),f.push(u));return s}function n(e,n){function l(){if(null==(l=h.pop()))return!0;var l,a,p,c,s=l.index,f=l.direction,x=s+(f===t?-e:f===r?e:f===i?-1:1),g=s%e,v=s/e|0,m=null==u[x];if(f===t?(a=g,p=v-1,c=r):f===r?(a=g,p=v+1,c=t):f===i?(a=g-1,p=v,c=d):(a=g+1,p=v,c=i),m){u[s]|=f,u[x]|=c;var M=0;p>0&&null==u[x-e]&&(h.push({index:x,direction:t}),++M),n-1>p&&null==u[x+e]&&(h.push({index:x,direction:r}),++M),a>0&&null==u[x-1]&&(h.push({index:x,direction:i}),++M),e-1>a&&null==u[x+1]&&(h.push({index:x,direction:d}),++M),o(h,h.length-M,h.length)}}function o(e,n,t){for(var r,i,d=t-n;d;)i=Math.random()*d--|0,r=e[d+n],e[d+n]=e[i+n],e[i+n]=r;return e}var u=new Array(e*n),h=[],a=(n-1)*e;for(u[a]=0,h.push({index:a,direction:t}),h.push({index:a,direction:d}),o(h,0,2);!l(););return u}var t=1,r=2,i=4,d=8,l=770,o=500,u=6,h=6,a=Math.floor((l-h)/(u+h)),p=Math.floor((o-h)/(u+h)),c={left:Math.floor((l-a*u-(a+1)*h)/2)+h+u/2+.5,top:Math.floor((o-p*u-(p+1)*h)/2)+h+u/2+.5},s=l-2*c.left,f=o-2*c.top,x=d3.layout.tree().size([f,s]),g=d3.select("#randomized-depth-first-tree"),v=g.append("svg").attr("width",l).attr("height",o).append("g").attr("transform","translate("+c.left+","+c.top+")");beforeVisible(g.node(),function(){var n=e(a,p),t=x.nodes(n),r=x.links(t);d3.select("#randomized-depth-first-tree-depth").text(d3.format(",.0d")(d3.max(t,function(e){return e.depth}))),v.selectAll(".link").data(r).enter().append("path").attr("class","link").attr("d",function(e){return"M"+e.source.y+","+e.source.x+"L"+e.target.y+","+e.target.x})})}();</script></div>
+
+这里两棵生成树的结点数都为`3239`。用这种方式展示是不是非常直观呢？不过要注意，由于为了适应大小，我们把第二张图缩小了，其生成树的实际深度要远远高于`Wilson`算法。两张图的生成树的最大深度分别为`310`和`832`，而在更大规模的迷宫中，例如有`480,000`个结点的迷宫，两棵生成树最大深度的有可能会相差10~20倍！所以使用随机深度优先遍历要谨慎啊~
+#0x05 小结&补充
+OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤部分了（-\_-||），什么**use vision to think**，用视觉思考？好吧，如果你感兴趣可以去看原文~
+
+这里还是谈谈我的感受吧
