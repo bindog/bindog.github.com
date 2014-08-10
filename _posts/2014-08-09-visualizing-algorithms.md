@@ -396,9 +396,13 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 我这里再把原文中列出的一些其他算法可视化方面的资源放在这里
 
 ##排序
+
 >[Aldo Cortesi’s sorting visualizations](http://sortvis.org/visualisations.html)
+
 >[sorting-algorithms.com](http://www.sorting-algorithms.com/)
+
 >[sorting.at](http://sorting.at/)
+
 >[Sorting Visualizer](http://www.aarondufour.com/)
 
 个人比较喜欢最后一个~
