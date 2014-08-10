@@ -406,31 +406,49 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 ##光影效果
 
 >[2D visibility](http://www.redblobgames.com/articles/visibility/)
+
 >[2D visibility and shadow effects](http://ncase.me/sight-and-light/)
 
 ##迷宫&寻路
 
 >[maze generation algorithms](http://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap)
+
 >[pathfinding](http://www.redblobgames.com/pathfinding/tower-defense/)
+
 >[polygonal map generation](http://www-cs-students.stanford.edu/~amitp/game-programming/polygon-map-generation/)
+
 >[GPU-based path finding implementation](http://nullprogram.com/blog/2014/06/22/)
 
 ##数学
 
 >[Lloyd’s Relaxation](http://www.jasondavies.com/lloyd/)
+
 >[Coalescing Soap Bubbles](http://www.jasondavies.com/bubbles/)
+
 >[Biham-Middleton-Levine Traffic Model](http://www.jasondavies.com/bml/)
+
 >[Collatz Graph](http://www.jasondavies.com/collatz-graph/)
+
 >[Random Points on a Sphere](Random Points on a Sphere)
+
 >[Bloom Filters](http://www.jasondavies.com/bloomfilter/)
+
 >[Animated Bézier Curves](Animated Bézier Curves)
+
 >[Animated Trigonometry](http://www.jasondavies.com/animated-trig/)
+
 >[Proof of Pythagoras’ Theorem](http://www.jasondavies.com/pythagoras-proof/)
+
 >[Morley’s Trisector Theorem](http://www.jasondavies.com/morley-triangle/)
+
 >[Fourier series](http://bl.ocks.org/jinroh/7524988)
+
 >[Simpson’s paradox](http://vudlab.com/simpsons/)
+
 >[central limit theorem](http://blog.vctr.me/posts/central-limit-theorem.html)
+
 >[conditional probabilities](http://setosa.io/conditional/)
+
 >[topology inference](http://bost.ocks.org/mike/topology/)
 
 不得不承认老外比我们领先太多了，不仅仅是技术上的领先，更多的是想法和思维上的领先。记得前一段时间刷微博的时候看到罗马尼亚人民是怎样教算法的，他们的计算机学院编排了排序算法的教学舞蹈~详情请戳[让程序员抓狂的排序算法教学视频](http://www.vaikan.com/sort-dance/)
