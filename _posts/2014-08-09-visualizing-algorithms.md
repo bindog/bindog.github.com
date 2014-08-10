@@ -28,19 +28,19 @@ function uniformRandomSampler(width,height,numSamplesMax){var numSamples=0;retur
 
 ![星空](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/starry-night-detail_zps35f7215a.jpg)
 
-关于光是怎样在人的视网膜上成像涉及到物理和生物的一些知识，这里我们不作讨论。但是其中有很重要的一个过程就是人眼把连续的光信号变成了离散的信号，并将其反馈给大脑。这个过程就称为**采样**
+关于光是怎样在人的视网膜上成像涉及到物理和生物的一些知识，这里我们不作讨论。但是其中有很重要的一个过程就是人眼把连续的光信号变成了离散的信号，并将其反馈给大脑。这个过程就称为**采样**。
 
-采样在计算机图形学中扮演着非常重要的角色。即使是简单的调整图像大小也要用到采样。因此如何进行采样就显得十分重要，一方面要保证采样点要均匀分布，另一方面要避免采样点重复或产生规律（否则会产生[混叠](http://zh.wikipedia.org/wiki/%E6%B7%B7%E7%96%8A)）。人的视网膜在采样上做的非常出色，看下面这张视网膜在显微镜下的图，图中的较大的视锥细胞探测颜色，较小的视杆细胞对弱光较为敏感
+采样在计算机图形学中扮演着非常重要的角色。即使是简单的调整图像大小也要用到采样。因此如何进行采样就显得十分重要，一方面要保证采样点要均匀分布，另一方面要避免采样点重复或产生规律（否则会产生[混叠](http://zh.wikipedia.org/wiki/%E6%B7%B7%E7%96%8A)）。人的视网膜在采样上做的非常出色，看下面这张视网膜在显微镜下的图，图中的较大的视锥细胞探测颜色，较小的视杆细胞对弱光较为敏感。
 
 ![视网膜](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/retinal-cone-mosaic_zps03166cc2.jpg)
 
-这些细胞稠密且均匀的分布在视网膜上，而且它们之间的相对位置是无规律的。我们称之为泊松圆盘分布，因为任意细胞间的最小距离总是一定的
+这些细胞稠密且均匀的分布在视网膜上，而且它们之间的相对位置是无规律的。我们称之为泊松圆盘分布，因为任意细胞间的最小距离总是一定的。
 
 但是构造一个泊松圆盘分布并不容易，我们先来看看米切尔最佳候选算法(Mitchell’s best-candidate algorithm)，它是泊松圆盘分布的一个近似，方便起见，我们就称之为`best-candidate`算法吧~
 
 <div class="animation" id="best-candidate-sampling"><script>!function(){function t(){var t=bestCandidateSampler(e,n,l,i),a=++c;s.selectAll("circle").remove(),d.classed("animation--playing",!0),d3.timer(function(){if(c!==a)return!0;for(var e=0;r>e;++e){var n=t();if(!n)return d.classed("animation--playing",!1),!0;s.append("circle").attr("cx",n[0]).attr("cy",n[1]).attr("r",1e-6).transition().attr("r",2)}})}var a=3,e=770-a-a,n=360-a-a,r=10,i=2e3,l=10,c=0,d=d3.select("#best-candidate-sampling").on("click",t),s=d.append("svg").attr("width",e+a+a).attr("height",n+a+a).append("g").attr("transform","translate("+a+","+a+")");d.append("button").text("▶ Play"),whenFullyVisible(d.node(),t)}();</script></div>
 
-从图上来看`best-candidate`算法形成的采样点还算令人满意，至少随机性是不错。不过缺点也很明显，有的区域采样点非常多（过采样），而有的区域则较稀疏（欠采样）。当然即使这样也是相当不错的，因为这个算法易于实现
+从图上来看`best-candidate`算法形成的采样点还算令人满意，至少随机性是不错。不过缺点也很明显，有的区域采样点非常多（过采样），而有的区域则较稀疏（欠采样）。当然即使这样也是相当不错的，因为这个算法易于实现。
 
 我们来看看这个算法的原理
 
@@ -48,9 +48,9 @@ function uniformRandomSampler(width,height,numSamplesMax){var numSamples=0;retur
 
 <div class="animation" id="best-candidate-explainer"><script>!function(){function t(){var t=1,i=d3.geom.quadtree().extent([[0,0],[a,e]])([[Math.random()*a,Math.random()*e]]);s.selectAll("*").interrupt().remove(),l.selectAll("*").interrupt().remove(),l.append("circle").attr("r",3.5).attr("cx",i.point[0]).attr("cy",i.point[1]),c.classed("animation--playing",!0),function d(){var o=0,p=-1/0,h=null;!function u(){if(++o>r)return s.selectAll("*").transition().style("opacity",0).remove(),l.append("circle").attr("r",3.5).attr("cx",h.__data__[0]).attr("cy",h.__data__[1]),i.add(h.__data__),void(++t<n?beforeVisible(c.node(),d):c.classed("animation--playing",!1));var y=Math.random()*a,_=Math.random()*e,m=i.find(y,_),v=m[0]-y,x=m[1]-_,f=Math.sqrt(v*v+x*x),g=s.insert("g","*").datum([y,_]).attr("class","candidate--current");g.append("circle").attr("class","search").attr("r",3.5).attr("cx",y).attr("cy",_),g.append("line").attr("class","search").attr("x1",y).attr("y1",_).attr("x2",y).attr("y2",_),g.append("circle").attr("class","point").attr("r",3.5).attr("cx",y).attr("cy",_);var b=g.transition().duration(750).each("end",function(){f>p?(d3.select(h).attr("class",null),d3.select(this.parentNode.appendChild(this)).attr("class","candidate--best"),h=this,p=f):d3.select(this).attr("class",null),u()});b.select("circle.search").attr("r",f),b.select("line.search").attr("x2",m[0]).attr("y2",m[1])}()}()}var a=770,e=500,r=10,n=1e3,c=d3.select("#best-candidate-explainer").on("click",t),i=c.append("svg").attr("width",a).attr("height",e),s=i.append("g").attr("class","candidate"),l=i.append("g").attr("class","point");c.append("button").text("▶ Play"),beforeVisible(c.node(),t)}();</script></div>
 
-`best-candidate`算法，顾名思义，是从一堆候选采样点中选取一个最佳采样点。首先，生成固定数量（上图中为10）的候选采样点，用灰色表示，每一个候选采样点是在采样区域随机生成的。然后寻找最佳候选采样点，用红色表示。什么是最佳候选采样点呢？就是**距离已固定的采样点（黑色表示）最远的那个点**。这么说大家可能还是不太明白，其实就是把已固定的采样点整体看成一个集合，候选采样点与这个集合中每一个元素都有一个距离，我们把最小的那个距离定义为该候选采样点到已固定采样点的距离
+`best-candidate`算法，顾名思义，是从一堆候选采样点中选取一个最佳采样点。首先，生成固定数量（上图中为10）的候选采样点，用灰色表示，每一个候选采样点是在采样区域随机生成的。然后寻找最佳候选采样点，用红色表示。什么是最佳候选采样点呢？就是**距离已固定的采样点（黑色表示）最远的那个点**。这么说大家可能还是不太明白，其实就是把已固定的采样点整体看成一个集合，候选采样点与这个集合中每一个元素都有一个距离，我们把最小的那个距离定义为该候选采样点到已固定采样点的距离。
 
-从图上来说就是对每一个灰点（候选采样点），寻找离它最近的黑点（已固定的采样点），在它们之间划一条线，线的长度就是它们的距离。红点（最佳候选采样点）就是在当前所有灰点中这个距离最大的那个点。当这一轮结束这后，把红点标为黑点（把最佳候选采样点作为已固定的采样点），然后进行下一轮的选取，如此循环下去
+从图上来说就是对每一个灰点（候选采样点），寻找离它最近的黑点（已固定的采样点），在它们之间划一条线，线的长度就是它们的距离。红点（最佳候选采样点）就是在当前所有灰点中这个距离最大的那个点。当这一轮结束这后，把红点标为黑点（把最佳候选采样点作为已固定的采样点），然后进行下一轮的选取，如此循环下去。
 
 下面是实现代码
 
@@ -69,7 +69,7 @@ function sample() {
 }
 {% endhighlight %}
 
-其中`numCandidates`表示一次生成的候选采样点个数，`numCandidates`越小，算法运行速度越快。相反，`numCandidates`越大，算法运行速度越慢，但是采样质量越高
+其中`numCandidates`表示一次生成的候选采样点个数，`numCandidates`越小，算法运行速度越快。相反，`numCandidates`越大，算法运行速度越慢，但是采样质量越高。
 
 `distance`函数也非常简单，如下所示
 
@@ -81,13 +81,13 @@ function distance(a, b) {
 }
 {% endhighlight %}
 
-`findClosest`函数返回距离当前灰点最近的黑点（距离当前候选采样点最近的已固定采样点）。我们可以用暴力搜索来实现，即遍历所有黑点，计算当前灰点与它们之间的距离，找出最小值。当然也可以采用一些快速的搜索算法，如**四叉树搜索算法**。暴力搜索简单，但是时间复杂度太高。而四叉树搜索算法需要一个前期建立四叉树的过程
+`findClosest`函数返回距离当前灰点最近的黑点（距离当前候选采样点最近的已固定采样点）。我们可以用暴力搜索来实现，即遍历所有黑点，计算当前灰点与它们之间的距离，找出最小值。当然也可以采用一些快速的搜索算法，如**四叉树搜索算法**。暴力搜索简单，但是时间复杂度太高。而四叉树搜索算法需要一个前期建立四叉树的过程。
 
 下面我们来看看另一种随机采样算法`uniform random`。`uniform random`算法是最简单的一种随机采样的实现，它的效果如下
 
 <div class="animation" id="uniform-random-sampling"><script>!function(){function t(){var t=uniformRandomSampler(n,r,i),a=++l;c.selectAll("circle").remove(),o.classed("animation--playing",!0),d3.timer(function(){if(l!==a)return!0;for(var n=0;e>n;++n){var r=t();if(!r)return o.classed("animation--playing",!1),!0;c.append("circle").attr("cx",r[0]).attr("cy",r[1]).attr("r",1e-6).transition().attr("r",2)}})}var a=3,n=770-a-a,r=360-a-a,e=10,i=2e3,l=0,o=d3.select("#uniform-random-sampling").on("click",t),c=o.append("svg").attr("width",n+a+a).attr("height",r+a+a).append("g").attr("transform","translate("+a+","+a+")");o.append("button").text("▶ Play"),whenFullyVisible(o.node(),t)}();</script></div>
 
-`uniform random`算法虽然简单，但是它的结果实在有点惨不忍睹，采样点重叠，过采样，欠采样等等
+`uniform random`算法虽然简单，但是它的结果实在有点惨不忍睹，采样点重叠，过采样，欠采样等等。
 
 那么除了通过采样点的分布规律来鉴别采样质量，还有没有其他方法呢？这里我们可以通过取距离采样点最近的颜色并对采样点所在色块进行着色的方法，也可以使用[沃罗诺伊图](http://zh.wikipedia.org/wiki/%E6%B2%83%E7%BD%97%E8%AF%BA%E4%BC%8A%E5%9B%BE)
 
@@ -95,24 +95,25 @@ function distance(a, b) {
 
 ![uniform random 星空](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/uniform-random-starry-night_zpsc3aa7d8f.jpg)
 
-效果果然很一般，采样点分布不均导致色块大小不一、细节丢失严重等一系列问题。左下角还有一些粉红色的色块，而原作中是没有这种颜色的
+效果果然很一般，采样点分布不均导致色块大小不一、细节丢失严重等一系列问题。左下角还有一些粉红色的色块，而原作中是没有这种颜色的。
 
 再来看看`best-candidate`算法采样后的《星空》
 
 ![best-candidate 星空](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/best-candidate-starry-night_zpsbbaf54f7.jpg)
 
-尽管仍有一些细节丢失等问题，但明显要比上一幅效果要好
+尽管仍有一些细节丢失等问题，但明显要比上一幅效果要好。
 
 我们也可以用沃罗诺伊图更直观的衡量采样质量，通过对每个色块的大小对其进行着色，色块越大颜色越深，色块越小颜色越浅。最佳的采样模式应该有几乎统一的着色，同时又保证不规律的采样点分布。下图是`uniform random`的效果
 
 ![uniform random 沃罗诺伊图](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/uniform-random-voronoi_zps5ddfcf29.jpg)
 
-色块之间的差别非常大，原因不再赘述
+色块之间的差别非常大，原因不再赘述。
+
 `best-candidate`的效果如下
 
 ![best-candidate 沃罗诺伊图](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/best-candidate-voronoi_zpsd3cab8d2.jpg)
 
-颜色明显均匀多了
+颜色明显均匀多了~
 
 那么有没有什么算法能比`best-candidate`算法效果更好呢？当然有了，这就是我们下面要讨论的Bridson泊松圆盘采样算法，这次可不是近似了哦~先来看看`Poisson-disc`算法的效果
 
@@ -124,9 +125,9 @@ function distance(a, b) {
 
 <div class="animation" id="poisson-disc-explainer"><script>!function(){function t(t,a){var n=t/y|0,r=a/y|0,i=Math.max(n-2,0),c=Math.max(r-2,0),l=Math.min(n+3,f),o=Math.min(r+3,M);for(r=c;o>r;++r){var d=r*f;for(n=i;l>n;++n)if(u=e[d+n]){var u,h=u[0]-t,m=u[1]-a;if(p>h*h+m*m)return b.append("line").attr("x1",t).attr("y1",a).attr("x2",t).attr("y2",a).transition().duration(s/4).attr("x2",u[0]).attr("y2",u[1]),!1}}return!0}function a(t,a){var n=[t,a];return A.append("circle").attr("r",1e-6).attr("cx",t).attr("cy",a).transition().duration(s).attr("r",u),P.append("circle").datum(n).attr("class","sample--active").attr("r",1e-6).attr("cx",t).attr("cy",a).transition().duration(s).attr("r",3),i.push(n),e[f*(a/y|0)+(t/y|0)]=n,++c,n}function n(t){t.interrupt().selectAll("*").interrupt().remove()}function r(){e=new Array(f*M),i=[],c=0,R.interrupt(),A.call(n),b.call(n),P.call(n),k.call(n),v.classed("animation--playing",!0),a(Math.random()*l,Math.random()*o),function r(){function n(){function r(){a(y,m),u()}if(++M>d)return e();var i=2*Math.PI*Math.random(),c=Math.sqrt(Math.random()*h+p),y=f[0]+c*Math.cos(i),m=f[1]+c*Math.sin(i);return 0>y||y>=l||0>m||m>=o?n():void k.append("circle").attr("r",1e-6).attr("cx",y).attr("cy",m).transition().duration(s/4).attr("r",3.75).each("end",t(y,m)?r:n)}function e(){i[y]=i[--c],i.length=c,x.classed("sample--active",!1),u()}function u(){k.transition().duration(s).style("opacity",0).selectAll("circle").remove(),b.transition().duration(s).style("opacity",0).selectAll("line").remove(),R.transition().duration(s).style("opacity",0).each("end",c?function(){beforeVisible(v.node(),r)}:function(){v.classed("animation--playing",!1)})}var y=Math.random()*c|0,f=i[y],M=0;k.style("opacity",null),b.style("opacity",null),R.style("opacity",null).style("stroke-opacity",0).attr("transform","translate("+f+")").attr("d",m).transition().duration(s).attr("d",g).style("stroke-opacity",1).each("end",n);var x=P.selectAll("circle").filter(function(t){return t===f})}()}var e,i,c,l=770,o=480,s=500,d=30,u=l/Math.SQRT1_2/20,p=u*u,h=3*p,y=u*Math.SQRT1_2,f=Math.ceil(l/y),M=Math.ceil(o/y),m=d3.svg.arc().innerRadius(u).outerRadius(u).startAngle(0).endAngle(2*Math.PI)(),g=d3.svg.arc().innerRadius(u).outerRadius(2*u).startAngle(0).endAngle(2*Math.PI)(),v=d3.select("#poisson-disc-explainer").on("click",r),x=v.append("svg").attr("width",l).attr("height",o),A=x.append("g").attr("class","exclusion");x.append("path").attr("class","grid").attr("transform","translate(.5,.5)").attr("d",d3.range(y,l,y).map(function(t){return"M"+Math.round(t)+",0V"+o}).join("")+d3.range(y,o,y).map(function(t){return"M0,"+Math.round(t)+"H"+l}).join(""));var R=x.append("path").attr("class","candidate-annulus"),b=x.append("g").attr("class","candidate-connection"),P=x.append("g").attr("class","sample"),k=x.append("g").attr("class","candidate");v.append("button").text("▶ Play"),beforeVisible(v.node(),r)}();</script></div>
 
-我们用红点表示活跃采样点，在每一轮的循环中从所有活跃采样点中随机选取一个点，然后以该点为圆心，分别以`r`和`2r`为半径作两个同心圆，其中`r`为两个采样点之间所允许的最小间距。然后我们在`r`与`2r`之间的环形区域随机生成一些候选采样点（白点），接下来的步骤就是从这些候选采样点中筛选出一个满足条件的采样点了
+我们用红点表示活跃采样点，在每一轮的循环中从所有活跃采样点中随机选取一个点，然后以该点为圆心，分别以`r`和`2r`为半径作两个同心圆，其中`r`为两个采样点之间所允许的最小间距。然后我们在`r`与`2r`之间的环形区域随机生成一些候选采样点（白点），接下来的步骤就是从这些候选采样点中筛选出一个满足条件的采样点了。
 
-注意到图中的灰色区域，它们是由已固定的采样点（包括红点和黑点）为圆心，`r`为半径作圆所形成的区域，我们可以称之为“禁区”。如果候选采样点落在灰色区域，那么表明它一定与某个已固定的采样点的距离不足`r`，这是不允许的，因此可以将这样的候选采样点排除掉。当我们找到一个没有落在灰色区域的候选采样点之后，便把它标为红点作为一个新的活跃采样点，原来的活跃采样点不变。如果生成的所有候选采样点都落在灰色区域内，那么就认为在`r`到`2r`的区域内不存在满足最小距离为`r`的点（当然实际情况不一定如此），然后把作为圆心的活跃采样点标为即不活跃采样点（从红点变成黑点）。当所有点都变成黑点之后，算法结束
+注意到图中的灰色区域，它们是由已固定的采样点（包括红点和黑点）为圆心，`r`为半径作圆所形成的区域，我们可以称之为“禁区”。如果候选采样点落在灰色区域，那么表明它一定与某个已固定的采样点的距离不足`r`，这是不允许的，因此可以将这样的候选采样点排除掉。当我们找到一个没有落在灰色区域的候选采样点之后，便把它标为红点作为一个新的活跃采样点，原来的活跃采样点不变。如果生成的所有候选采样点都落在灰色区域内，那么就认为在`r`到`2r`的区域内不存在满足最小距离为`r`的点（当然实际情况不一定如此），然后把作为圆心的活跃采样点标为即不活跃采样点（从红点变成黑点）。当所有点都变成黑点之后，算法结束。
 
 下图是`Poisson-disc`算法的沃罗诺伊图
 
@@ -140,7 +141,7 @@ function distance(a, b) {
 美不胜收！
 
 #0x02 洗牌
-正如扑克的洗牌一样，洗牌算法是对一组元素的随机重排列的过程。一个好的洗牌算法应该是无偏的，即每一种排列都是等可能的
+正如扑克的洗牌一样，洗牌算法是对一组元素的随机重排列的过程。一个好的洗牌算法应该是无偏的，即每一种排列都是等可能的。
 
 下面我们来看看`Fisher–Yates`洗牌算法，它可是最优洗牌算法哦~它不仅是无偏的，而且时间复杂度是`O(n)`，空间复杂度是`O(1)`，同时也非常容易实现，代码如下
 
@@ -163,9 +164,9 @@ function shuffle(array) {
 
 <div id="fisher-yates-shuffle" class="animation shuffle"><script>!function(){function t(){var t=n(i.slice()).reverse(),a=i.slice();d.classed("animation--playing",!0),f.each(function(t,e){t.index=e}).attr("transform",e).attr("class","line").interrupt(),function r(){var n,i=t.pop(),l=i[0],o=i[1];n=a[l],a[l]=a[o],a[o]=n,a[l].index=l,a[o].index=o,d3.selectAll([f[0][a[o].value],f[0][a[l].value]]).attr("class","line line--active").each(function(){this.parentNode.appendChild(this)}).transition().duration(750).attr("transform",e).each("end",function(e,n){d3.select(this).attr("class",n||i[0]===i[1]?"line line--inactive":"line"),(n||i[0]===i[1])&&(t.length?r():d.classed("animation--playing",!1))})}()}function e(t){return"translate("+s(t.index)+","+o+")rotate("+c(t.value)+")"}function n(t){for(var e,n,a=[],i=t.length;i;)n=Math.floor(Math.random()*i--),e=t[i],t[i]=t[n],t[n]=e,a.push([i,n]);return a}var a=120,i=d3.range(a).map(function(t,e){return{value:t,index:e}}),r={top:60,right:60,bottom:60,left:60},l=770-r.left-r.right,o=180-r.top-r.bottom,s=d3.scale.ordinal().domain(d3.range(a)).rangePoints([0,l]),c=d3.scale.linear().domain([0,a-1]).range([-45,45]),d=d3.select("#fisher-yates-shuffle").on("click",t),p=d.append("svg").attr("width",l+r.left+r.right).attr("height",o+r.top+r.bottom).append("g").attr("transform","translate("+r.left+","+r.top+")"),f=p.append("g").selectAll("line").data(i).enter().append("line").attr("class","line line--inactive").attr("transform",e).attr("y2",-o);d.append("button").text("▶ Play"),whenFullyVisible(d.node(),t)}();</script></div>
 
-图中的每一条线代表一个数字，线的倾斜程度代表数的大小，线越往左倾斜表明数越小，反之越往右倾斜表明数越大
+图中的每一条线代表一个数字，线的倾斜程度代表数的大小，线越往左倾斜表明数越小，反之越往右倾斜表明数越大。
 
-从图中可以明显看出，该算法把数组划分为两个部分，右半边是已洗牌区域（用黑线表示），左半边是待洗牌区域（用灰线表示）。每一步从左边的待洗牌区域随机选择一个元素并将其移动到右侧，如此循环下去直到待洗牌区域无数组元素，算法终止
+从图中可以明显看出，该算法把数组划分为两个部分，右半边是已洗牌区域（用黑线表示），左半边是待洗牌区域（用灰线表示）。每一步从左边的待洗牌区域随机选择一个元素并将其移动到右侧，如此循环下去直到待洗牌区域无数组元素，算法终止。
 
 `Fisher–Yates`洗牌算法是一个简单而且正确的算法，但并不是每一个简单的洗牌算法都一定是正确的。我们来看看下面这个错误的洗牌算法
 
@@ -178,17 +179,17 @@ function shuffle(array) {
 }
 {% endhighlight %}
 
-我们先来解释一下代码，`array.sort()`表示对数组进行排序，一般情况下是按照数组中元素的大小（例如整形）或者是按照字典序列（例如字符）来进行排序。当然我们也可以自定义规则，也就是自定义一个`comparator`函数，然后依据返回值来确定待排元素的大小关系，返回值大于`0`表明第一个参数更大，返回值小于`0`表明第二个参数更大，返回值为`0`表明相等。上面的代码中定义了这样的一个`comparator`函数，从数组中随机取两个元素`a`和`b`，然后随机返回`[-0.5,0.5)`之间的一个值，也就是说元素`a`和`b`之间的大小关系是随机的，所以它们之间的顺序也是随机的，这样遍历完整个数组后所有元素的顺序都是随机的
+我们先来解释一下代码，`array.sort()`表示对数组进行排序，一般情况下是按照数组中元素的大小（例如整形）或者是按照字典序列（例如字符）来进行排序。当然我们也可以自定义规则，也就是自定义一个`comparator`函数，然后依据返回值来确定待排元素的大小关系，返回值大于`0`表明第一个参数更大，返回值小于`0`表明第二个参数更大，返回值为`0`表明相等。上面的代码中定义了这样的一个`comparator`函数，从数组中随机取两个元素`a`和`b`，然后随机返回`[-0.5,0.5)`之间的一个值，也就是说元素`a`和`b`之间的大小关系是随机的，所以它们之间的顺序也是随机的，这样遍历完整个数组后所有元素的顺序都是随机的。
 
-但真的是这样的吗？当然不是，这个算法的有着非常严重的缺陷。首先我们要知道，任意两个元素之间的顺序随机性并不能保证整体的顺序随机性。同时，一个比较器应该满足**传递性**，如果有`a>b`且`b>c`，那么就有`a>c`。而上述代码中的随机比较器破坏了这个特性，导致`array.sort()`的行为是不确定的，所以最后的结果也是不可靠的
+但真的是这样的吗？当然不是，这个算法的有着非常严重的缺陷。首先我们要知道，任意两个元素之间的顺序随机性并不能保证整体的顺序随机性。同时，一个比较器应该满足**传递性**，如果有`a>b`且`b>c`，那么就有`a>c`。而上述代码中的随机比较器破坏了这个特性，导致`array.sort()`的行为是不确定的，所以最后的结果也是不可靠的。
 
 那么它的结果到底如何呢？来看看下面这张图
 
 <div id="random-comparator-shuffle" class="animation shuffle" style="-webkit-user-select:none"><script>!function(){function t(){s.classed("animation--playing",!0),p.data(a(d3.range(e)),function(t){return t}).interrupt().transition().attr("transform",n).each("end",function(t,n){n||s.classed("animation--playing",!1)})}function n(t,n){return"translate("+l(n)+","+i+")rotate("+d(t)+")"}function a(t){return t.sort(function(){return Math.random()-.5})}var e=120,r={top:60,right:60,bottom:60,left:60},o=770-r.left-r.right,i=180-r.top-r.bottom,l=d3.scale.ordinal().domain(d3.range(e)).rangePoints([0,o]),d=d3.scale.linear().domain([0,e-1]).range([-45,45]),s=d3.select("#random-comparator-shuffle").on("click",t),c=s.append("svg").attr("width",o+r.left+r.right).attr("height",i+r.top+r.bottom).append("g").attr("transform","translate("+r.left+","+r.top+")"),p=c.append("g").selectAll("line").data(d3.range(e)).enter().append("line").attr("class","line line--inactive").attr("transform",n).attr("y2",-i);s.append("button").text("▶ Play"),beforeVisible(s.node(),t)}();</script></div>
 
-乍一看好像也是随机的啊，但是我们要注意有些东西人眼看起来是随机的，但实际上确并非随机的
+乍一看好像也是随机的啊，但是我们要注意有些东西人眼看起来是随机的，但实际上确并非随机的。
 
-为了更直观的衡量算法的质量，我们换一种方式来进行展示
+为了更直观的衡量算法的质量，我们换一种方式来进行展示~
 
 一个好的洗牌算法应该保证无偏性，也就是说保证每个元素在洗牌结束后出现在数组的任何位置都是等可能的，概率为`1/n`，其中`n`为数组元素个数。当然准确的计算这个概率有点困难（依赖具体的算法），但是我们可以从统计意义上来计算这个概率。也就是把洗牌算法运行几千次，统计原先在位置`i`的元素在洗牌后出现在位置`j`的次数，然后画在一张图上，如下
 
@@ -196,26 +197,26 @@ function shuffle(array) {
 
 上图中列表示元素在洗牌前的位置，行表示元素在洗牌后的位置。颜色表示概率，绿色表示正偏，也就是其出现次数高于预期。红色表示负偏，也就是其出现次数低于预期。
 
-上图是在`Chrome`浏览器下的结果，只能说很一般。注意到在对角线偏下的位置有严重的正偏现象，表明这个算法很容易将一个在位置`i`元素在洗牌后放置到`i+1`或者`i+2`的位置上去，同时也注意到在数组第一个、中间的和最后一个元素也有很多正偏和负偏现象，这个可能和`Chrome`浏览器的具体实现有关
+上图是在`Chrome`浏览器下的结果，只能说很一般。注意到在对角线偏下的位置有严重的正偏现象，表明这个算法很容易将一个在位置`i`元素在洗牌后放置到`i+1`或者`i+2`的位置上去，同时也注意到在数组第一个、中间的和最后一个元素也有很多正偏和负偏现象，这个可能和`Chrome`浏览器的具体实现有关。
 
 而`Fisher–Yates`洗牌算法的结果就要好很多
 
 ![Fisher–Yates matrix diagram](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/fisher-yates-shuffle-bias_zpse8b352e7.png)
 
-图中没有明显的规律可循，个别偏差也是因为我们使用的是统计的方法，与算法本身无关
+图中没有明显的规律可循，个别偏差也是因为我们使用的是统计的方法，与算法本身无关。
 
 另外值得一提的一点是，随机比较器(random comparator)洗牌算法的结果与浏览器的实现也有很大关系。刚才`Chrome`浏览器的结果已经很糟糕了，我们再来看看`Firefox`下的结果
 
 ![random comparator matrix diagram Firefox](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/random-comparator-firefox-shuffle-bias_zpsa5aea260.png)
 
-只能说惨不忍睹！当然这并不意味着`Chrome`比`Firefox`要强，只能说明我们所使用的算法是有问题的，导致其结果是不确定的。而浏览器内部的不同实现更直观的把这个问题暴露出来了
+只能说惨不忍睹！当然这并不意味着`Chrome`比`Firefox`要强，只能说明我们所使用的算法是有问题的，导致其结果是不确定的。而浏览器内部的不同实现更直观的把这个问题暴露出来了。
 
 #0x03 排序
 排序呢大家都很熟悉了，我们先来看看耳熟能详的快速排序
 
 <div id="quicksort" class="animation shuffle"><script>!function(){function t(){var t=a(r.slice()).reverse(),e=u.selectAll("line").attr("transform",n).attr("class","line--inactive").interrupt(),i=f.transition().duration(150).each("start",function l(){var a=t.pop();switch(a.type){case"swap":var r=a[0],o=a[1],s=e[0][r],c=e[0][o];e[0][r]=c,e[0][o]=s,i.each(function(){e.transition().attr("transform",n)});break;case"partition":e.attr("class",function(t,n){return n===a.pivot?"line--active":a.left<=n&&n<a.right?"line--inactive":null})}t.length?i=i.transition().each("start",l):i.each("end",function(){e.attr("class","line--inactive")})})}function n(t,n){return"translate("+s(n)+","+o+")rotate("+c(t)+")"}function a(t){function n(n,e,r){var i=t[r];a(r,--e);for(var l=n;e>l;++l)t[l]<i&&a(l,n++);return a(n,e),n}function a(n,a){if(n!==a){var e=t[n];t[n]=t[a],t[a]=e,r.push({type:"swap",0:n,1:a})}}function e(t,a){if(a-1>t){var i=t+a>>1;r.push({type:"partition",left:t,pivot:i,right:a}),i=n(t,a,i),e(t,i),e(i+1,a)}}var r=[];return e(0,t.length),r}var e=120,r=d3.shuffle(d3.range(e)),i={top:60,right:60,bottom:60,left:60},l=770-i.left-i.right,o=180-i.top-i.bottom,s=d3.scale.ordinal().domain(d3.range(e)).rangePoints([0,l]),c=d3.scale.linear().domain([0,e-1]).range([-45,45]),p=d3.select("#quicksort").on("click",t),f=p.append("svg").attr("width",l+i.left+i.right).attr("height",o+i.top+i.bottom).append("g").attr("transform","translate("+i.left+","+i.top+")"),u=f.append("g").attr("class","line");u.selectAll("line").data(r).enter().append("line").attr("class","line--inactive").attr("transform",n).attr("y2",-o),p.append("button").text("▶ Play"),whenFullyVisible(p.node(),t)}();</script></div>
 
-快排的原理这里也不多说了，就是通过在当前待排元素中取一个基准，然后将比该基准小的元素放置其左侧，比基准大的元素放置在其右侧，然后递归进行下去
+快排的原理这里也不多说了，就是通过在当前待排元素中取一个基准，然后将比该基准小的元素放置其左侧，比基准大的元素放置在其右侧，然后递归进行下去。
 
 以下是实现代码
 
@@ -299,7 +300,7 @@ function merge(a0, a1, left, right, end) {
 
 不过我们也不能一味的追求炫丽的视觉效果，因为我们的最终目的是学习和理解算法的本质，而不是仅仅局限在一个数据集上。
 
-这里我们可以通过数据最终的展示形式将算法可视化划分为三个层次
+这里我们可以通过数据最终的展示形式将算法可视化划分为三个层次：
 
 * Level 0/黑盒——这是最简单的一类，就是只展示最终结果，我们看不到算法运行的过程，但是可以判断算法的正确性。用这种形式来展示更有助于我们比较不同算法之间结果。我们也可以将黑盒可视化与其他更深层次的分析方法结合起来，如前面洗牌算法部分用到的展示算法偏差方法。
 * Level 1/灰盒——许多算法是逐渐生成最终结果的，通过观察算法过程中的一些关键步骤有助于我们理解算法的运行过程，而且我们也不需要引入什么新的名词概念，因为中间过程的结构和最终结果的结构是相似的。但是灰盒可视化也会引入更多问题，因为它并没有触及到算法的本质，大家往往搞不清为什么算法的中间过程是这样的。
@@ -308,7 +309,7 @@ function merge(a0, a1, left, right, end) {
 当然想真正理解一个算法还是要阅读它的源码，算法可视只不过是辅助我们理解它的一个手段，而不是万能的银弹。
 
 #0x04 迷宫生成
-我们讨论的最一个问题是迷宫生成，它可能不如前面的洗牌或者排序应用的广泛，但它比较有趣。本节所有算法生成的迷宫本质上是一个二维矩阵网络形式的生成树，也就是说其中没有回路，同时从左下角的起点到迷宫中的每一点都有且仅有一条路径
+我们讨论的最一个问题是迷宫生成，它可能不如前面的洗牌或者排序应用的广泛，但它比较有趣。本节所有算法生成的迷宫本质上是一个二维矩阵网络形式的生成树，也就是说其中没有回路，同时从左下角的起点到迷宫中的每一点都有且仅有一条路径。
 
 迷宫生成的原理也比较简单，主要就是用到了生成树的一些算法，如果你对广度优先遍历、深度优先遍历、`Kruskal`算法、`Prim`算法这些不是很熟悉的话强烈建议你先去看看相应的资料。我们先来看看随机遍历
 
@@ -359,7 +360,7 @@ function merge(a0, a1, left, right, end) {
 
 <div id="randomized-depth-first-traversal-color-flood" class="animation"><script>!function(){function a(){function a(){for(var a,r,s=[],l=g.length,c=d3.rgb(floodColor(h++)),u=0;l>u;++u)a=g[u]<<2,p.data[a+0]=c.r,p.data[a+1]=c.g,p.data[a+2]=c.b,p.data[a+3]=255;for(var u=0;l>u;++u)a=g[u],t[a]&i&&!f[r=a+1]&&(f[r]=!0,s.push(r)),t[a]&d&&!f[r=a-1]&&(f[r]=!0,s.push(r)),t[a]&o&&!f[r=a+e]&&(f[r]=!0,s.push(r)),t[a]&n&&!f[r=a-e]&&(f[r]=!0,s.push(r));return g=s,!s.length}var c=++s;u.clearRect(0,0,e,r),l.classed("animation--playing",!0);var h=0,f=new Array(e*r),g=[(r-1)*e],p=u.createImageData(e,r);d3.timer(function(){if(c!==s)return!0;for(var t,e=0;50>e&&!(t=a());++e);return u.putImageData(p,0,0),t&&l.classed("animation--playing",!1)})}var t,e=770,r=360,n=1,o=2,d=4,i=8,s=0,l=d3.select("#randomized-depth-first-traversal-color-flood"),c=l.append("canvas").attr("width",e).attr("height",r);l.append("button").text("▶ Play");var u=c.node().getContext("2d");whenFullyVisible(l.node(),function(){var n=new Worker("/assets/js/generate-randomized-depth-first-traversal.js");n.postMessage({width:e,height:r}),n.addEventListener("message",function(e){n.terminate(),t=e.data,l.on("click",a),a()})})}();</script><div></div></div>
 
-随机深度优先遍历的层次结构要比随机遍历深的多，因为是深度优先嘛，这里彩虹的七种颜色显然不够用了，我们已经完全无法看出结果的层次结构了，只是知道它很复杂
+随机深度优先遍历的层次结构要比随机遍历深的多，因为是深度优先嘛，这里彩虹的七种颜色显然不够用了，我们已经完全无法看出结果的层次结构了，只是知道它很复杂。
 
 再来看随机`Prim`算法
 
@@ -384,7 +385,62 @@ function merge(a0, a1, left, right, end) {
 <div id="randomized-depth-first-tree"><script>!function(){function e(e,l){for(var o,u,h,a,p=n(e,l),c=d3.range(e*l).map(function(){return!1}),s={index:p.length-1,children:[]},f=[s];null!=(o=f.pop());)a=p[o.index],a&d&&!c[h=o.index+1]&&(c[h]=!0,u={index:h,children:[]},o.children.push(u),f.push(u)),a&i&&!c[h=o.index-1]&&(c[h]=!0,u={index:h,children:[]},o.children.push(u),f.push(u)),a&r&&!c[h=o.index+e]&&(c[h]=!0,u={index:h,children:[]},o.children.push(u),f.push(u)),a&t&&!c[h=o.index-e]&&(c[h]=!0,u={index:h,children:[]},o.children.push(u),f.push(u));return s}function n(e,n){function l(){if(null==(l=h.pop()))return!0;var l,a,p,c,s=l.index,f=l.direction,x=s+(f===t?-e:f===r?e:f===i?-1:1),g=s%e,v=s/e|0,m=null==u[x];if(f===t?(a=g,p=v-1,c=r):f===r?(a=g,p=v+1,c=t):f===i?(a=g-1,p=v,c=d):(a=g+1,p=v,c=i),m){u[s]|=f,u[x]|=c;var M=0;p>0&&null==u[x-e]&&(h.push({index:x,direction:t}),++M),n-1>p&&null==u[x+e]&&(h.push({index:x,direction:r}),++M),a>0&&null==u[x-1]&&(h.push({index:x,direction:i}),++M),e-1>a&&null==u[x+1]&&(h.push({index:x,direction:d}),++M),o(h,h.length-M,h.length)}}function o(e,n,t){for(var r,i,d=t-n;d;)i=Math.random()*d--|0,r=e[d+n],e[d+n]=e[i+n],e[i+n]=r;return e}var u=new Array(e*n),h=[],a=(n-1)*e;for(u[a]=0,h.push({index:a,direction:t}),h.push({index:a,direction:d}),o(h,0,2);!l(););return u}var t=1,r=2,i=4,d=8,l=770,o=500,u=6,h=6,a=Math.floor((l-h)/(u+h)),p=Math.floor((o-h)/(u+h)),c={left:Math.floor((l-a*u-(a+1)*h)/2)+h+u/2+.5,top:Math.floor((o-p*u-(p+1)*h)/2)+h+u/2+.5},s=l-2*c.left,f=o-2*c.top,x=d3.layout.tree().size([f,s]),g=d3.select("#randomized-depth-first-tree"),v=g.append("svg").attr("width",l).attr("height",o).append("g").attr("transform","translate("+c.left+","+c.top+")");beforeVisible(g.node(),function(){var n=e(a,p),t=x.nodes(n),r=x.links(t);d3.select("#randomized-depth-first-tree-depth").text(d3.format(",.0d")(d3.max(t,function(e){return e.depth}))),v.selectAll(".link").data(r).enter().append("path").attr("class","link").attr("d",function(e){return"M"+e.source.y+","+e.source.x+"L"+e.target.y+","+e.target.x})})}();</script></div>
 
 这里两棵生成树的结点数都为`3239`。用这种方式展示是不是非常直观呢？不过要注意，由于为了适应大小，我们把第二张图缩小了，其生成树的实际深度要远远高于`Wilson`算法。两张图的生成树的最大深度分别为`310`和`832`，而在更大规模的迷宫中，例如有`480,000`个结点的迷宫，两棵生成树最大深度的有可能会相差10~20倍！所以使用随机深度优先遍历要谨慎啊~
+
 #0x05 小结&补充
 OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤部分了（-\_-||），什么**use vision to think**，用视觉思考？好吧，如果你感兴趣可以去看原文~
 
-这里还是谈谈我的感受吧
+这里还是谈谈我的感受吧，回想当初学习数据结构和算法的主要方法就是啃代码，极其枯燥。而且我们的教学形式很久都没有变化了，现在的学生们估计还是要硬生生的去理解代码（-\_-），不过这篇《*Visualizing Algorithms*》却给我们提供了一个很好的思路，那就是把算法变得直观、有趣，从不同角度和层面去剖析一个算法。
+
+当然这并不是一件容易的事情，首先我们对算法的理解需要更加深入和透彻，否则不可能想出那些神奇的展现方式。其次就是我们的美工水平和前端编程能力，我看了一下原作者网页中可视化实现的一些代码，涉及到`CSS`、`javascript`和`HTML5`（尤其是`svg`标签和`canvas`标签的使用）等很多内容，这些没有深厚的功底是做不到的。
+
+我这里再把原文中列出的一些其他算法可视化方面的资源放在这里
+##排序
+>[Aldo Cortesi’s sorting visualizations](http://sortvis.org/visualisations.html)
+>[sorting-algorithms.com](http://www.sorting-algorithms.com/)
+>[sorting.at](http://sorting.at/)
+>[Sorting Visualizer](http://www.aarondufour.com/)
+
+个人比较喜欢最后一个~
+##光影效果
+>[2D visibility](http://www.redblobgames.com/articles/visibility/)
+>[2D visibility and shadow effects](http://ncase.me/sight-and-light/)
+
+##迷宫&寻路
+>[maze generation algorithms](http://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap)
+>[pathfinding](http://www.redblobgames.com/pathfinding/tower-defense/)
+>[polygonal map generation](http://www-cs-students.stanford.edu/~amitp/game-programming/polygon-map-generation/)
+>[GPU-based path finding implementation](http://nullprogram.com/blog/2014/06/22/)
+
+##数学
+>[Lloyd’s Relaxation](http://www.jasondavies.com/lloyd/)
+>[Coalescing Soap Bubbles](http://www.jasondavies.com/bubbles/)
+>[Biham-Middleton-Levine Traffic Model](http://www.jasondavies.com/bml/)
+>[Collatz Graph](http://www.jasondavies.com/collatz-graph/)
+>[Random Points on a Sphere](Random Points on a Sphere)
+>[Bloom Filters](http://www.jasondavies.com/bloomfilter/)
+>[Animated Bézier Curves](Animated Bézier Curves)
+>[Animated Trigonometry](http://www.jasondavies.com/animated-trig/)
+>[Proof of Pythagoras’ Theorem](http://www.jasondavies.com/pythagoras-proof/)
+>[Morley’s Trisector Theorem](http://www.jasondavies.com/morley-triangle/)
+>[Fourier series](http://bl.ocks.org/jinroh/7524988)
+>[Simpson’s paradox](http://vudlab.com/simpsons/)
+>[central limit theorem](http://blog.vctr.me/posts/central-limit-theorem.html)
+>[conditional probabilities](http://setosa.io/conditional/)
+>[topology inference](http://bost.ocks.org/mike/topology/)
+
+不得不承认老外比我们领先太多了，不仅仅是技术上的领先，更多的是想法和思维上的领先。记得前一段时间刷微博的时候看到罗马尼亚人民是怎样教算法的，他们的计算机学院编排了排序算法的教学舞蹈~详情请戳[让程序员抓狂的排序算法教学视频](http://www.vaikan.com/sort-dance/)
+
+说了这么多，如果你也想学习算法可视化，可以从这个用`C#`实现的[排序算法可视化](http://www.codeproject.com/articles/132757/visualization-and-comparison-of-sorting-algorithms)开始，有源码哦~它的效果也挺不错的，大概是这个样子
+>冒泡排序
+>![冒泡排序](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/Bubble_Sort_zps2005195b.gif)
+>插入排序
+>![插入排序](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/Insertion_Sort_zps05879f48.gif)
+>快速排序
+>![快速排序](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/Quick_Sort_zps0abcb2fb.gif)
+
+#0x06 后记
+折腾这篇文章真的太辛苦了，首先原文实在是太长了，其次是那些动画和图片，本来想把那些动画用`GIF`录制器录制下来，但是发现有些动画实在太长，这样会导致`GIF`文件很大，而且录制出来的效果也不是很好。
+
+所以我决定将原文中的动画原汁原味的保留下来，这个过程太辛酸，`20`多个动画的样式和脚本一个一个的复制和微调（为了适应我这个博客的主题），纯手工操作（本人比较菜，也只会这个方法了-\_-||），不过仍有一些瑕疵——一些动画的位置有很小的偏移，不过不影响大家的观看啦~
+
+文章较长，一半翻译一半是我自己的理解，难免有一些错误的地方，欢迎大家指出，在下面留言就好了~谢谢！
