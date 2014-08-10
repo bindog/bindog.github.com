@@ -404,16 +404,19 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 个人比较喜欢最后一个~
 
 ##光影效果
+
 >[2D visibility](http://www.redblobgames.com/articles/visibility/)
 >[2D visibility and shadow effects](http://ncase.me/sight-and-light/)
 
 ##迷宫&寻路
+
 >[maze generation algorithms](http://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap)
 >[pathfinding](http://www.redblobgames.com/pathfinding/tower-defense/)
 >[polygonal map generation](http://www-cs-students.stanford.edu/~amitp/game-programming/polygon-map-generation/)
 >[GPU-based path finding implementation](http://nullprogram.com/blog/2014/06/22/)
 
 ##数学
+
 >[Lloyd’s Relaxation](http://www.jasondavies.com/lloyd/)
 >[Coalescing Soap Bubbles](http://www.jasondavies.com/bubbles/)
 >[Biham-Middleton-Levine Traffic Model](http://www.jasondavies.com/bml/)
