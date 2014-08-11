@@ -400,7 +400,7 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 * [Aldo Cortesi’s sorting visualizations](http://sortvis.org/visualisations.html)
 * [sorting-algorithms.com](http://www.sorting-algorithms.com/)
 * [sorting.at](http://sorting.at/)
-*[Sorting Visualizer](http://www.aarondufour.com/)
+* [Sorting Visualizer](http://www.aarondufour.com/)
 
 个人比较喜欢最后一个~
 
