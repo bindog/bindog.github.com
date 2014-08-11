@@ -116,6 +116,7 @@ public boolean isProbablePrime(int certainty)
 当然我们可以采用随机搜索法（每次生成一个完全不一样的随机数），也可以采用随机递增搜索法（生成一个随机数之后，每次对其加2）
 
 生成一个`n`位十进制大素数的步骤如下：
+
 * 1.产生一个`n`位的随机数`p`，且最高位不能为`0`
 * 2.若最低位为偶数，则将它加`1`，保证该数为奇数以节省时间
 * 3.测试该数能否被`10000`以下的素数（共`1228`个）整除，这样可以快速排除许多合数，节省时间
@@ -146,6 +147,7 @@ public boolean isProbablePrime(int certainty)
 
 ##其他素性测试
 说了这么多，到底有没有一个确定的素性测试算法呢？（除了试除法-\_-）当然有了~这就是传说中的AKS素性测试
+
 >AKS素数测试（又被称为Agrawal–Kayal–Saxena素数测试和Cyclotomic AKS test）是一个决定型素数测试算法，由三个来自Indian Institute of Technology Kanpur的计算机科学家，Manindra Agrawal、Neeraj Kayal和Nitin Saxena，在2002年8月6日发表于一篇题为*PRIMES is in P*（素数属于P）的论文。作者们因此获得了许多奖项，包含了2006年的哥德尔奖和2006年的Fulkerson Prize。这个算法可以在多项式时间之内，决定一个给定整数是素数或者合数。
 
 关于这个算法小伙伴们可以去看他们的论文，我只想说：论文的标题还能再牛X一点么？！
