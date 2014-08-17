@@ -68,7 +68,7 @@ PS:如果你想了解什么是PAC脚本的话请先戳[科学上网之红杏插�
 
 打码的部分是红杏在海外搭的代理服务器地址
 
-然后我们用另一款`Chrome`下的拓展`SwichySharp`加载`vip.pac`，可以看到能够科学上网了
+然后我们用另一款`Chrome`下的拓展`SwichySharp`加载`vip.pac`（如果打不开谷歌扩展商店可以从[百度网盘](http://pan.baidu.com/s/1o6Dhdai)下载，密码`ccae`），可以看到能够科学上网了
 
 ![google](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-08-17_121543_zpsf287197b.png)
 
