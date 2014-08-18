@@ -34,8 +34,6 @@ twitter:        'https://twitter.com/bindog'
 facebook:       'https://www.facebook.com/bindog'
 gplus:          'https://plus.google.com/bindog'
 
-# Google Analytics
-gahandler: 'UA-52149651-1'
 
 # Disqus
 disqushandler: 'bindog'
