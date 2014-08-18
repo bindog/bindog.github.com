@@ -123,7 +123,248 @@ function distance(a, b) {
 
 <style>#poisson-disc-explainer svg{border:solid 1px #ccc}#poisson-disc-explainer .grid{stroke:#777;stroke-opacity:.35}#poisson-disc-explainer .exclusion{fill:#ddd}#poisson-disc-explainer .candidate-connection,#poisson-disc-explainer .candidate{fill:#fff;stroke:#000}#poisson-disc-explainer .candidate-annulus{fill:#000;fill-opacity:.25;stroke:#000}#poisson-disc-explainer .sample{fill:#000}#poisson-disc-explainer .sample--active{fill:#f00;stroke:#f00;stroke-width:2px}</style>
 
-<p class="animation" id="poisson-disc-explainer"><script>(function() {var width = 960,    height = 480;var duration = 500;var k = 30, // maximum number of samples before rejection    radius = width / Math.SQRT1_2 / 20, // 100,    radius2 = radius * radius,    R = 3 * radius2,    cellSize = radius * Math.SQRT1_2,    gridWidth = Math.ceil(width / cellSize),    gridHeight = Math.ceil(height / cellSize),    grid,    queue,    queueSize;var arcEmptyAnnulus = d3.svg.arc()    .innerRadius(radius)    .outerRadius(radius)    .startAngle(0)    .endAngle(2 * Math.PI)();var arcAnnulus = d3.svg.arc()    .innerRadius(radius)    .outerRadius(radius * 2)    .startAngle(0)    .endAngle(2 * Math.PI)();var p = d3.select("#poisson-disc-explainer")    .on("click", click);var svg = p.append("svg")    .attr("width", width)    .attr("height", height);var gExclusion = svg.append("g")    .attr("class", "exclusion");svg.append("path")    .attr("class", "grid")    .attr("transform", "translate(.5,.5)")    .attr("d", d3.range(cellSize, width, cellSize)        .map(function(x) { return "M" + Math.round(x) + ",0V" + height; })        .join("")      + d3.range(cellSize, height, cellSize)        .map(function(y) { return "M0," + Math.round(y) + "H" + width; })        .join(""));var searchAnnulus = svg.append("path")    .attr("class", "candidate-annulus");var gConnection = svg.append("g")    .attr("class", "candidate-connection");var gSample = svg.append("g")    .attr("class", "sample");var gCandidate = svg.append("g")    .attr("class", "candidate");p.append("button")    .text("▶ Play");function far(x, y) {  var i = x / cellSize | 0,      j = y / cellSize | 0,      i0 = Math.max(i - 2, 0),      j0 = Math.max(j - 2, 0),      i1 = Math.min(i + 3, gridWidth),      j1 = Math.min(j + 3, gridHeight);  for (j = j0; j< j1; ++j) {    var o = j * gridWidth;    for (i = i0; i< i1; ++i) {      if (s = grid[o + i]) {        var s,            dx = s[0] - x,            dy = s[1] - y;        if (dx * dx + dy * dy< radius2) {          gConnection.append("line")              .attr("x1", x)              .attr("y1", y)              .attr("x2", x)              .attr("y2", y)            .transition()              .duration(duration / 4)              .attr("x2", s[0])              .attr("y2", s[1]);          return false;        }      }    }  }  return true;}function sample(x, y) {  var s = [x, y];  gExclusion.append("circle")      .attr("r", 1e-6)      .attr("cx", x)      .attr("cy", y)    .transition()      .duration(duration)      .attr("r", radius);  gSample.append("circle")      .datum(s)      .attr("class", "sample--active")      .attr("r", 1e-6)      .attr("cx", x)      .attr("cy", y)    .transition()      .duration(duration)      .attr("r", 3);  queue.push(s);  grid[gridWidth * (y / cellSize | 0) + (x / cellSize | 0)] = s;  ++queueSize;  return s;}beforeVisible(p.node(), click);function cancel(g) {  g      .interrupt()    .selectAll("*")      .interrupt()      .remove();}function click() {  grid = new Array(gridWidth * gridHeight);  queue = [];  queueSize = 0;  searchAnnulus.interrupt();  gExclusion.call(cancel);  gConnection.call(cancel);  gSample.call(cancel);  gCandidate.call(cancel);  p      .classed("animation--playing", true);  sample(Math.random() * width, Math.random() * height);  (function selectActive() {    var i = Math.random() * queueSize | 0,        s = queue[i],        j = 0;    gCandidate        .style("opacity", null);    gConnection        .style("opacity", null);    searchAnnulus        .style("opacity", null)        .style("stroke-opacity", 0)        .attr("transform", "translate(" + s + ")")        .attr("d", arcEmptyAnnulus)      .transition()        .duration(duration)        .attr("d", arcAnnulus)        .style("stroke-opacity", 1)        .each("end", generateCandidate);    var sampleActive = gSample.selectAll("circle")      .filter(function(d) { return d === s; });    function generateCandidate() {      if (++j > k) return rejectActive();      var a = 2 * Math.PI * Math.random(),          r = Math.sqrt(Math.random() * R + radius2),          x = s[0] + r * Math.cos(a),          y = s[1] + r * Math.sin(a);      // Reject candidates that are outside the allowed extent.      if (0 > x || x >= width || 0 > y || y >= height) return generateCandidate();      // If this is an acceptable candidate, create a new sample;      // otherwise, generate a new candidate.      gCandidate.append("circle")          .attr("r", 1e-6)          .attr("cx", x)          .attr("cy", y)        .transition()          .duration(duration / 4)          .attr("r", 3.75)          .each("end", far(x, y) ? acceptCandidate : generateCandidate);      function acceptCandidate() {        sample(x, y);        nextActive();      }    }    function rejectActive() {      queue[i] = queue[--queueSize];      queue.length = queueSize;      sampleActive          .classed("sample--active", false);      nextActive();    }    function nextActive() {      gCandidate.transition()          .duration(duration)          .style("opacity", 0)        .selectAll("circle")          .remove();      gConnection.transition()          .duration(duration)          .style("opacity", 0)        .selectAll("line")          .remove();      searchAnnulus.transition()          .duration(duration)          .style("opacity", 0)          .each("end", queueSize              ? function() { beforeVisible(p.node(), selectActive); }              : function() { p.classed("animation--playing", false); });    }  })();}})()</script></p>
+<p class="animation" id="poisson-disc-explainer"><script>(function() {
+
+var width = 960,
+    height = 480;
+
+var duration = 500;
+
+var k = 30, // maximum number of samples before rejection
+    radius = width / Math.SQRT1_2 / 20, // 100,
+    radius2 = radius * radius,
+    R = 3 * radius2,
+    cellSize = radius * Math.SQRT1_2,
+    gridWidth = Math.ceil(width / cellSize),
+    gridHeight = Math.ceil(height / cellSize),
+    grid,
+    queue,
+    queueSize;
+
+var arcEmptyAnnulus = d3.svg.arc()
+    .innerRadius(radius)
+    .outerRadius(radius)
+    .startAngle(0)
+    .endAngle(2 * Math.PI)();
+
+var arcAnnulus = d3.svg.arc()
+    .innerRadius(radius)
+    .outerRadius(radius * 2)
+    .startAngle(0)
+    .endAngle(2 * Math.PI)();
+
+var p = d3.select("#poisson-disc-explainer")
+    .on("click", click);
+
+var svg = p.append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var gExclusion = svg.append("g")
+    .attr("class", "exclusion");
+
+svg.append("path")
+    .attr("class", "grid")
+    .attr("transform", "translate(.5,.5)")
+    .attr("d", d3.range(cellSize, width, cellSize)
+        .map(function(x) { return "M" + Math.round(x) + ",0V" + height; })
+        .join("")
+      + d3.range(cellSize, height, cellSize)
+        .map(function(y) { return "M0," + Math.round(y) + "H" + width; })
+        .join(""));
+
+var searchAnnulus = svg.append("path")
+    .attr("class", "candidate-annulus");
+
+var gConnection = svg.append("g")
+    .attr("class", "candidate-connection");
+
+var gSample = svg.append("g")
+    .attr("class", "sample");
+
+var gCandidate = svg.append("g")
+    .attr("class", "candidate");
+
+p.append("button")
+    .text("▶ Play");
+
+function far(x, y) {
+  var i = x / cellSize | 0,
+      j = y / cellSize | 0,
+      i0 = Math.max(i - 2, 0),
+      j0 = Math.max(j - 2, 0),
+      i1 = Math.min(i + 3, gridWidth),
+      j1 = Math.min(j + 3, gridHeight);
+
+  for (j = j0; j < j1; ++j) {
+    var o = j * gridWidth;
+    for (i = i0; i < i1; ++i) {
+      if (s = grid[o + i]) {
+        var s,
+            dx = s[0] - x,
+            dy = s[1] - y;
+        if (dx * dx + dy * dy < radius2) {
+          gConnection.append("line")
+              .attr("x1", x)
+              .attr("y1", y)
+              .attr("x2", x)
+              .attr("y2", y)
+            .transition()
+              .duration(duration / 4)
+              .attr("x2", s[0])
+              .attr("y2", s[1]);
+
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+function sample(x, y) {
+  var s = [x, y];
+
+  gExclusion.append("circle")
+      .attr("r", 1e-6)
+      .attr("cx", x)
+      .attr("cy", y)
+    .transition()
+      .duration(duration)
+      .attr("r", radius);
+
+  gSample.append("circle")
+      .datum(s)
+      .attr("class", "sample--active")
+      .attr("r", 1e-6)
+      .attr("cx", x)
+      .attr("cy", y)
+    .transition()
+      .duration(duration)
+      .attr("r", 3);
+
+  queue.push(s);
+  grid[gridWidth * (y / cellSize | 0) + (x / cellSize | 0)] = s;
+  ++queueSize;
+  return s;
+}
+
+beforeVisible(p.node(), click);
+
+function cancel(g) {
+  g
+      .interrupt()
+    .selectAll("*")
+      .interrupt()
+      .remove();
+}
+
+function click() {
+  grid = new Array(gridWidth * gridHeight);
+  queue = [];
+  queueSize = 0;
+
+  searchAnnulus.interrupt();
+
+  gExclusion.call(cancel);
+  gConnection.call(cancel);
+  gSample.call(cancel);
+  gCandidate.call(cancel);
+
+  p
+      .classed("animation--playing", true);
+
+  sample(Math.random() * width, Math.random() * height);
+
+  (function selectActive() {
+    var i = Math.random() * queueSize | 0,
+        s = queue[i],
+        j = 0;
+
+    gCandidate
+        .style("opacity", null);
+
+    gConnection
+        .style("opacity", null);
+
+    searchAnnulus
+        .style("opacity", null)
+        .style("stroke-opacity", 0)
+        .attr("transform", "translate(" + s + ")")
+        .attr("d", arcEmptyAnnulus)
+      .transition()
+        .duration(duration)
+        .attr("d", arcAnnulus)
+        .style("stroke-opacity", 1)
+        .each("end", generateCandidate);
+
+    var sampleActive = gSample.selectAll("circle")
+      .filter(function(d) { return d === s; });
+
+    function generateCandidate() {
+      if (++j > k) return rejectActive();
+
+      var a = 2 * Math.PI * Math.random(),
+          r = Math.sqrt(Math.random() * R + radius2),
+          x = s[0] + r * Math.cos(a),
+          y = s[1] + r * Math.sin(a);
+
+      // Reject candidates that are outside the allowed extent.
+      if (0 > x || x >= width || 0 > y || y >= height) return generateCandidate();
+
+      // If this is an acceptable candidate, create a new sample;
+      // otherwise, generate a new candidate.
+      gCandidate.append("circle")
+          .attr("r", 1e-6)
+          .attr("cx", x)
+          .attr("cy", y)
+        .transition()
+          .duration(duration / 4)
+          .attr("r", 3.75)
+          .each("end", far(x, y) ? acceptCandidate : generateCandidate);
+
+      function acceptCandidate() {
+        sample(x, y);
+        nextActive();
+      }
+    }
+
+    function rejectActive() {
+      queue[i] = queue[--queueSize];
+      queue.length = queueSize;
+
+      sampleActive
+          .classed("sample--active", false);
+
+      nextActive();
+    }
+
+    function nextActive() {
+      gCandidate.transition()
+          .duration(duration)
+          .style("opacity", 0)
+        .selectAll("circle")
+          .remove();
+
+      gConnection.transition()
+          .duration(duration)
+          .style("opacity", 0)
+        .selectAll("line")
+          .remove();
+
+      searchAnnulus.transition()
+          .duration(duration)
+          .style("opacity", 0)
+          .each("end", queueSize
+              ? function() { beforeVisible(p.node(), selectActive); }
+              : function() { p.classed("animation--playing", false); });
+    }
+  })();
+}
+
+})()</script>
+</p>
 
 我们用红点表示活跃采样点，在每一轮的循环中从所有活跃采样点中随机选取一个点，然后以该点为圆心，分别以`r`和`2r`为半径作两个同心圆，其中`r`为两个采样点之间所允许的最小间距。然后我们在`r`与`2r`之间的环形区域随机生成一些候选采样点（白点），接下来的步骤就是从这些候选采样点中筛选出一个满足条件的采样点了。
 
