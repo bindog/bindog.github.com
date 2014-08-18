@@ -26,9 +26,7 @@ bloghome: true
                 <br/>
                 {{ post.content | split: '<!--more-->' | first }}
                 <p>
-                    <a href="{{ post.url }}/#more" class="btn btn-orange">
-                        <span class="btn btn-orange">阅读全文 &raquo;</span>
-                    </a>
+                    <a href="{{ post.url }}" class="btn btn-orange">Read More&raquo;</a>
                 </p>
               </article>
               {% endfor %}
