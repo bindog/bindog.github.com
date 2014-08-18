@@ -23,7 +23,6 @@ bloghome: true
                 <div class="publish-tag">
                   <span class="fa fa-calendar"></span>&nbsp;PUBLISHED ON {{ post.date | date: "%B %d, %Y" }}
                 </div>
-                <br/>
                 {{ post.content | split: '<!--more-->' | first }}
                 <p>
                     <a href="{{ post.url }}" class="btn btn-orange">Read More&raquo;</a>
