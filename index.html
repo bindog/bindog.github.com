@@ -1,80 +1,121 @@
 ---
-layout: page
+layout: master
 title: Bindog
-tagline: A dog lives in winter
+description: Backyard of bindog
 ---
 
-{% for post in paginator.posts %}
-<div class="post-wrapper">
-  <h2 class="h2 entry-title">
-    <a href="{{ post.url }}">{{ post.title }}</a>
-  </h2>
-  <div class="entry-meta">
-      <i class="icon-user"></i>  <span>{{ post.author }}</span> &nbsp;
-      <i class="icon-calendar"></i>  <span>{{ post.date | date:"%Y-%m-%d" }}</span> &nbsp;
-      {% unless post.categories == empty %}
-        <br />
-        <i class="icon-bookmark"></i>
-        {% for category in post.categories %}
-          <a href="/categories.html#{{ category }}-ref" target="_blank">
-            <span class="label post-category">{{ category }}</span>
-          </a>
-        {% endfor %}
-      {% endunless %}
-       &nbsp;
-      {% unless post.tags == empty %}
-        <i class="icon-tag"></i>
-        {% for tag in post.tags %}
-          <a href="/tags.html#{{ tag }}-ref" target="_blank">
-            <span class="label post-tag">{{ tag }}</span>
-          </a>
-        {% endfor %}
-      {% endunless %}
-  </div>
-  <br /><br />
-  <div class="entry">
-    {{ post.content | split: '<!--more-->' | first }}
-    <p>
-      <a href="{{ post.url }}/#more" class="more-link btn">
-        <span class="readmore">阅读全文 &raquo;</span>
-      </a>
-    </p>
-  </div>
-</div>
-<br />
-{% endfor %}
+<div class="container">
 
-<!-- Pagination links -->
-<hr />
-<div class="paginate">
-  <ul>
-    <li class="single">page {{ paginator.page }} of {{ paginator.total_pages }}</li>
-    {% if paginator.previous_page %}
-      {% if paginator.previous_page == 1 %}
-        <li><a href="/">prev</a></li>
-      {% else %}
-        <li><a href="/page{{paginator.previous_page}}/">prev</a></li>
-      {% endif %}
-    {% else %}
-      <li class="single">prev</li>
-    {% endif %}
-    {% for count in (1..paginator.total_pages) %}
-      {% if count == paginator.page %}
-        <li class="current">{{count}}</li>
-      {% else %}
-        {% if count == 1 %}
-          <li><a href="/">{{count}}</a></li>
-        {% else %}
-          <li><a href="/page{{count}}/">{{count}}</a></li>
-        {% endif %}
-      {% endif %}
-    {% endfor %}
-    {% if paginator.next_page %}
-      <li><a href="/page{{paginator.next_page}}/">next</a></li>
-    {% else %}
-      <li class="single">next</li>
-    {% endif %}
-  </ul>
+	<header class="row">
+	  <div class="col-sm-6 col-md-12" style="margin-top:25px;margin-bottom:25px">
+	    <h1 id="pin">{{site.title}}</h1>
+	  </div>
+	</header>
+	<nav>
+		<div class="row" style="margin-top:25px">
+ 			<div class="col-md-4 col-sm-6 col-xs-12">
+				<a href="about/">
+					<div class="tile purple profile bord">
+						<h2 class="title">About Me</h2>
+						<p>Hello World, I am {{site.author}}.</p>
+					</div>
+				</a>
+		    </div>
+			<div class="col-md-2 col-sm-3 col-xs-6">
+				<a href="resume/" title="Resume" class="tile red bord icon-resume"></a>
+			</div>
+			<div class="col-md-2 col-sm-3 col-xs-6">
+				<div class="live-tile" data-mode="flip" data-delay="4000">
+					<div>
+						<a href="blog/" title="Blog" class="tile orange bord icon-blog"></a>
+					</div>
+					<div>
+						<a href="blog/" title="Blog" class="tile orange bord font-fix">
+						<p>Blog Section:</p>
+							<ol>
+								<li>Posts</li>
+								<li>News</li>
+							</ol>
+						</a>
+					</div>
+				</div>
+			</div>	
+		</div>
+
+		<div class="row">
+		<div >	
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				{% for post in site.posts offset:1 limit:1 %}
+				<a href="{{post.url}}">
+					<div class="tile green bord">
+						<h3 class="title">Recent Article</h3>
+						<h4 class="title">{{ post.title }}</h4>
+						<p> {{ post.content | strip_html | truncatewords: 10 }}</p>
+					</div>
+				</a>
+				{% endfor %}
+			</div>
+			
+		</div>	
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				{% for post in site.posts limit:1 %}
+				<a href="{{post.url}}">
+					<div class="tile red bord">
+						<h3 class="title">Latest Article</h3>
+						<h4 class="title">{{ post.title }}</h4>
+						<p> {{ post.content | strip_html | truncatewords: 10 }}</p>
+					</div>
+				</a>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="row" style="margin-bottom:25px">
+			<div data-delay="2000" data-mode="flip" class="live-tile flip ha fix-3">
+			<div class="col-md-2 col-sm-3 col-xs-6 flip-front ha" style="transform: rotateX(180deg); transition: all 500ms ease 0s;">
+				<a class="tile blue bord lk-ico" href="https://ae.linkedin.com/in/olakara/"></a>
+			</div>
+
+			<div class="col-md-2 col-sm-3 col-xs-6 flip-back ha" style="transform: rotateX(360deg); transition: all 500ms ease 0s;">
+				<a class="tile blue bord tw-ico" href="https://twitter.com/olakara"></a>
+			</div>
+		</div>
+
+			<div class="col-md-2 col-sm-3 col-xs-6">
+				<a href="{{site.twitter}}"  class="tile blue bord tw-ico"></a>
+			</div>
+
+			<div class="col-md-2 col-sm-3 col-xs-6">
+				<a href="{{site.facebook}}" class="tile blue bord fk-ico"></a>
+			</div>
+
+			<div class="col-md-2 col-sm-3 col-xs-6">
+				<a href="feed.xml/" class="tile purple bord rs-ico"></a>
+			</div>
+
+			<div class="col-md-2 col-sm-3 col-xs-6">
+				<a href="{{site.gplus}}" class="tile orange bord gl-ico"></a>
+			</div>
+			
+			<!-- Mini tile -->
+			<div class="col-md-2 col-sm-3 col-xs-6 rside">
+				<div class="row">
+					<div style="padding-left:0px" class="col-md-6 col-sm-6 col-xs-6">
+					    <a href="{{site.linkedin}}" class="mtile blue bord lk-ico-sm"></a>
+					</div>
+					<div style="padding-left:0px" class="col-md-6 col-sm-6 col-xs-6">
+						<a href="{{site.twitter}}"  class="mtile blue bord tw-ico-sm"></a>
+					</div>
+				</div>
+				<div class="row">
+					<div  class="col-md-6 col-sm-6 col-xs-6 rep-1">
+						<a href="{{site.facebook}}" class="mtile purple bord fk-ico-sm"></a>
+					</div>
+					<div  class="col-md-6 col-sm-6 col-xs-6 rep-2">
+						<a href="{{site.gplus}}" class="mtile orange bord gl-ico-sm"></a>
+					</div>
+				</div>
+			</div> <!-- End of Mini tile -->
+		</div>
+	</nav>
 </div>
-<br />
-<br />

@@ -1,40 +1,43 @@
-# Jekyll-Bootstrap
+# Jekyll Metro
 
-The quickest way to start and publish your Jekyll powered blog. 100% compatible with GitHub pages
+Jekyll Metro is a metro inspired theme for [Jekyll](http://jekyllrb.com).
 
-## Usage
+## Summary
 
-For all usage and documentation please see: <http://jekyllbootstrap.com>
+Jekyll Metro is a theme built on top of bootstrap and other freely available libraries. Its aimed to provide a fully furnished Jekyll theme for personal sites with blog.
 
-## Version
+**Note:** Jekyll Metro is still under active development but you may use one of the available releases. The latest release 0.7.6 is ready for you to use (You will still need some modifications)
 
-0.3.0 - stable and versioned using [semantic versioning](http://semver.org/).
+## Features
 
-**NOTE:** 0.3.0 introduces a new theme which is not backwards compatible in the sense it won't _look_ like the old version.
-However, the actual API has not changed at all.
-You might want to run 0.3.0 in a branch to make sure you are ok with the theme design changes.
+- Responsive Jekyll theme
+- Metro style Homepage
+  - Configurable tiles with different size
+  - Configurable colors for tiles
+  - Display of Latest and Recent articles as tiles
+- Pages for About Me, Resume with configurable color themes
+- Blog home page with listing of articles in pagination
+- Blog article page with configurable color themes
+- Easy integration with Google Analytics
+- Easy integration with Disqus for comments
 
-## Contributing
+## Demo
 
+You can see the live demo of this theme at [http://blog-olakara.rhcloud.com](http://blog-olakara.rhcloud.com)
 
-To contribute to the framework please make sure to checkout your branch based on `jb-development`!!
-This is very important as it allows me to accept your pull request without having to publish a public version release.
+## Author
 
-Small, atomic Features, bugs, etc.
-Use the `jb-development` branch but note it will likely change fast as pull requests are accepted.
-Please rebase as often as possible when working.
-Work on small, atomic features/bugs to avoid upstream commits affecting/breaking your development work.
+**[Abdel Raoof Olakara](http://abdelraoof.com)**
+- <https://github.com/olakara>
+- <https://twitter.com/olakara>
 
-For Big Features or major API extensions/edits:
-This is the one case where I'll accept pull-requests based off the master branch.
-This allows you to work in isolation but it means I'll have to manually merge your work into the next public release.
-Translation : it might take a bit longer so please be patient! (but sincerely thank you).
+## Contributors
 
-**Jekyll-Bootstrap Documentation Website.**
-
-The documentation website at <http://jekyllbootstrap.com> is maintained at https://github.com/plusjade/jekyllbootstrap.com
-
+**Stilyan Kongalov**
+- <https://github.com/Stilyan-Kangalov>
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT)
+Open sourced under the [MIT license](LICENSE.md).
+
+<3

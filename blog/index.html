@@ -1,0 +1,61 @@
+---
+layout: master
+title: Bindog's Blog
+description: Landing Page for the blog
+bloghome: true
+---
+
+      
+      <div class="container-fluid">
+        <div class="row">
+          <div class="hidden-xs col-md-2 col-sm-3 orange sidebar">
+            {% include sidemenu.html %}
+          </div>
+          <div class="col-md-10 col-sm-9 col-md-offset-2 col-sm-offset-3">
+            <div class="row">
+              {% for post in paginator.posts %}
+              <article class="col-md-12 justified">
+                <h1 class="post-title">
+                  <a href="{{ post.url }}" class="orange-link">
+                    {{ post.title }}
+                  </a>
+                </h1>
+                <div class="publish-tag">
+                  <span class="fa fa-calendar"></span>&nbsp;PUBLISHED ON {{ post.date | date: "%B %d, %Y" }}
+                </div>
+                <br/>
+                {{ post.content | split: '<!--more-->' | first }}
+                <p>
+                    <a href="{{ post.url }}/#more" class="btn btn-orange">
+                        <span class="btn btn-orange">阅读全文 &raquo;</span>
+                    </a>
+                </p>
+              </article>
+              {% endfor %}
+            </div>
+            <br/>
+  
+            <div class="row">
+              <div class="col-sm-6 col-xs-6 text-left">
+                  {% if paginator.next_page %}
+                    <a class="btn btn-orange" href="{{paginator.next_page_path}}">← Older</a>
+                  {% else %}
+                    <span class="btn btn-orange disabled">← Older</span>
+                  {% endif %}
+              </div>
+              <div class="col-sm-6 col-xs-6 text-right">
+                  {% if paginator.previous_page %}
+                    {% if paginator.page == 2 %}
+                    <a class="btn btn-orange" href="/blog/">Newer →</a>
+                    {% else %}
+                    <a class="btn btn-orange" href="{{paginator.previous_page_path}}">Newer →</a>
+                    {% endif %}
+                  {% else %}
+                    <span class="btn btn-orange disabled">Newer →</span>
+                  {% endif %}
+              </div>
+            </div>
+            {% include footer.html %}
+          </div>
+        </div>
+      </div>  
