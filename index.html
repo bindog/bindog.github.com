@@ -1,121 +1,96 @@
 ---
 layout: master
-title: Bindog
-description: Backyard of bindog
+title: Home
+description: dindog's backyard
 ---
-
 <div class="container">
-
+	<div class="hidden-xs" style="margin-top:80px">
+	</div>
 	<header class="row">
-	  <div class="col-sm-6 col-md-12" style="margin-top:25px;margin-bottom:25px">
-	    <h1 id="pin">{{site.title}}</h1>
-	  </div>
+	<div class="col-sm-6 col-md-12" style="margin-top:25px;margin-bottom:25px">
+		<h1>{{site.title}}</h1>
+	</div>
 	</header>
 	<nav>
-		<div class="row" style="margin-top:25px">
- 			<div class="col-md-4 col-sm-6 col-xs-12">
-				<a href="about/">
-					<div class="tile purple profile bord">
-						<h2 class="title">About Me</h2>
-						<p>Hello World, I am {{site.author}}.</p>
-					</div>
-				</a>
-		    </div>
-			<div class="col-md-2 col-sm-3 col-xs-6">
-				<a href="resume/" title="Resume" class="tile red bord icon-resume"></a>
+	<div class="row" style="margin-top:25px">
+		<div class="col-md-4 col-sm-6 col-xs-12">
+			<a href="about/">
+			<div class="tile purple profile">
+				<h2 class="title">About Me</h2>
+				<p>
+					Hello World, I am {{site.author}}.
+				</p>
 			</div>
-			<div class="col-md-2 col-sm-3 col-xs-6">
-				<div class="live-tile" data-mode="flip" data-delay="4000">
-					<div>
-						<a href="blog/" title="Blog" class="tile orange bord icon-blog"></a>
-					</div>
-					<div>
-						<a href="blog/" title="Blog" class="tile orange bord font-fix">
-						<p>Blog Section:</p>
-							<ol>
-								<li>Posts</li>
-								<li>News</li>
-							</ol>
-						</a>
-					</div>
+			</a>
+		</div>
+		<div class="col-md-2 col-sm-3 col-xs-6">
+			<a href="resume/">
+			<div class="tile red">
+				<strong> Resume </strong>
+				<div class="icon icon-resume">
+					&nbsp;
 				</div>
-			</div>	
+			</div>
+			</a>
 		</div>
-
-		<div class="row">
-		<div >	
-			<div class="col-md-4 col-sm-6 col-xs-12">
-				{% for post in site.posts offset:1 limit:1 %}
-				<a href="{{post.url}}">
-					<div class="tile green bord">
-						<h3 class="title">Recent Article</h3>
-						<h4 class="title">{{ post.title }}</h4>
-						<p> {{ post.content | strip_html | truncatewords: 10 }}</p>
-					</div>
-				</a>
-				{% endfor %}
-			</div>
-			
-		</div>	
-			<div class="col-md-4 col-sm-6 col-xs-12">
-				{% for post in site.posts limit:1 %}
-				<a href="{{post.url}}">
-					<div class="tile red bord">
-						<h3 class="title">Latest Article</h3>
-						<h4 class="title">{{ post.title }}</h4>
-						<p> {{ post.content | strip_html | truncatewords: 10 }}</p>
-					</div>
-				</a>
-				{% endfor %}
-			</div>
-		</div>
-
-		<div class="row" style="margin-bottom:25px">
-			<div data-delay="2000" data-mode="flip" class="live-tile flip ha fix-3">
-			<div class="col-md-2 col-sm-3 col-xs-6 flip-front ha" style="transform: rotateX(180deg); transition: all 500ms ease 0s;">
-				<a class="tile blue bord lk-ico" href="https://ae.linkedin.com/in/olakara/"></a>
-			</div>
-
-			<div class="col-md-2 col-sm-3 col-xs-6 flip-back ha" style="transform: rotateX(360deg); transition: all 500ms ease 0s;">
-				<a class="tile blue bord tw-ico" href="https://twitter.com/olakara"></a>
-			</div>
-		</div>
-
-			<div class="col-md-2 col-sm-3 col-xs-6">
-				<a href="{{site.twitter}}"  class="tile blue bord tw-ico"></a>
-			</div>
-
-			<div class="col-md-2 col-sm-3 col-xs-6">
-				<a href="{{site.facebook}}" class="tile blue bord fk-ico"></a>
-			</div>
-
-			<div class="col-md-2 col-sm-3 col-xs-6">
-				<a href="feed.xml/" class="tile purple bord rs-ico"></a>
-			</div>
-
-			<div class="col-md-2 col-sm-3 col-xs-6">
-				<a href="{{site.gplus}}" class="tile orange bord gl-ico"></a>
-			</div>
-			
-			<!-- Mini tile -->
-			<div class="col-md-2 col-sm-3 col-xs-6 rside">
-				<div class="row">
-					<div style="padding-left:0px" class="col-md-6 col-sm-6 col-xs-6">
-					    <a href="{{site.linkedin}}" class="mtile blue bord lk-ico-sm"></a>
-					</div>
-					<div style="padding-left:0px" class="col-md-6 col-sm-6 col-xs-6">
-						<a href="{{site.twitter}}"  class="mtile blue bord tw-ico-sm"></a>
-					</div>
+		<div class="col-md-2 col-sm-3 col-xs-6">
+			<a href="blog/">
+			<div class="tile orange">
+				<strong>Blog</strong>
+				<div class="icon icon-blog">
+					&nbsp;
 				</div>
-				<div class="row">
-					<div  class="col-md-6 col-sm-6 col-xs-6 rep-1">
-						<a href="{{site.facebook}}" class="mtile purple bord fk-ico-sm"></a>
-					</div>
-					<div  class="col-md-6 col-sm-6 col-xs-6 rep-2">
-						<a href="{{site.gplus}}" class="mtile orange bord gl-ico-sm"></a>
-					</div>
-				</div>
-			</div> <!-- End of Mini tile -->
+			</div>
+			</a>
 		</div>
+	</div>
+	<div class="row" style="margin-bottom:25px">
+		<div class="col-md-2 col-sm-3 col-xs-6">
+			<a href="{{site.linkedin}}">
+			<div class="tile blue">
+				<div class="icon icon-linkedin">
+					&nbsp;
+				</div>
+			</div>
+			</a>
+		</div>
+		<div class="col-md-2 col-sm-3 col-xs-6">
+			<a href="{{site.twitter}}">
+			<div class="tile blue">
+				<div class="icon icon-twitter">
+					&nbsp;
+				</div>
+			</div>
+			</a>
+		</div>
+		<div class="col-md-2 col-sm-3 col-xs-6">
+			<a href="{{site.facebook}}">
+			<div class="tile blue">
+				<div class="icon icon-facebook">
+					&nbsp;
+				</div>
+			</div>
+			</a>
+		</div>
+		<div class="col-md-2 col-sm-3 col-xs-6">
+			<a href="{{site.gplus}}">
+			<div class="tile red">
+				<div class="icon icon-googleplus">
+					&nbsp;
+				</div>
+			</div>
+			</a>
+		</div>
+		<div class="col-md-2 col-sm-3 col-xs-6">
+			<a href="/feed.xml">
+			<div class="tile orange ">
+				<div class="icon icon-RSS">
+					&nbsp;
+				</div>
+			</div>
+			</a>
+		</div>
+	</div>
 	</nav>
 </div>
+<!-- container -->

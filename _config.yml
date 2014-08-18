@@ -6,8 +6,6 @@ highlighter: pygments
 # Permalinks
 permalink:        /blog/:year/:month/:day/:title
 
-exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
-pygments: true
 
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
@@ -15,9 +13,6 @@ pygments: true
 title : 寂寞的宾狗
 tagline: A dog lives in winter
 description:      '宾狗的后院'
-baseurl:          ''
-
-production_url : http://username.github.io
 
 # Navigation
 navigation:
