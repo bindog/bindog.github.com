@@ -13,9 +13,7 @@ layout: master
         <div class="publish-tag">
           <span class="fa fa-calendar"></span>&nbsp;Published On {{ page.date | date: "%B %d, %Y" }}
         </div>
-        {{ content }}
-        <br/>
-        <span class="fa fa-tag"></span>Tags:
+		<span class="fa fa-tag"></span>Tags:
         {% if page.tags %}
           {% for tag in page.tags %}		
             <a href="/tags/{{tag}}"><span class="label label-primary">{{tag}}</span></a>
@@ -24,6 +22,10 @@ layout: master
           None
         {% endif %}
         <br/><br/>
+		
+        {{ content }}
+        <br/>
+        
 		<script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
