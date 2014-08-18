@@ -7,7 +7,6 @@ theme: purple
 
 #我要让所有人知道，这个鱼塘被你承包了
 
-### Comments:
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
