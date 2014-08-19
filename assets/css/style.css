@@ -37,7 +37,7 @@ h4{font-family:"Cuprum","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-siz
 pre,code{font-family:Menlo,"Andale Mono",Consolas,"Courier New",Monaco,monospace;font-size:13px;}
 code{background-color:#F7F7F7;}
 embed,object,iframe{display:block;margin:4px auto;}
-.gist{font-size:12px;line-height:18px;margin-bottom:20px;width:100%}.gist pre{font-family:Menlo,Monaco,'Bitstream Vera Sans Mono','Courier New',monospace!important}.gist-meta{font-family:Helvetica,Arial,sans-serif;font-size:13px!important}.gist-meta a{color:#26a!important;text-decoration:none}.gist-meta a:hover{color:#0e4071!important}
+.gist{font-size: 12px;line-height:1.6;}
 @media print {
   *{font-weight:normal;}
   h1,h2,h3{font-weight:400;}
