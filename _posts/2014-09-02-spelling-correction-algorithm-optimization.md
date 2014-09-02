@@ -14,9 +14,7 @@ tags:
 #0x00 前言
 > Premature optimization is the root of all evil（过早的优化是万恶之源）
 
-学计算机的小伙伴们一定对Donald Knuth老先生的这句话不陌生，而且过去常常以此来为自己的懒惰开脱=。=
-
-但是请注意，Donald Knuth说的是**过早的**优化，而并非简单的一刀切，一个完美的系统都是在不断完善和优化的过程中成长起来的。
+学计算机的小伙伴们一定对Donald Knuth老先生的这句话不陌生，而且过去常常以此来为自己的懒惰开脱=。=但是请注意，Donald Knuth说的是**过早的**优化，而不指所有的优化都是没有必要的，一个完美的系统是在不断完善和优化的过程中成长起来的。
 
 本人认为优化有三个层次：
 
@@ -28,9 +26,7 @@ tags:
 
 3. 底层优化，底层涉及的包括编译器、指令集，还有Java虚拟机等等，比如在科学计算中就会涉及到较多的底层优化
 
-一般来说，从效果上来看**顶层优化>代码优化>底层优化**，当然这也不绝对的，与具体场景有关。
-
-说了这么多，本文将要介绍的就是一种顶层优化，而且效率比原来的方法高了**1000**多倍。有兴趣的小伙伴可以看看原文，[1000x Faster Spelling Correction algorithm](http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/)
+一般来说，从效果上来看**顶层优化>代码优化>底层优化**，当然这也不绝对的，与具体场景有关。说了这么多，本文将要介绍的就是一种顶层优化，而且效率比原来的方法高了**1000**多倍。有兴趣的小伙伴可以看看原文，[1000x Faster Spelling Correction algorithm](http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/)
 
 #0x01 拼写校正
 关于拼写校正这里就不多解释了，用过Office的人肯定对人名和地名下面的红色波浪线恨之入骨=。=
