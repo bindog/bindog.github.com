@@ -26,7 +26,7 @@ tags:
 
 3. 底层优化，底层涉及的包括编译器、指令集，还有Java虚拟机等等，比如在科学计算中就会涉及到较多的底层优化
 
-一般来说，从效果上来看**顶层优化>代码优化>底层优化**，当然这也不绝对的，与具体场景有关。说了这么多，本文将要介绍的就是一种顶层优化，而且效率比原来的方法高了**1000**多倍。有兴趣的小伙伴可以看看原文，[1000x Faster Spelling Correction algorithm](http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/)
+一般来说，从效果上来看**顶层优化>代码优化>底层优化**，当然这也不是绝对的，与具体场景有关。本文将要介绍的就是一种顶层优化，而且效率比原来的方法高了**1000**多倍。有兴趣的小伙伴可以看看原文，[1000x Faster Spelling Correction algorithm](http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/)
 
 #0x01 拼写校正
 关于拼写校正这里就不多解释了，用过Office的人肯定对人名和地名下面的红色波浪线恨之入骨=。=
