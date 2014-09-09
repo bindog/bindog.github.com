@@ -117,8 +117,7 @@ socket.create_connection = create_connection
 5. 具体怎么配置浏览器使用ShadowSocks上网请参考[ShadowSocks—科学上网之瑞士军刀](http://www.jianshu.com/p/08ba65d1f91a)
 
 ##下载地址
-
-* [源码](http://pan.baidu.com/s/1dDCdXzb)，密码是`eln3`
-* [EXE工具](http://pan.baidu.com/s/1dDcScvB)，密码是`xye5`
+* [源码](http://pan.baidu.com/s/1mgr6XPu)，密码是`2i9y`
+* [EXE工具](http://pan.baidu.com/s/1qWCx2MC)，密码是`apef`
 * [SwitchySharp.crx](http://pan.baidu.com/s/1o6Dhdai)，密码是`ccae`
 
