@@ -113,7 +113,7 @@ socket.create_connection = create_connection
 1. 源码中运行`SSAccount.py`即可，此外我用`PyInstaller`将程序打包成了一个`exe`工具，方便没有安装`Python`的小伙伴
 2. `zbar`和`shadowsocks`文件夹中存放的是文中提到的两个命令行工具
 3. 程序执行完成后会生成一个`available.txt`，里面有可用账号和延迟信息
-4. 你可以用把可用账号信息复制到`config.json`中，运行`shadowsocks-local.exe`来上网，当然也可以使用`Shadowsocks GUI`这种带界面的客户端
+4. 你可以把可用账号信息复制到`config.json`中，运行`shadowsocks-local.exe`来上网，当然也可以使用`Shadowsocks GUI`这种带界面的客户端
 5. 具体怎么配置浏览器使用ShadowSocks上网请参考[ShadowSocks—科学上网之瑞士军刀](http://www.jianshu.com/p/08ba65d1f91a)
 
 ##下载地址
