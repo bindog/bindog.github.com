@@ -12,7 +12,7 @@ tags:
 ---
 
 #0x00 前言
-最近看到一篇幅文章关于Unix管道的，讲的非常透彻，所以这次依然做一个简单的**翻译和解读**~原文地址请戳[这里](http://blog.petersobot.com/pipes-and-filters)
+最近看到一篇文章关于Unix管道的，讲的非常透彻，所以这次依然做一个简单的**翻译和解读**~原文地址请戳[这里](http://blog.petersobot.com/pipes-and-filters)
 
 下面正式开始~
 
@@ -26,7 +26,7 @@ tags:
 
 如果你经常使用Unix的话，一定对管道符号`|`不陌生。那么，我们来看看下面这个例子
 
-```
+{% highlight bash %}
 cat /usr/share/dict/words |     # Read in the system's dictionary.
 grep purple |                   # Find words containing 'purple'
 awk '{print length($1), $1}' |  # Count the letters in each word
@@ -34,11 +34,11 @@ sort -n |                       # Sort lines ("${length} ${word}")
 tail -n 1 |                     # Take the last line of the input
 cut -d " " -f 2 |               # Take the second part of each line
 cowsay -f tux                   # Put the resulting word into Tux's mouth
-```
+{% endhighlight %}
 
 用`bash`运行上面的命令，最终会返回一只可爱的`Linux`小企鹅，并告诉你字典中包含`purple`最长的一个单词，看起来是下面这个样子
 
-```
+{% highlight bash %}
  _____________ 
 < unimpurpled >
  ------------- 
@@ -51,7 +51,8 @@ cowsay -f tux                   # Put the resulting word into Tux's mouth
      (|     | )
     /'\_   _/`\
     \___)=(___/
-```
+{% endhighlight %}
+
 #0x01 执行流程
 
 上面看似简单的命令却执行了一个非常复杂的流程，当我们按下回车键时，下面的步骤依次执行
@@ -77,7 +78,7 @@ cowsay -f tux                   # Put the resulting word into Tux's mouth
 #0x02 性能和复杂度
 管道的另一个优点就是它天生的高性能。我们对上面的命令稍作修改以观察其中每一个过滤器组件的内存和CPU占用率
 
-```
+{% highlight bash %}
 /usr/bin/time -l cat /usr/share/dict/words 2> cat.time.txt | 
 /usr/bin/time -l grep purple 2> grep.time.txt |
 /usr/bin/time -l awk '{print length($1), $1}' 2> awk.time.txt |
@@ -85,7 +86,7 @@ cowsay -f tux                   # Put the resulting word into Tux's mouth
 /usr/bin/time -l tail -n 1 2> tail.time.txt |
 /usr/bin/time -l cut -d " " -f 2 2> cut.time.txt |
 /usr/bin/time -l cowsay -f tux 2> cowsay.time.txt
-```
+{% endhighlight %}
 
 (注意：如果你使用的是`Linux`，可以使用`-v`选项实现同样的效果。`2> something.time.txt`会将`stderr`重定向到文件中)
 
@@ -108,7 +109,7 @@ cowsay -f tux                   # Put the resulting word into Tux's mouth
 
 我们对刚才那个例子稍作修改，加入一个自己用python实现的`fail.py`程序，它把`stdin`的内容直接输出到`stdout`中去，但是它有50%的概率产生异常
 
-```
+{% highlight bash %}
 cat /usr/share/dict/words |     # Read in the system's dictionary.
 grep purple |                   # Find words containing 'purple'
 awk '{print length($1), $1}' |  # Count the letters in each word
@@ -117,7 +118,7 @@ python fail.py |                # Play Russian Roulette with our data!
 tail -n 1 |                     # Take the last line of the input
 cut -d " " -f 2 |               # Take the second part of each line
 cowsay -f tux                   # Put the resulting word into Tux's mouth
-```
+{% endhighlight %}
 
 `fail.py`的源码
 
@@ -143,7 +144,8 @@ while True:
 4. `cowsay`会输出在`python`发生异常之前的数据集中含`purple`且最长的单词
 
 结果是什么呢？
-```
+
+{% highlight bash %}
  __________ 
 < repurple >
  ---------- 
@@ -156,18 +158,22 @@ while True:
      (|     | )
     /'\_   _/`\
     \___)=(___/
-```
+{% endhighlight %}
+
 企鹅说的不再是unimpurpled，而变成了repurple，这个结果是错误的！虽然其中一个过滤器发生了异常，我们还是得到结果了，只不过是一个错误的结果，但是更糟糕的事情是当我们查看管道的返回码时，得到了这样的结果
 
-```
+{% highlight bash %}
 bash-3.2$ echo $?
 0
-```
+{% endhighlight %}
+
 `bash`显示管道正确执行了，这是由于`bash`把最后一个进程的返回码当作整个管道的状态码返回给我们。如果要查看管道中每一个进程的返回码，要使用到一个很少用到的`$PIPESTATUS`变量
-```
+
+{% highlight bash %}
 bash-3.2$ echo ${PIPESTATUS[*]}
 0 0 0 0 1 0 0 0
-```
+{% endhighlight %}
+
 这个数组保存了管道中每一个进程的返回码，只有从这里我们才能发现管道中的一个过滤器发生了异常
 
 这就是传统的Unix管道一个非常大的缺点，如果想在管道处理数据时探测异常需要用到带外数据(out-of-band)信号来检测异常，并将消息发到其他进程(如果你的过滤器有不止一个输入管道这是非常好实现的，但如果你使用的仅仅是UNXI管道就比较困难了)
@@ -177,6 +183,7 @@ bash-3.2$ echo ${PIPESTATUS[*]}
 看完了上面的介绍，你可能会有下面的问题
 
 >管道在现实中如何使用呢？
+>
 >能否在我的web app中使用管道呢？
 
 这些对管道来说都不是问题，只要你的任务可以被划分为很小的部分而且处理时可以逐步完成就可以了。下面我们来看几个实例~
@@ -184,30 +191,35 @@ bash-3.2$ echo ${PIPESTATUS[*]}
 ##音频转码
 假设你有许多`.flac`格式的文件——高品质音乐文件，你想把他们放到MP3里面去，但是它不支持`.flac`格式。而且由于某些原因，你的电脑上可用的RAM空间不超10M，这时该怎么办呢？你可以使用管道
 
-```
+{% highlight bash %}
 ls *.flac | 
 while read song
 do 
     flac -d "$song" --stdout | 
     lame -V2 - "$song".mp3
 done
-```
+{% endhighlight %}
+
 这个命令比我们之前用到的更复杂一点，这里用到了内建的`bash`结构——`while`，从输入的每一行中读取文件名(从ls输出的管道中获取)，内层循环中调用了`flac`解码音频文件，然后调用`lame`将其编码为MP3格式。
 
 这个管道的性能如何呢？在一个全部为`.flac`文件，总大小为115MB的文件夹中运行上述命令，只占用了**1.3MB**内存
 
 ##web app
 设想这样一个网页应用，用户提交了一个表单，现在你需要在后端对这个表单进行处理，涉及数据清洗，数据验证，最终保存为一个PDF文件(当然这个例子可能显得有些做作)。这些任务依然可以用管道来完成
-```
+
+{% highlight bash %}
 my_webserver | 
 line_sanitizer | 
 verifier | 
 pdf_renderer
-```
+{% endhighlight %}
+
 当用户将表单提交到`my_webserver`，它会将这些数据转换为一行JSON并输出到`stdout`，假设这个JSON数据是这样的
-```
+
+{% highlight javascript %}
 {"name": "Raymond Luxury Yacht", "organization": "Flying Circus"}
-```
+{% endhighlight %}
+
 管道中的下一个进程`line_sanitizer`可以作如下处理
 
 {% highlight python %}
@@ -258,17 +270,18 @@ for line in sys.stdin:
 
 不过还有一个问题没有解决，就是我们前面提到的异常处理。比如当某个用户使用了Eric Idle这个用户名或者填写了一个不存在的organization时，我们如何reject这次提交并告知用户错误信息呢？一个非常有Unix特色的方法就是使用**命名管道(named pipe)**来处理所有失败请求
 
-```
+{% highlight bash %}
 mkfifo errors  # create a named pipe for our errors
 
 my_webserver | 
 line_sanitizer 2> errors | 
 verifier 2> errors | 
 pdf_renderer 2> errors
-```
+{% endhighlight %}
+
 任何进程都可以从我们自定义的命名管道`errors`中读取数据，此外管道中的每个进程都可以把错误信息输出到命名管道`errors`中。我们还可以添加一个reader，当发生异常的时候从命名管道`errors`中读取信息并给我们发一封邮件
 
-```
+{% highlight bash %}
 mkfifo errors              # create a named pipe for our errors
 email_on_error < errors &  # add a reader to this pipe
 
@@ -276,7 +289,7 @@ my_webserver |
 line_sanitizer 2> errors | 
 verifier 2> errors | 
 pdf_renderer 2> errors
-```
+{% endhighlight %}
 
 此时，`line_sanitizer`可以这样写
 
@@ -307,7 +320,7 @@ Unix管道有很多优点，但也存在诸多不足。并非所有软件都能�
 
 `pressure`是用`python`实现的，目前仍处于起步阶段。为了展示`pressure`的强大之处，我们用`pressure`自带的Unix管道适配器实现本文开始的那个例子。(`put`和`get`是用C实现的两个小程序，用于充当传统Unix管道和存放在`Redis`中分布式`pressure`队列之间的桥梁)
 
-```
+{% highlight bash %}
 # Read in the system's dictionary
 cat /usr/share/dict/words | ./put test_1 &
 
@@ -328,10 +341,11 @@ cat /usr/share/dict/words | ./put test_1 &
 
 # Put the resulting word into Tux's mouth
 ./get test_6 | cowsay -f tux
-```
+{% endhighlight %}
+
 首先要说明的是这是一个非常慢的过程，整个过程结束时通过`Redis`发送的消息共有`235,912`条，这部分的时间开销就有将近4分钟(如果我们让`grep`紧接着`cat`执行，而不是先把数据放到`Redis`中，整个过程可以提速1200倍)，但是不管怎样，最终我们得到了一个正确的结果
 
-```
+{% highlight bash %}
  _____________ 
 < unimpurpled >
  ------------- 
@@ -344,10 +358,11 @@ cat /usr/share/dict/words | ./put test_1 &
      (|     | )
     /'\_   _/`\
     \___)=(___/
-```
+{% endhighlight %}
+
 `pressure`依然保持了传统Unix管道节省空间的特性，我们可以用`Redis`命令行工具查看内存使用情况
 
-```
+{% highlight bash %}
 $ redis-cli info | grep memory
 used_memory:3126928
 used_memory_human:2.98M
@@ -355,7 +370,7 @@ used_memory_rss:2850816
 used_memory_peak:3127664
 used_memory_peak_human:2.98M
 used_memory_lua:31744
-```
+{% endhighlight %}
 
 `pressure`仍在开发阶段，现在还不能大规模部署，希望大家都能来用一用，提出宝贵的建议~
 
