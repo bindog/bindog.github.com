@@ -16,16 +16,17 @@ tags:
 
 这是一个测试
 
-![测试1](http://a.hiphotos.bdimg.com/wisegame/pic/item/9e1f4134970a304edd48ccfdd2c8a786c9175c4b.jpg)
-
-
-这是另一个测试
-
 <span id="noreferer">
 </span>
 
 <script>
 document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http://a.hiphotos.bdimg.com/wisegame/pic/item/9e1f4134970a304edd48ccfdd2c8a786c9175c4b.jpg');
 </script>
+
+
+这是另一个测试
+
+![测试1](http://a.hiphotos.bdimg.com/wisegame/pic/item/9e1f4134970a304edd48ccfdd2c8a786c9175c4b.jpg)
+
 
 这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试
