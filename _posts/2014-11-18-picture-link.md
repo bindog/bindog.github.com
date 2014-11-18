@@ -21,9 +21,11 @@ tags:
 
 这是另一个测试
 
-<div id="noreferer">
-</div>
+<span id="noreferer">
+</span>
 
 <script>
 document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http://a.hiphotos.bdimg.com/wisegame/pic/item/9e1f4134970a304edd48ccfdd2c8a786c9175c4b.jpg');
 </script>
+
+这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试
