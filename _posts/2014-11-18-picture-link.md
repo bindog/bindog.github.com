@@ -71,9 +71,7 @@ tags:
 document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http://a.hiphotos.baidu.com/ting/pic/item/3bf33a87e950352aa210e8635043fbf2b2118b6c.jpg');
 </script>
 
-测试
-
-![盗链提示](http://a.hiphotos.baidu.com/ting/pic/item/cdbf6c81800a19d8f33dea0031fa828ba61e46fc.jpg)
+同样是百度域名下面的图片，为什么一张可以正常显示，另一张就显示盗链呢？我们来抓包看看
 
 
 
