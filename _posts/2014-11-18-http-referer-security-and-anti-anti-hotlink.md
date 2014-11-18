@@ -58,7 +58,7 @@ tags:
 
 注意，上面的不是截图，就是盗链，你可以用审查元素进行查看。
 
-当然，访问用户可以通过给浏览器安装一些插件去除Referer来正常显示，但是并非每一个用户都那个爱折腾。有没有一个简单粗暴跨平台跨浏览器的服务器端解决方案呢？也就是说访问用户什么都不用做就可以正常显示。
+当然，访问用户可以通过给浏览器安装一些插件去除Referer来正常显示，但是并非每一个用户都那么爱折腾。有没有一个简单粗暴跨平台跨浏览器的服务器端解决方案呢？也就是说访问用户什么都不用做就可以正常显示。
 
 当然有，看下面这张图片，你同样可以用审查元素进行查看（这里为了防止缓存我使用的是不一样的图片）
 
@@ -75,11 +75,11 @@ document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http:
 
 显示盗链的图片
 
-[显示盗链的图片抓包]()
+![显示盗链的图片抓包](http://i1378.photobucket.com/albums/ah103/bind0g/http%20referer/hotlink_zpse8c2947f.png)
 
 正常显示的图片
 
-[正常显示的图片抓包]()
+![正常显示的图片抓包](http://i1378.photobucket.com/albums/ah103/bind0g/http%20referer/nothotlink_zps64e52d48.png)
 
 看到了吗？正常显示的那张图片的HTTP请求中没有Referer，所以我们得到了正常的结果
 
@@ -87,9 +87,9 @@ document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http:
 
 这里我用到了[referrer-killer](https://github.com/jpgerek/referrer-killer)，里面还有一个Demo，具体用法可以查看本篇博客的网页源码，或者那个Demo的网页源码。
 
-粗看referrer-killer的原理并不复杂，动态生成了一个iframe，并在这个iframe里面加入img标签来进行显示
+粗看referrer-killer的原理并不复杂，动态生成了一个iframe，并在这个iframe里面加入img标签来进行显示。
 
-等等，如果仅仅是这样的话Referer依然会存在，要么是iframe父页面的地址，要么是iframe属性中src的地址，详情请戳[What is the HTTP Referer if the link is clicked in an \<iframe\>?](http://stackoverflow.com/questions/8468335/what-is-the-http-referer-if-the-link-is-clicked-in-an-iframe)
+等等，如果仅仅是这样的话Referer依然会存在，要么是iframe父页面的地址，要么是iframe属性中src的地址，详情请戳[What is the HTTP Referer if the link is clicked in an \<iframe\>?](http://stackoverflow.com/questions/8468335/what-is-the-http-referer-if-the-link-is-clicked-in-an-iframe)，里面有详细解释。
 
 再仔细看代码，发现iframe中src的值为`javascript:"<!doctype html>......"`，原来是把iframe中的HTML代码全部放到了src中，使用这种方法就可以去掉Referer。其实乌云早有大神给出了方法，只不过没有工具化罢了，详情请戳[json hijack如何丢掉referer](http://zone.wooyun.org/content/744)，注意看[@Sogili](http://zone.wooyun.org/user/Sogili)和[@gainover](http://zone.wooyun.org/user/gainover)同学的回复。
 
