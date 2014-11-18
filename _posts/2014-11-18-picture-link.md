@@ -26,7 +26,7 @@ document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http:
 
 这是另一个测试
 
-![测试1](http://musicdata.baidu.com/data2/pic/122112239/122112239.jpg)
+![测试1](http://a.hiphotos.baidu.com/ting/pic/item/cdbf6c81800a19d8f33dea0031fa828ba61e46fc.jpg)
 
 
 这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试这是另一个测试
