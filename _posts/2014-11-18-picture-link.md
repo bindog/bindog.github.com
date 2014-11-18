@@ -20,7 +20,7 @@ tags:
 </span>
 
 <script>
-document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http://a.hiphotos.bdimg.com/wisegame/pic/item/9e1f4134970a304edd48ccfdd2c8a786c9175c4b.jpg');
+document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http://e.hiphotos.bdimg.com/wisegame/pic/item/3f6034a85edf8db1773637230b23dd54564e7459.jpg');
 </script>
 
 
