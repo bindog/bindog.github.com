@@ -87,7 +87,8 @@ document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http:
 
 这里我用到了[referrer-killer](https://github.com/jpgerek/referrer-killer)，里面还有一个Demo，具体用法可以查看本篇博客的网页源码，或者那个Demo的网页源码。其实就三行代码~
 
-```
+{% highlight HTML %}
+
 <script src="/assets/js/ReferrerKiller.js"></script>
 
 <span id="noreferer"></span>
@@ -96,7 +97,7 @@ document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http:
 document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http://a.hiphotos.baidu.com/ting/pic/item/3bf33a87e950352aa210e8635043fbf2b2118b6c.jpg');
 </script>
 
-```
+{% endhighlight %}
 
 粗看referrer-killer的原理并不复杂，动态生成了一个iframe，并在这个iframe里面加入img标签来进行显示。
 
