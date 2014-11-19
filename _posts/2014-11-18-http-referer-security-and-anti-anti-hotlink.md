@@ -85,7 +85,7 @@ document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http:
 
 那么问题来了——Referer是怎么去除的呢？
 
-这里我用到了[referrer-killer](https://github.com/jpgerek/referrer-killer)，里面还有一个Demo，具体用法可以查看本篇博客的网页源码，或者那个Demo的网页源码。其实就三行代码~
+这里我用到了[referrer-killer](https://github.com/jpgerek/referrer-killer)，里面还有一个Demo，具体用法可以查看本篇博客的网页源码，或者那个Demo的网页源码。其实就几行代码~
 
 {% highlight HTML %}
 
