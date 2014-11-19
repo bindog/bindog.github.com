@@ -36,7 +36,7 @@ PS:如果你想了解什么是PAC脚本的话请先戳[科学上网之红杏插�
 
 下载好了之后我们就得到了一个`hongxing.crx`文件，我们把后缀改成`zip`，然后解压之后的目录结构大概是这个样子
 
-![红杏主目录](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-08-17_105953_zps52bf4dfe.png)
+![红杏主目录](http://bindog.qiniudn.com/hack-hongxing2/hongxin-source.png)
 
 我们把`_metadata`这个文件夹删掉，否则一会儿加载进`Chrome`时会报错。
 
@@ -52,29 +52,29 @@ PS:如果你想了解什么是PAC脚本的话请先戳[科学上网之红杏插�
 
 好了，把我们修改的部分保存一下，然后按照这个步骤把红杏插件加载进`Chrome`
 
-![加载开发中的红杏](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-07-04_082317_zps00f82502.png)
+![加载开发中的红杏](http://bindog.qiniudn.com/hack-hongxing/hongxin-debug.png)
 
 剩下的过程就是用一个**VIP账号**登陆红杏，然后进入这个页面守株待兔~
 
-![红杏主界面](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-08-17_165600_zps936acf51.png)
+![红杏主界面](http://bindog.qiniudn.com/hack-hongxing2/hongxin.png)
 
 按`F12`打开开发人员工具，不出意外的话你应该能看到下面这个字段（看不到可以等一会或者刷新页面），正是刚才我们放到`Local Storage`里面的`pac`
 
-![Loacl Storage](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-08-17_120718_zpsc27e1681.png)
+![Loacl Storage](http://bindog.qiniudn.com/hack-hongxing2/local-storage-pac.png)
 
 把`pac`的值复制出来，保存到一个文件里面，比如`vip.pac`
 
-![pac文件](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-08-17_121137_zps80ae91bb.png)
+![pac文件](http://bindog.qiniudn.com/hack-hongxing2/vip-pac.png)
 
 打码的部分是红杏在海外搭的代理服务器地址
 
 然后我们用另一款`Chrome`下的拓展`SwichySharp`加载`vip.pac`（如果打不开谷歌扩展商店可以从[百度网盘](http://pan.baidu.com/s/1o6Dhdai)下载，密码`ccae`），可以看到能够科学上网了
 
-![google](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-08-17_121543_zpsf287197b.png)
+![google](http://bindog.qiniudn.com/hack-hongxing2/https-google.png)
 
 但是当我访问非`HTTPS`的网站时就不行了，这也是我没有解决的问题，希望有大牛可以帮忙
 
-![scholar](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-08-17_121728_zps7ce16163.png)
+![scholar](http://bindog.qiniudn.com/hack-hongxing2/un-scholar-google.png)
 
 #0x02 把自己改成VIP
 
@@ -92,9 +92,9 @@ PS:如果你想了解什么是PAC脚本的话请先戳[科学上网之红杏插�
 
 把所有修改保存一下，然后我们**重新加载**`DIY`的插件，这个时候就可以用**非VIP账号**登陆了，然后就是见证奇迹的时刻~Enjoy!
 
-![twitter](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-08-17_165745_zps86ae1121.png)
+![twitter](http://bindog.qiniudn.com/hack-hongxing2/twitter.png)
 
-![scholar](http://i1378.photobucket.com/albums/ah103/bind0g/hackhongxin/2014-08-17_165759_zpsf28450d2.png)
+![scholar](http://bindog.qiniudn.com/hack-hongxing2/scholar-google2.png)
 
 如果你想把`DIY`之后的插件打包，请参考[科学上网之红杏插件的原理与破解](http://bindog.github.io/%E5%B7%A5%E7%A8%8B/2014/07/03/analysis-and-hack-of-hongxin/)中的`0x04`部分
 
