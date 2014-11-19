@@ -26,13 +26,13 @@ function uniformRandomSampler(width,height,numSamplesMax){var numSamples=0;retur
 #0x01 采样
 首先我们来欣赏一下梵高同学的名画《星空》的一部分
 
-![星空](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/starry-night-detail_zps35f7215a.jpg)
+![星空](http://bindog.qiniudn.com/visualizing-algorithms/starry-night-detail.jpg)
 
 关于光是怎样在人的视网膜上成像涉及到物理和生物的一些知识，这里我们不作讨论。但是其中有很重要的一个过程就是人眼把连续的光信号变成了离散的信号，并将其反馈给大脑。这个过程就称为**采样**。
 
 采样在计算机图形学中扮演着非常重要的角色。即使是简单的调整图像大小也要用到采样。因此如何进行采样就显得十分重要，一方面要保证采样点要均匀分布，另一方面要避免采样点重复或产生规律（否则会产生[混叠](http://zh.wikipedia.org/wiki/%E6%B7%B7%E7%96%8A)）。人的视网膜在采样上做的非常出色，看下面这张视网膜在显微镜下的图，图中的较大的视锥细胞探测颜色，较小的视杆细胞对弱光较为敏感。
 
-![视网膜](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/retinal-cone-mosaic_zps03166cc2.jpg)
+![视网膜](http://bindog.qiniudn.com/visualizing-algorithms/retinal-cone-mosaic.jpg)
 
 这些细胞稠密且均匀的分布在视网膜上，而且它们之间的相对位置是无规律的。我们称之为泊松圆盘分布，因为任意细胞间的最小距离总是一定的。
 
@@ -93,25 +93,25 @@ function distance(a, b) {
 
 先来看看在`uniform random`算法生成的`6667`个采样点下的《星空》是什么样的
 
-![uniform random 星空](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/uniform-random-starry-night_zpsc3aa7d8f.jpg)
+![uniform random 星空](http://bindog.qiniudn.com/visualizing-algorithms/uniform-random-starry-night.jpg)
 
 效果果然很一般，采样点分布不均导致色块大小不一、细节丢失严重等一系列问题。左下角还有一些粉红色的色块，而原作中是没有这种颜色的。
 
 再来看看`best-candidate`算法采样后的《星空》
 
-![best-candidate 星空](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/best-candidate-starry-night_zpsbbaf54f7.jpg)
+![best-candidate 星空](http://bindog.qiniudn.com/visualizing-algorithms/best-candidate-starry-night.jpg)
 
 尽管仍有一些细节丢失等问题，但明显要比上一幅效果要好。
 
 我们也可以用沃罗诺伊图更直观的衡量采样质量，通过对每个色块的大小对其进行着色，色块越大颜色越深，色块越小颜色越浅。最佳的采样模式应该有几乎统一的着色，同时又保证不规律的采样点分布。下图是`uniform random`的效果
 
-![uniform random 沃罗诺伊图](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/uniform-random-voronoi_zps5ddfcf29.jpg)
+![uniform random 沃罗诺伊图](http://bindog.qiniudn.com/visualizing-algorithms/uniform-random-voronoi.jpg)
 
 色块之间的差别非常大，原因不再赘述。
 
 `best-candidate`的效果如下
 
-![best-candidate 沃罗诺伊图](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/best-candidate-voronoi_zpsd3cab8d2.jpg)
+![best-candidate 沃罗诺伊图](http://bindog.qiniudn.com/visualizing-algorithms/best-candidate-voronoi.jpg)
 
 颜色明显均匀多了~
 
@@ -131,12 +131,12 @@ function distance(a, b) {
 
 下图是`Poisson-disc`算法的沃罗诺伊图
 
-![Poisson-disc 沃罗诺伊图](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/poisson-disc-voronoi_zpsd001ab24.jpg)
+![Poisson-disc 沃罗诺伊图](http://bindog.qiniudn.com/visualizing-algorithms/poisson-disc-voronoi.jpg)
 
 颜色更加匀称了是不是？
 再看看`Poisson-disc`算法下的星空
 
-![Poisson-disc 星空](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/poisson-disc-starry-night_zps4a390d2b.jpg)
+![Poisson-disc 星空](http://bindog.qiniudn.com/visualizing-algorithms/poisson-disc-starry-night.jpg)
 
 美不胜收！
 
@@ -193,7 +193,7 @@ function shuffle(array) {
 
 一个好的洗牌算法应该保证无偏性，也就是说保证每个元素在洗牌结束后出现在数组的任何位置都是等可能的，概率为`1/n`，其中`n`为数组元素个数。当然准确的计算这个概率有点困难（依赖具体的算法），但是我们可以从统计意义上来计算这个概率。也就是把洗牌算法运行几千次，统计原先在位置`i`的元素在洗牌后出现在位置`j`的次数，然后画在一张图上，如下
 
-![random comparator matrix diagram chrome](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/random-comparator-chrome-shuffle-bias_zps283b77df.png)
+![random comparator matrix diagram chrome](http://bindog.qiniudn.com/visualizing-algorithms/random-comparator-chrome-shuffle-bias.png)
 
 上图中列表示元素在洗牌前的位置，行表示元素在洗牌后的位置。颜色表示概率，绿色表示正偏，也就是其出现次数高于预期。红色表示负偏，也就是其出现次数低于预期。
 
@@ -201,13 +201,13 @@ function shuffle(array) {
 
 而`Fisher–Yates`洗牌算法的结果就要好很多
 
-![Fisher–Yates matrix diagram](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/fisher-yates-shuffle-bias_zpse8b352e7.png)
+![Fisher–Yates matrix diagram](http://bindog.qiniudn.com/visualizing-algorithms/fisher-yates-shuffle-bias.png)
 
 图中没有明显的规律可循，个别偏差也是因为我们使用的是统计的方法，与算法本身无关。
 
 另外值得一提的一点是，随机比较器(random comparator)洗牌算法的结果与浏览器的实现也有很大关系。刚才`Chrome`浏览器的结果已经很糟糕了，我们再来看看`Firefox`下的结果
 
-![random comparator matrix diagram Firefox](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/random-comparator-firefox-shuffle-bias_zpsa5aea260.png)
+![random comparator matrix diagram Firefox](http://bindog.qiniudn.com/visualizing-algorithms/random-comparator-firefox-shuffle-bias.png)
 
 只能说惨不忍睹！当然这并不意味着`Chrome`比`Firefox`要强，只能说明我们所使用的算法是有问题的，导致其结果是不确定的。而浏览器内部的不同实现更直观的把这个问题暴露出来了。
 
@@ -439,15 +439,15 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 
 冒泡排序
 
-![冒泡排序](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/Bubble_Sort_zps2005195b.gif)
+![冒泡排序](http://bindog.qiniudn.com/visualizing-algorithms/Bubble_Sort.gif)
 
 插入排序
 
-![插入排序](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/Insertion_Sort_zps05879f48.gif)
+![插入排序](http://bindog.qiniudn.com/visualizing-algorithms/Insertion_Sort.gif)
 
 快速排序
 
-![快速排序](http://i1378.photobucket.com/albums/ah103/bind0g/visualizing%20algorithms/Quick_Sort_zps0abcb2fb.gif)
+![快速排序](http://bindog.qiniudn.com/visualizing-algorithms/Quick_Sort.gif)
 
 #0x06 后记
 折腾这篇文章真的太辛苦了，首先原文实在是太长了，其次是那些动画和图片，本来想把那些动画用`GIF`录制器录制下来，但是发现有些动画实在太长，这样会导致`GIF`文件很大，而且录制出来的效果也不是很好。
