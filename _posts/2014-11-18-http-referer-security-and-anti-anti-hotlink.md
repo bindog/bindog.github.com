@@ -75,11 +75,11 @@ document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http:
 
 显示盗链的图片
 
-![显示盗链的图片抓包](http://i1378.photobucket.com/albums/ah103/bind0g/http%20referer/hotlink_zpse8c2947f.png)
+![显示盗链的图片抓包](http://bindog.qiniudn.com/http-referer/hotlink.png)
 
 正常显示的图片
 
-![正常显示的图片抓包](http://i1378.photobucket.com/albums/ah103/bind0g/http%20referer/nothotlink_zps64e52d48.png)
+![正常显示的图片抓包](http://bindog.qiniudn.com/http-referer/nothotlink.png)
 
 看到了吗？正常显示的那张图片的HTTP请求中没有Referer，所以我们得到了正常的结果
 
