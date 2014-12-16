@@ -35,7 +35,7 @@ tags:
 
 我们先来看看“联通”这两个字的编码
 
-```python
+{% highlight python %}
 # -*- coding: utf-8 -*-
 teststr = u'联通'
 print repr(teststr)
@@ -45,7 +45,7 @@ print repr(teststr.encode("gbk"))
 # u'\u8054\u901a'
 # '\xe8\x81\x94\xe9\x80\x9a'
 # '\xc1\xaa\xcd\xa8'
-```
+{% endhighlight %}
 然后再来看看记事本是怎么存储这两个字的，`Windows`下记事本支持4种编码方式，如图
 ![4-coding](http://7rfbbn.com1.z0.glb.clouddn.com/python-coding/notepad-coding.png)
 其中默认的是`ANSI`，我们分别用这4种方式保存“联通”两个字并用`010Editor`打开查看
@@ -70,9 +70,9 @@ print repr(teststr.encode("gbk"))
 
 可以看出来还是有一定规律的，我们可以写的一个正则表达式来匹配这种种模式
 
-```python
+{% highlight python %}
 [\x01-\x7f]|[\xc0-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xf7][\x80-\xbf]{3}|[\xf8-\xfb][\x80-\xbf]{4}|[\xfc-\xfd][\x80-\xbf]{5}
-```
+{% endhighlight %}
 
 相信你已经看晕了，没关系，我们用一个[正则表达式可视化工具](http://www.regexper.com/)来解析一下
 
@@ -84,7 +84,7 @@ print repr(teststr.encode("gbk"))
 
 那么，还有哪些中文字符存在这些问题呢？我们用一个程序把它们全找出来
 
-```python
+{% highlight python %}
 col = "     "
 for i in range(0,16):
     col = col + "+" + hex(i)[2:].upper() + " "
@@ -106,8 +106,9 @@ for i in range(192,224):
             print line.strip()
             count = 0
             newline = True
-```
-```python
+{% endhighlight %}
+
+{% highlight python %}
 # 输出
      +0 +1 +2 +3 +4 +5 +6 +7 +8 +9 +A +B +C +D +E +F 
 C080 纮 纴 纻 纼 绖 绤 绬 绹 缊 缐 缞 缷 缹 缻 缼 缽
@@ -238,7 +239,7 @@ DF80 還 邅 邆 邇 邉 邊 邌 邍 邎 邏 邐 邒 邔 邖 邘 邚
 DF90 邜 邞 邟 邠 邤 邥 邧 邨 邩 邫 邭 邲 邷 邼 邽 邿
 DFA0 郀 摺 撷 撸 撙 撺 擀 擐 擗 擤 擢 攉 攥 攮 弋 忒
 DFB0 甙 弑 卟 叱 叽 叩 叨 叻 吒 吖 吆 呋 呒 呓 呔 呖
-```
+{% endhighlight %}
 
 凡是**仅由**这张表里面的字构成的文本输入到记事本里用`ANSI`保存后，再次打开都会变成乱码
 
@@ -253,27 +254,31 @@ DFB0 甙 弑 卟 叱 叽 叩 叨 叻 吒 吖 吆 呋 呒 呓 呔 呖
 一般情况下，如果你得到的数据在没有被加密或者压缩的情况下出现了乱码，那多半是没有被正确的编码解析罢了，剩下的事无非就是编码转换的问题了。
 
 比如，我抓取的一个网页是用`utf-8`编码的，而我的数据库的编码是`gbk`，直接存肯定是不行的，怎么办呢，很简单
-```python
+
+{% highlight python %}
 unicodestr = webstr.decode("utf-8")
 databasestr = unicodestr.encode("gbk")
 # 然后把databasestr写进数据库就可以了
-```
+{% endhighlight %}
 
 在某些情况下，不知道数据来源的编码是什么，那该怎么办呢？`Python`下有一个`chardet`能非常方便的解决这个问题
-```python
+
+{% highlight python %}
 import chardet
 f = open("unknown.txt","r")
 fstr = f.read()
 print chardet.detect(fstr)
 # 输出
 # {'confidence': XXX, 'encoding': 'XXX'}
-```
+{% endhighlight %}
+
 输出有两个值，后一个是`chardet`认为可能的编码，前一个表示可能性的大小。只要我们提供的字符串没有什么问题，一般`chardet`都可以给出一个比较准确的答案。在知道目标采用了什么编码后，就可以使用前面的方法进行编码转换了。
 
 
 
 要注意的一点是，当你使用`print`显示乱码时并不一定真的是乱码。比如下面这段程序
-```python
+
+{% highlight python %}
 # -*- coding: utf-8 -*-
 teststr = u'测试'
 utf8str = teststr.encode("utf-8")
@@ -289,27 +294,30 @@ utf8f.close()
 gbkf = open("gbkstr.txt","w")
 gbkf.write(gbkstr)
 gbkf.close()
-```
+{% endhighlight %}
+
 分别在`Eclipse`和`Windows`命令行中执行，发现`Eclipse`中`print gbkstr`出现了乱码，而在`Windows`命令行中`print utf8str`出现了乱码，但却并不影响两个文件的正常显示(编码不同罢了，记事本都可以识别)。这与`Python`中`print`的实现有关，`print`直接把字符串传递给当前运行环境，只有当该字符串**与运行环境默认的编码一致**时才能正常显示。
 
 最后，再总结几点`Python 2.X`中常见的字符串问题
 
  - `Python`默认脚本文件都是ASCII编码的，当文件中有非ASCII编码范围内的字符的时候就要使用“编码指示”来修正，也就是在文件第一行或第二行指定编码声明：`# -*- coding=utf-8 -*-`或者`#coding=utf-8`
  - 在`Python`中str和unicode在编码和解码过程中，如果将一个str直接编码成另一种编码，或者把str与一个unicode相加，会先把str解码成unicode，采用的编码为默认编码，一般默认编码是`ascii`，我们可以使用下面的代码来改变`Python`默认编码
-```python
+
+ {% highlight python %}
 # -*- coding=utf-8 -*-
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 s = '测试'
 s.encode('gb2312')
-# 虽然这样修改不会报错了，但是仍然不建议你这样做
-```
+{% endhighlight %}
+
  - 有些时候字符串中大部分字符编码都是正确的，但是偶尔出现了一两个非法字符，这时候使用`decode`会抛出异常而无法正常解码，不过我们可以使用`decode`的第二个参数来解决这个问题，如`s.decode('gbk', 'ignore')`，因为`decode`的函数原型是`decode([encoding], [errors='strict'])`，可以用第二个参数控制错误处理的策略，默认的参数就是`strict`，代表遇到非法字符时抛出异常，如果设置为`ignore`，则会忽略非法字符，如果设置为`replace`，则会用`?`取代非法字符；
 
 #0x04 建议
 先看看下面的代码
-```python
+
+ {% highlight python %}
 # -*- coding: utf-8 -*-
 teststr = u'测试'
 utf8str = teststr.encode("utf-8")
@@ -321,7 +329,8 @@ print len(gbkstr)
 # 2
 # 6
 # 4
-```
+{% endhighlight %}
+
 注意，`Python`中对`str`进行`len()`操作，计算的可是字节的长度，而且非常我们逻辑上的一个字。所以下面提一些建议供大家参考~
 
 - 使用字符编码声明，并且同一工程中的所有源代码文件使用相同的字符编码声明。
