@@ -68,7 +68,7 @@ print repr(teststr.encode("gbk"))
 如果你看过了第一部分的基础知识，那么就应该清楚`utf-8`的编码规则
 ![utf-8](http://7rfbbn.com1.z0.glb.clouddn.com/python-coding/utf-8.jpg)
 
-可以看出来还是有一定规律的，我们可以写的一个正则表达式来匹配这种种模式
+可以看出来还是有一定规律的，我们可以写的一个正则表达式来匹配这种模式
 
 {% highlight python %}
 [\x01-\x7f]|[\xc0-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xf7][\x80-\xbf]{3}|[\xf8-\xfb][\x80-\xbf]{4}|[\xfc-\xfd][\x80-\xbf]{5}
