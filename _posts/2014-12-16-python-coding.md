@@ -16,6 +16,8 @@ tags:
 
 最近在学习`Python`的过程中再次遇到了这个问题，决定认认真真把编码问题搞清楚，同时也把经验和心得分享给大家。如有谬误，欢迎大家批评指正~
 
+<!--more-->
+
 #0x01 基础知识
 首先声明，本文不是科普，如果你对`Unicode`、`utf-8`、`gb2312`、`gbk`这样的概念非常陌生的话，强烈建议你先看下[字符编码的奥秘utf-8, Unicode](http://blog.csdn.net/hherima/article/details/8655200)和[速解UTF-8中文字符，方法和原理](http://jsfox.cn/blog/others/quick-translate-chinese-utf8-by-unicode.html)这两篇文章，图文并茂~
 
