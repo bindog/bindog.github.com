@@ -93,7 +93,7 @@ tags:
 ##Miller-Rabin素性测试的实现
 了解了Miller-Rabin素性测试的基本原理就可以用程序来实现它，先来看看伪代码
 
-<script src="https://gist.github.com/bindog/5b4a1d765c5d17afdf83.js"> </script>
+<script src="http://gist.stutostu.com/bindog/5b4a1d765c5d17afdf83.js"> </script>
 
 思路很简单，对照前面的解释很容易看懂~
 
@@ -107,7 +107,7 @@ public boolean isProbablePrime(int certainty)
 
 我们来看看用`Python`怎么实现Miller-Rabin素性测试
 
-<script src="https://gist.github.com/bindog/7a7e457e7c0dced3f1d4.js"> </script>
+<script src="http://gist.stutostu.com/bindog/7a7e457e7c0dced3f1d4.js"> </script>
 
 代码的解释在注释中写的很详细了，这里就不再啰嗦了~
 
@@ -128,7 +128,7 @@ public boolean isProbablePrime(int certainty)
 
 下面我们来看看网上的一个开源`Javascript`[加密函数库](http://www-cs-students.stanford.edu/~tjw/jsbn/)（新浪微博和网易微博都在使用这个库）是如何实现的
 
-<script src="https://gist.github.com/bindog/9e40489d942ce2436072.js"> </script>
+<script src="http://gist.stutostu.com/bindog/9e40489d942ce2436072.js"> </script>
 
 明白了原理，是不是觉得非常简单呢？^\_^
 

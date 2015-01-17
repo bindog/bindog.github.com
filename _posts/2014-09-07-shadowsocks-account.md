@@ -40,13 +40,13 @@ PS:本文获取的账号全部来自[ShadowSocks公益组织](https://www.shadow
 
 ##获取网站上所有的二维码
 
-<script src="https://gist.github.com/bindog/2b24e2c11e2fe37b4de8.js"> </script>
+<script src="http://gist.stutostu.com/bindog/2b24e2c11e2fe37b4de8.js"> </script>
 
 这个没什么好说的，就是正则表达式匹配
 
 ##解析二维码获得账号信息
 
-<script src="https://gist.github.com/bindog/8e0536716fe7e8b5f7b9.js"> </script>
+<script src="http://gist.stutostu.com/bindog/8e0536716fe7e8b5f7b9.js"> </script>
 
 这里我将所有二维码下载到`qrcode`这个文件夹中，`Python`中有许多二维码生成的库，但是二维码解析的库很少而且安装起来都比较麻烦。所以有两种偷懒的办法，一种是使用在线的`API`服务，国外有一个叫QR code API，国内有草料API，不过我都没用过=。=另一种办法就是我这里用的了，使用现成的命令行工具~
 
@@ -57,7 +57,7 @@ PS:本文获取的账号全部来自[ShadowSocks公益组织](https://www.shadow
 ##配置账号信息并测试延迟
 账号什么的都有了，下面就差测试延迟了
 
-<script src="https://gist.github.com/bindog/83b66002ca62ba83d8bf.js"> </script>
+<script src="http://gist.stutostu.com/bindog/83b66002ca62ba83d8bf.js"> </script>
 
 这里我测试的是平均延迟，这样结果可靠一点，测试的是`Google`和`Twitter`，都是被墙的=。=
 

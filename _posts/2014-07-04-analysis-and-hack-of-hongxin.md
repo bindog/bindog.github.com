@@ -85,11 +85,11 @@ tags:
 
 还原完代码后，我们怎样从这么多js文件中找到与代理过程相关的那个文件呢？一般来说，文件名很大程度上反映了它的功能（程序员都这么干，除非你跟自己过不去或者和团队的人过不去）,所以我们直接搜`proxy`，在`js\services\`目录下找到了一个`proxyManager.js`，直觉告诉我们就是它了！代码有大概400多行，这里我贴几段比较重要的代码段
 
-<script src="https://gist.github.com/bindog/8523971ed42eba49364c.js"> </script>
+<script src="http://gist.stutostu.com/bindog/8523971ed42eba49364c.js"> </script>
 
 其实看到`chrome.proxy.settings.set`就知道这肯定和代理设置相关了，在谷歌上一搜就找到一篇关于[开发Chrome代理扩展程序](http://lmk123.duapp.com/chrome/extensions/proxy.html)的文档，里面说的非常详细。注意后面的`generatePacScript`函数，其生成了一段`pac`脚本（关于`pac`脚本的知识刚才的那篇文档里也有涉及），其实就是一段简单的程序，告诉浏览器访问哪些网址的时候用什么代理。这段`pac`脚本就是红杏的“秘密”，如下
 
-<script src="https://gist.github.com/bindog/3d34bb38d48f59550a96.js"> </script>
+<script src="http://gist.stutostu.com/bindog/3d34bb38d48f59550a96.js"> </script>
 
 事实上我们把这段脚本保存下来，使用另一款`Chrome`扩展`SwitchySharp`，并将这段脚本导入到`SwitchySharp`中同样可以实现代理功能！不过在访问一些没有使用`HTTPS`协议的网址如`http://scholar.google.com`时会出问题（暂时还不清楚原因-_-），但是像`https://www.google.com`或者`https://twitter.com`这样的网址是没有问题的~
 
@@ -113,7 +113,7 @@ client = RedSockClient.create(API_URL);
 
 这行代码以`API_URL`作为参数并将线索指向了`js\services\RedSockClient.js`这个文件，从名字能大概能猜出是和服务器通信相关的，其中有如下代码段
 
-<script src="https://gist.github.com/bindog/c2536c3109d9b124d93d.js"> </script>
+<script src="http://gist.stutostu.com/bindog/c2536c3109d9b124d93d.js"> </script>
 
 这里我采用了一个笨方法`alert()`进行调试，得到如下结果
 
@@ -130,7 +130,7 @@ client = RedSockClient.create(API_URL);
 
 是不是又看到了前文提到的`level`？再看`js\services\userManager.js`中的如下代码段
 
-<script src="https://gist.github.com/bindog/f759d4e3fc47595ae4fb.js"> </script>
+<script src="http://gist.stutostu.com/bindog/f759d4e3fc47595ae4fb.js"> </script>
 
 结合代码和`data`的格式我们可以知道红杏是如何判定用户身份的，破解也非常容易，在`return`语句前加一句`$rootScope.user.role = ROLES.VIP`就行了。重新加载插件后你就可以发现讨厌的非VIP用户已经没有了，也可以开启“一直模式”和编辑科学上网列表了
 

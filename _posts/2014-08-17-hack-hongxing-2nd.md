@@ -42,11 +42,11 @@ PS:如果你想了解什么是PAC脚本的话请先戳[科学上网之红杏插�
 
 红杏核心的代码都在`js`这个文件夹里面，目录结构如下
 
-<script src="https://gist.github.com/bindog/466aa8db7287896c93ac.js"> </script>
+<script src="http://gist.stutostu.com/bindog/466aa8db7287896c93ac.js"> </script>
 
 需要重点关注的几个`js`文件在注释中标了出来，首先我们打开`proxyManager.js`，完全没法看！没关系，把内容复制一下，用这个[在线工具](http://tool.lu/js/)解密一下，这里为了节省空间和美观我截取了部分代码，并调整了一下格式，你可在代码中搜索下面这部分
 
-<script src="https://gist.github.com/bindog/929f5510318610c3c4bd.js"> </script>
+<script src="http://gist.stutostu.com/bindog/929f5510318610c3c4bd.js"> </script>
 
 只要在倒数第二行加一句`localStorage.setItem("pac", source)`就行了~
 
@@ -82,13 +82,13 @@ PS:如果你想了解什么是PAC脚本的话请先戳[科学上网之红杏插�
 
 这里我们还是在红杏的基础上搞破坏吧，还是`proxyManager.js`文件，我们加一行代码
 
-<script src="https://gist.github.com/bindog/263ef943cf50bd845a3b.js"> </script>
+<script src="http://gist.stutostu.com/bindog/263ef943cf50bd845a3b.js"> </script>
 
 代理服务器的地址大家按照上一个章节自行获取吧~
 
 接下来是`userManager.js`文件，同样我截取了部分代码，也是加一行代码就行了
 
-<script src="https://gist.github.com/bindog/b0ad984d04345ea9ecb3.js"> </script>
+<script src="http://gist.stutostu.com/bindog/b0ad984d04345ea9ecb3.js"> </script>
 
 把所有修改保存一下，然后我们**重新加载**`DIY`的插件，这个时候就可以用**非VIP账号**登陆了，然后就是见证奇迹的时刻~Enjoy!
 

@@ -33,7 +33,7 @@ tags:
 
 我们可以通过Sina Visitor System的网页源码来看看它到底做了什么
 
-<script src="https://gist.github.com/bindog/3aaf8a67da2b8ab48cfa.js"> </script>
+<script src="http://gist.stutostu.com/bindog/3aaf8a67da2b8ab48cfa.js"> </script>
 
 代码不是很多，而且还有中文注释，新浪还真是照顾我们……
 
@@ -58,11 +58,11 @@ tags:
 
 那么，我们就来试验一下。我用`Python`写了一个小程序，从一个微博用户的主页中取出该用户的昵称
 
-<script src="https://gist.github.com/bindog/aaaeb76d4b9b81cff63d.js"> </script>
+<script src="http://gist.stutostu.com/bindog/aaaeb76d4b9b81cff63d.js"> </script>
 
 设置一下User-Agent，把自己伪装成搜索引擎爬虫，具体用什么随意啦~谷歌、必应都可以，或者仅仅用`spider`也行！
 
-<script src="https://gist.github.com/bindog/04ce03860d2c18b3eeb6.js"> </script>
+<script src="http://gist.stutostu.com/bindog/04ce03860d2c18b3eeb6.js"> </script>
 
 #0x03 总结
 
