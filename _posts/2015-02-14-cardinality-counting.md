@@ -28,7 +28,7 @@ tags:
 ##内切圆
 在平面上画一个正方形和一个内切圆，然后**随机**向正方形区域内撒$n$个点，统计落在圆内点的个数$m$，如下图所示
 
-[正方形内切圆撒点]()
+![正方形内切圆撒点](http://ac-cf2bfs1v.clouddn.com/uvLJBJ3UbK8SogiJXRXMlCaMsVgwqYm9DCX1FJuV.gif)
 
 可以认为我们随机撒的点服从均匀分布，因此点的个数与平面区域的面积有如下关系
 
@@ -52,15 +52,15 @@ print sum(1 if random()**2 + random()**2 < 1 else 0 for i in range(n))*4.0/n
 
 再来看第二种利用统计模拟计算$\pi$的方法，这就是大名鼎鼎的蒲丰投针问题(Buffon's needle)
 
-[蒲丰投针]()
+![蒲丰投针](http://ac-cf2bfs1v.clouddn.com/Ld7JYEtTYboUPMFKW1HYBGPv8YBeU8h9JW8jEBXQ.jpg)
 
 在平面上画上无数条平行线，间距为$d$， 取一根长度为$l(l < d)$的针，随机向该平面投掷$n$次
 
-[扔肥皂]()
+![扔肥皂](http://ac-cf2bfs1v.clouddn.com/5DAxN6pX7VN34jjln9OhiLtdNYd8SPKfhjbRCt72.png)
 
 然后统计与平行线相交的次数$m$
 
-[蒲丰投针结果]()
+![蒲丰投针结果](http://ac-cf2bfs1v.clouddn.com/wmXxOa57aQqC2UKqfP2llIs6DGVHML7U3vk8yApH.gif)
 
 那么$\pi$可以由下式算出
 
@@ -70,11 +70,11 @@ $$\pi=\frac{2l}{d}\cdot\frac{n}{m}$$
 
 首先我们把问题简化一下，只考察**两条平行线之间的半区域**（其他区域都是等价的）。容易观察出针与平行线是否相交取决于两个因素，针的位置和旋转的角度，我们用$x(0\le x \le \frac{d}{2})$表示针中心点到平行线的距离，用$\theta(0 < \theta < \pi)$表示针与平行线的夹角，如下图所示
 
-[蒲丰投针证明]()
+![蒲丰投针证明](http://ac-cf2bfs1v.clouddn.com/qvLxKdc5KdlakSzV5ALtWQcxqKCGXBCoD8Waez3Q.png)
 
 显然，当$x \le \frac{l}{2}\cdot sin\theta$时，针与平行线相交。如下图所示
 
-[蒲丰投针证明2]()
+![蒲丰投针证明2](http://ac-cf2bfs1v.clouddn.com/bx5QI0X8JvPNB8HVnzo62SBEDmlW47wbYQeqsP4L.png)
 
 从图中可以看出，当$x$与$\theta$的取值落在区域$g$内时，上述条件即可满足，所以针与平行线相交的概率为
 
@@ -113,7 +113,7 @@ print 2.0*n/direct_needle(n)
 如果只是一个小型网站这么做是完全可以的，但是如果是一个每日PV在上亿甚至更高数量级的大型网站中，线性表的查询效率可想而知，而进行二分查找、B树等优化也会遇到各种各样的问题。这里我不想炒大数据这个概念，但在现实场景中，数据到达一定数量级之后这都是不得不考虑的问题。
 
 ##bitmap与Hash函数
-bitmap是非常经典的海量数据处理数据结构，其本质是用bit数组的某一位表示某一数据，从而一个bit数组可以表示海量数据。用0表示某一元素不在集合中，用1表示某一元素在集合中，如"0100000011000000"可以用来表示集合$\left \\{ 1,8,9  \right \\}$。
+bitmap是非常经典的海量数据处理数据结构，其本质是用bit数组的某一位表示某一数据，从而一个bit数组可以表示海量数据。用0表示某一元素不在集合中，用1表示某一元素在集合中，如`0100000011000000`可以用来表示集合$\left \\{ 1,8,9  \right \\}$。
 
 Hash函数，也称散列函数，原本是密码学领域的概念。说白了就是将一长串输入转换为固定长度的输出，即$H(M)=h$，其中$H$为Hash函数，$M$为密文，$h$为定长的hash值。同时要满足以下几个条件：
 
@@ -196,7 +196,7 @@ $f(x)=-m\ln\frac{x}{m}$是可逆函数，$u$为$E(u)$的最大似然估计，所
 
 这里我们也要注意到，m的取值不能太小，不然很有可能bitmap上所有位都被映射到了，这样u就为0了，整个算法就失去了意义。原论文作者给出了一张表
 
-[linear counting]()
+![linear counting table](http://ac-cf2bfs1v.clouddn.com/a31O15gKYEnkj90zGsx5JlIyILLgzNPET8ygyNwr.png)
 
 可以看出m大约为n的十分之一左右。如果面对上亿级别的基数计数，这个方法的空间利用率依然不高。
 
@@ -207,7 +207,7 @@ $f(x)=-m\ln\frac{x}{m}$是可逆函数，$u$为$E(u)$的最大似然估计，所
 
 设a为待估集合中的一个元素，h为a经过hash后的结果（$h=H(a)$），h为长度为L的比特串（例如h为`098950fc`，则可以写成`00001001100010010101000011111100`），将这L个比特串从左至右依次编号为1、2、……、L。因为Hash函数是均匀分布的，所以这L个比特服从如下分布且相互独立
 
-$$ P(x=k) = \left \\{_{0.5(k=1)}^{0.5(k=0)} \right. $$
+$ P(x=k) = \left \\{_{0.5(k=1)}^{0.5(k=0)} \right. $
 
 其实也就是说h中每一个比特位出现0或者1都是等可能且互相独立的，设$\rho(h)$为比特串h中第一个1出现的位置（例如h为`098950fc`，则$\rho(h)=5$）。现在对集合中的每个元素都作Hash运算，对每个生成的h都计算其$\rho(h)$，取$\rho_{max}$为所有$\rho(h)$中的最大值。此时，我们可以估计集合的基数为
 
