@@ -101,7 +101,11 @@ n=10**6
 print 2.0*n/direct_needle(n)
 {% endhighlight %}
 
+
+
 与MC方法相关的还有许多理论与算法，如马尔可夫链蒙特卡洛方法(Markov Chain Monte Carlo，简称MCMC)，吉布斯采样(Gibbs Sampling)……这些方法在物理、经济等诸多领域发挥着重要作用~当然本文的重点并不是介绍MC方法，只是想通过这个例子说明，在理论和事实之间有着某种神秘的联系（就像我们可以从大量统计数据中估算出$\pi$一样），而概率与统计就是我们认识和研究这种联系的利器。
+
+后面的内容较长且涉及的数学知识较多，理解起来可能不太轻松，感兴趣的同学可以把本文存为书签，有时间的时候再看~
 
 #0x02 基数计数(Cardinality Counting)
 基数(cardinality，也译作势)，是指一个集合中不重复元素的个数。注意这里的集合和我们学过的严格定义的集合不同，允许存在重复元素，另外，本文所讨论的均为有限集。如给定这样的一个集合$\left \\{ 1,2,3,1,2  \right \\}$，它有$5$个元素，但它的基数为$3$。
@@ -142,7 +146,7 @@ $$\hat{n}=-m\log\frac{u}{m}$$
 
 乍一看，这个算法的描述和前面的差不多，其实最大的区别在于这里的Hash函数是允许冲突的，也就是说允许$H(M)=H(M')$的情况出现。
 
-下面来看看如何进行证明。首先我们要明确一点，这里bitmap的最终值只与集合的基数有关，比如$A=\left \\{ k_1,k_2,\cdots,k_n  \right \\}$和$B=\left \\{ k_1,k_2,\cdots,k_n ，x_1,x_2,\cdots,x_i \right \\}$两个集合，其中$k_1,k_2,\cdots,k_n$为$n$个不同元素，$x_i \in \left \\{ k_1,k_2,\cdots,k_n  \right \\}$。显然，$A$和$B$的基数是相同的，经过Hash函数映射得到的bitmap也是一样的。
+下面来看看如何进行证明。首先我们要明确一点，这里bitmap的最终值只与集合的基数有关，比如$A=\left \\{ k_1,k_2,\cdots,k_n  \right \\}$和$B=\left \\{ k_1,k_2,\cdots,k_n ,x_1,x_2,\cdots,x_i \right \\}$两个集合，其中$k_1,k_2,\cdots,k_n$为$n$个不同元素，$x_i \in \left \\{ k_1,k_2,\cdots ,k_n  \right \\}$。显然，$A$和$B$的基数是相同的，经过Hash函数映射得到的bitmap也是一样的。
 
 所以下面的证明我们就用集合$A$来进行辅助思考~
 
@@ -240,7 +244,9 @@ $$\hat n=2^{\rho_{max}}$$
 概率与统计的神奇之处还不仅限于这些，在**统计学习**中有更多让人着迷的应用。最后，引用《统计与真理》这本书的里的话作为结语~
 
 >All knowledge is, in final anlysis, history.
+
 >All sciences are, in the abstract, mathematics.
+
 >All judgements are, in their rationale, statistics.
 
 #0x04 参考文献
