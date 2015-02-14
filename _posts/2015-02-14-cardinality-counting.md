@@ -103,7 +103,7 @@ print 2.0*n/direct_needle(n)
 
 <script src="/assets/js/jwplayer/jwplayer.js"></script>
 <script>jwplayer.key="ZWdJjYcW5EkJT2N3NpRhOVmpih/10y8pFPJFZg==";</script>
-<div id="Buffonneedle" align="center"></div>
+<center><div id="Buffonneedle" align="center"></div></center>
 <script type="text/javascript">
     jwplayer("Buffonneedle").setup({
         file: "http://bindog.qiniudn.com/cardinality-counting/Monte-Carlo-and-Buffon-needle.mp4",
