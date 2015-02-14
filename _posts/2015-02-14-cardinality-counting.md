@@ -100,10 +100,10 @@ def direct_needle(N):
 n=10**6
 print 2.0*n/direct_needle(n)
 {% endhighlight %}
-http://bindog.qiniudn.com/cardinality-counting/Monte-Carlo-and-Buffon-needle.mp4
 
-<script src="http://jwpsrv.com/library/Kypz6LP6EeS8TBJtO5t17w.js"></script>
-<div id="Buffonneedle"></div>
+<script src="/assets/js/jwplayer/jwplayer.js"></script>
+<script>jwplayer.key="ZWdJjYcW5EkJT2N3NpRhOVmpih/10y8pFPJFZg==";</script>
+<div id="Buffonneedle" style="margin:0 auto;"></div>
 <script type="text/javascript">
     jwplayer("Buffonneedle").setup({
         file: "http://bindog.qiniudn.com/cardinality-counting/Monte-Carlo-and-Buffon-needle.mp4",
