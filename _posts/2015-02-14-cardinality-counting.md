@@ -27,7 +27,9 @@ tags:
 
 ##内切圆
 在平面上画一个正方形和一个内切圆，然后**随机**向正方形区域内撒$n$个点，统计落在圆内点的个数$m$，如下图所示
+
 [正方形内切圆撒点]()
+
 可以认为我们随机撒的点服从均匀分布，因此点的个数与平面区域的面积有如下关系
 
 $$\frac{S_{circle}}{S_{square}}=\frac{m}{n}$$
@@ -49,11 +51,17 @@ print sum(1 if random()**2 + random()**2 < 1 else 0 for i in range(n))*4.0/n
 ##蒲丰投针
 
 再来看第二种利用统计模拟计算$\pi$的方法，这就是大名鼎鼎的蒲丰投针问题(Buffon's needle)
+
 [蒲丰投针]()
+
 在平面上画上无数条平行线，间距为$d$， 取一根长度为$l(l < d)$的针，随机向该平面投掷$n$次
+
 [扔肥皂]()
+
 然后统计与平行线相交的次数$m$
+
 [蒲丰投针结果]()
+
 那么$\pi$可以由下式算出
 
 $$\pi=\frac{2l}{d}\cdot\frac{n}{m}$$
@@ -61,9 +69,13 @@ $$\pi=\frac{2l}{d}\cdot\frac{n}{m}$$
 方法是很简单，但是为什么呢？下面我们来证明一下。
 
 首先我们把问题简化一下，只考察**两条平行线之间的半区域**（其他区域都是等价的）。容易观察出针与平行线是否相交取决于两个因素，针的位置和旋转的角度，我们用$x(0\le x \le \frac{d}{2})$表示针中心点到平行线的距离，用$\theta(0 < \theta < \pi)$表示针与平行线的夹角，如下图所示
+
 [蒲丰投针证明]()
+
 显然，当$x \le \frac{l}{2}\cdot sin\theta$时，针与平行线相交。如下图所示
+
 [蒲丰投针证明2]()
+
 从图中可以看出，当$x$与$\theta$的取值落在区域$g$内时，上述条件即可满足，所以针与平行线相交的概率为
 
 $$p=\frac{S_{g}}{S_{G}}=\frac{\int_{0}^{\pi}\frac{l}{2}\cdot sin\theta d\theta}{\frac{d}{2}\cdot \pi}=\frac{\frac{l}{2}\cdot (-cos\theta|_0^\pi)}{\frac{d}{2}\cdot \pi}=\frac{2l}{d\pi}$$
@@ -149,16 +161,23 @@ $$\lim_{n \to +\infty }(1+\frac{1}{n})^n=e$$
 自然数$e$就是这么定义的~
 
 $$\lim_{m \to +\infty }(1+\frac{1}{-m})^{-m}=\lim_{m \to +\infty }(1-\frac{1}{m})^{-m}$$
+
 $$=\lim_{m \to +\infty }(\frac{m-1}{m})^{-m}$$
+
 $$=\lim_{m \to +\infty }(\frac{m}{m-1})^{m}$$
+
 $$=\lim_{m \to +\infty }(1+\frac{1}{m-1})^m$$
+
 $$=\lim_{m \to +\infty }(1+\frac{1}{m-1})^{m-1}$$
+
 $$=\lim_{m \to +\infty }(1+\frac{1}{m})^{m}$$
+
 $$=e$$
 
 所以，当$m$和$n$都趋于无穷时有，
 
 $$E(u)=me^{-\frac{n}{m}}$$
+
 $$n=-m\ln\frac{E(u)}{m}$$
 
 bitmap上每一位的值服从参数相同0-1分布，因此u服从二项分布。由概率论知识可知，当n很大时，可以用正态分布逼近二项分布，因此可以认为当n和m趋于无穷大时u服从正态分布。
@@ -176,6 +195,7 @@ $f(x)$是可逆函数，$\hat{x}$是$x$的最大似然估计，则$f(\hat{x})$�
 $f(x)=-m\ln\frac{x}{m}$是可逆函数，$u$为$E(u)$的最大似然估计，所以$\hat{n}=-m\log\frac{u}{m}$为$n=-m\log\frac{E(u)}{m}$的一个最大似然估计。
 
 这里我们也要注意到，m的取值不能太小，不然很有可能bitmap上所有位都被映射到了，这样u就为0了，整个算法就失去了意义。原论文作者给出了一张表
+
 [linear counting]()
 
 可以看出m大约为n的十分之一左右。如果面对上亿级别的基数计数，这个方法的空间利用率依然不高。
@@ -187,7 +207,7 @@ $f(x)=-m\ln\frac{x}{m}$是可逆函数，$u$为$E(u)$的最大似然估计，所
 
 设a为待估集合中的一个元素，h为a经过hash后的结果（$h=H(a)$），h为长度为L的比特串（例如h为`098950fc`，则可以写成`00001001100010010101000011111100`），将这L个比特串从左至右依次编号为1、2、……、L。因为Hash函数是均匀分布的，所以这L个比特服从如下分布且相互独立
 
-$ P(x=k) = \left \\{_{0.5(k=1)}^{0.5(k=0)} \right. $
+$$ P(x=k) = \left \\{_{0.5(k=1)}^{0.5(k=0)} \right. $$
 
 其实也就是说h中每一个比特位出现0或者1都是等可能且互相独立的，设$\rho(h)$为比特串h中第一个1出现的位置（例如h为`098950fc`，则$\rho(h)=5$）。现在对集合中的每个元素都作Hash运算，对每个生成的h都计算其$\rho(h)$，取$\rho_{max}$为所有$\rho(h)$中的最大值。此时，我们可以估计集合的基数为
 
@@ -220,8 +240,8 @@ $$\hat n=2^{\rho_{max}}$$
 概率与统计的神奇之处还不仅限于这些，在**统计学习**中有更多让人着迷的应用。最后，引用《统计与真理》这本书的里的话作为结语~
 
 >All knowledge is, in final anlysis, history.
-All sciences are, in the abstract, mathematics.
-All judgements are, in their rationale, statistics.
+>All sciences are, in the abstract, mathematics.
+>All judgements are, in their rationale, statistics.
 
 #0x04 参考文献
 
