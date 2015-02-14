@@ -101,6 +101,8 @@ n=10**6
 print 2.0*n/direct_needle(n)
 {% endhighlight %}
 
+这里还有一个关于蒲丰投针证明的视频，讲的很生动形象（台湾腔的大叔讲话还是很有感觉的╮(￣▽￣)╭）
+
 <script src="/assets/jwplayer/jwplayer.js"></script>
 <center><div id="Buffonneedle" align="center"></div></center>
 <script type="text/javascript">
