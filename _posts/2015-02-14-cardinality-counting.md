@@ -101,19 +101,25 @@ n=10**6
 print 2.0*n/direct_needle(n)
 {% endhighlight %}
 
-<script src="/assets/js/jwplayer/jwplayer.js"></script>
-<script src="/assets/js/jwplayer/jwpsrv.js"></script>
-<script>jwplayer.key="ZWdJjYcW5EkJT2N3NpRhOVmpih/10y8pFPJFZg==";</script>
-<center><div id="Buffonneedle" align="center"></div></center>
-<script type="text/javascript">
-    jwplayer("Buffonneedle").setup({
-        file: "http://bindog.qiniudn.com/cardinality-counting/Monte-Carlo-and-Buffon-needle.mp4",
-        image: "http://ac-cf2bfs1v.clouddn.com/9myrbFUJ8nFWyh2M016nMaajm9d5VOgBNnGg9k6b.png",
-        width: 640,
-        height: 480
-    });
-</script>
-
+<center><div id="Buffonneedle" align="center">
+	<object id="player" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" name="player" width="640" height="480">
+		<param name="movie" value="/assets/flash/player.swf" />
+		<param name="allowfullscreen" value="true" />
+		<param name="allowscriptaccess" value="always" />
+		<param name="flashvars" value="file=http://bindog.qiniudn.com/cardinality-counting/Monte-Carlo-and-Buffon-needle.mp4&image=http://ac-cf2bfs1v.clouddn.com/9myrbFUJ8nFWyh2M016nMaajm9d5VOgBNnGg9k6b.png" />
+		<embed
+			type="application/x-shockwave-flash"
+			id="player2"
+			name="player2"
+			src="/assets/flash/player.swf" 
+			width="400" 
+			height="315"
+			allowscriptaccess="always" 
+			allowfullscreen="true"
+			flashvars="file=http://bindog.qiniudn.com/cardinality-counting/Monte-Carlo-and-Buffon-needle.mp4&image=http://ac-cf2bfs1v.clouddn.com/9myrbFUJ8nFWyh2M016nMaajm9d5VOgBNnGg9k6b.png" 
+		/>
+	</object>
+</div></center>
 
 与MC方法相关的还有许多理论与算法，如马尔可夫链蒙特卡洛方法(Markov Chain Monte Carlo，简称MCMC)，吉布斯采样(Gibbs Sampling)……这些方法在物理、经济等诸多领域发挥着重要作用~当然本文的重点并不是介绍MC方法，只是想通过这个例子说明，在理论和事实之间有着某种神秘的联系（就像我们可以从大量统计数据中估算出$\pi$一样），而概率与统计就是我们认识和研究这种联系的利器。
 
