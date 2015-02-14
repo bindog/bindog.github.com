@@ -100,7 +100,18 @@ def direct_needle(N):
 n=10**6
 print 2.0*n/direct_needle(n)
 {% endhighlight %}
+http://bindog.qiniudn.com/cardinality-counting/Monte-Carlo-and-Buffon-needle.mp4
 
+<script src="http://jwpsrv.com/library/Kypz6LP6EeS8TBJtO5t17w.js"></script>
+<div id="Buffonneedle"></div>
+<script type="text/javascript">
+    jwplayer("Buffonneedle").setup({
+        file: "http://bindog.qiniudn.com/cardinality-counting/Monte-Carlo-and-Buffon-needle.mp4",
+        image: "http://ac-cf2bfs1v.clouddn.com/9myrbFUJ8nFWyh2M016nMaajm9d5VOgBNnGg9k6b.png",
+        width: 640,
+        height: 480
+    });
+</script>
 
 
 与MC方法相关的还有许多理论与算法，如马尔可夫链蒙特卡洛方法(Markov Chain Monte Carlo，简称MCMC)，吉布斯采样(Gibbs Sampling)……这些方法在物理、经济等诸多领域发挥着重要作用~当然本文的重点并不是介绍MC方法，只是想通过这个例子说明，在理论和事实之间有着某种神秘的联系（就像我们可以从大量统计数据中估算出$\pi$一样），而概率与统计就是我们认识和研究这种联系的利器。
