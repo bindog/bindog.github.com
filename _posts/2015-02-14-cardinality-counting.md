@@ -102,6 +102,7 @@ print 2.0*n/direct_needle(n)
 {% endhighlight %}
 
 <script src="/assets/js/jwplayer/jwplayer.js"></script>
+<script src="/assets/js/jwplayer/jwpsrv.js"></script>
 <script>jwplayer.key="ZWdJjYcW5EkJT2N3NpRhOVmpih/10y8pFPJFZg==";</script>
 <center><div id="Buffonneedle" align="center"></div></center>
 <script type="text/javascript">
