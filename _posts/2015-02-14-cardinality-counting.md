@@ -106,17 +106,17 @@ print 2.0*n/direct_needle(n)
 		<param name="movie" value="/assets/flash/player.swf" />
 		<param name="allowfullscreen" value="true" />
 		<param name="allowscriptaccess" value="always" />
-		<param name="flashvars" value="file=http://bindog.qiniudn.com/cardinality-counting/Monte-Carlo-and-Buffon-needle.mp4&image=http://ac-cf2bfs1v.clouddn.com/9myrbFUJ8nFWyh2M016nMaajm9d5VOgBNnGg9k6b.png" />
+		<param name="flashvars" value="file=http%3A%2F%2Fbindog.qiniudn.com%2Fcardinality-counting%2FMonte-Carlo-and-Buffon-needle.mp4&image=http%3A%2F%2Fac-cf2bfs1v.clouddn.com%2F9myrbFUJ8nFWyh2M016nMaajm9d5VOgBNnGg9k6b.png" />
 		<embed
 			type="application/x-shockwave-flash"
 			id="player2"
 			name="player2"
 			src="/assets/flash/player.swf" 
-			width="400" 
-			height="315"
+			width="640" 
+			height="480"
 			allowscriptaccess="always" 
 			allowfullscreen="true"
-			flashvars="file=http://bindog.qiniudn.com/cardinality-counting/Monte-Carlo-and-Buffon-needle.mp4&image=http://ac-cf2bfs1v.clouddn.com/9myrbFUJ8nFWyh2M016nMaajm9d5VOgBNnGg9k6b.png" 
+			flashvars="file=http%3A%2F%2Fbindog.qiniudn.com%2Fcardinality-counting%2FMonte-Carlo-and-Buffon-needle.mp4&image=http%3A%2F%2Fac-cf2bfs1v.clouddn.com%2F9myrbFUJ8nFWyh2M016nMaajm9d5VOgBNnGg9k6b.png" 
 		/>
 	</object>
 </div></center>
