@@ -245,9 +245,7 @@ $$\hat n=2^{\rho_{max}}$$
 
 >
 All knowledge is, in final anlysis, history.
-
 All sciences are, in the abstract, mathematics.
-
 All judgements are, in their rationale, statistics.
 
 #0x04 参考文献
