@@ -243,11 +243,12 @@ $$\hat n=2^{\rho_{max}}$$
 
 概率与统计的神奇之处还不仅限于这些，在**统计学习**中有更多让人着迷的应用。最后，引用《统计与真理》这本书的里的话作为结语~
 
->All knowledge is, in final anlysis, history.
+>
+All knowledge is, in final anlysis, history.
 
->All sciences are, in the abstract, mathematics.
+All sciences are, in the abstract, mathematics.
 
->All judgements are, in their rationale, statistics.
+All judgements are, in their rationale, statistics.
 
 #0x04 参考文献
 
