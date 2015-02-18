@@ -90,7 +90,7 @@ python实现
 
 {% highlight python %}
 from random import uniform
-from math import pi, cos
+from math import pi, sin
 #注意:为了便于计算,这里我们假定l=d=1
 def direct_needle(N):
    N_hits=0
