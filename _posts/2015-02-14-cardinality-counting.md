@@ -91,12 +91,13 @@ python实现
 {% highlight python %}
 from random import uniform
 from math import pi, cos
+#注意:为了便于计算,这里我们假定l=d=1
 def direct_needle(N):
    N_hits=0
    for i in range(N):
       x_center=uniform(0.,0.5)
       phi=uniform(0,pi/2)
-      x_tip=x_center - cos(phi)/2.
+      x_tip=x_center - sin(phi)/2.
       if x_tip < 0: N_hits += 1
    return N_hits
 n=10**6
