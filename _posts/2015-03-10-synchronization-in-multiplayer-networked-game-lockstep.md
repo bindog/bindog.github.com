@@ -2,7 +2,7 @@
 author: 宾狗
 date: 2015-03-10 10:54+08:00
 layout: post
-title: "游戏中的同络同步机制——Lockstep"
+title: "游戏中的网络同步机制——Lockstep"
 description: ""
 categories:
 - 工程
