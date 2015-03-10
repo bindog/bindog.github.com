@@ -22,7 +22,7 @@ RTS游戏有很多，比如我们都玩过的的`Warcraft III`（大家耳熟能
 
 那么为什么要强调早期呢？因为`Dota2`和`LOL`等新兴的游戏使用的同步机制不再是传统的Lockstep了。严格来说，Warcraft和现在意义上的网游有很大区别，因为它所谓的网是局域网（LAN）。Warcraft i和ii出现时互联网还没有现在那么普及，网速也很慢，更没有什么像样的网游，能够支持局域网对战已经很不错了。
 
-有人可能会有疑问，我们平时经常在11对战平台上和全国各地的人打`Dota`，你为什么说`Warcraft III`只支持局域网呢？这又是一个很有意思的话题，实际上，对战平台使用了虚拟局域网（VLAN）技术，通过进程注入，HOOK `WinSock`函数调用，将数据包发送到对战平台服务器上，由服务器分配虚拟IP，这里还能够进行天梯匹配等等，在随后的游戏过程中游戏数据包都是通过对战平台的服务器进行转发，但是这一切对`Warcraft III`进程本身来说是透明的，它依然感觉自己在一个局域网环境中。（你们人类都是骗子<img class="None" src="http://mat1.gtimg.com/www/mb/images/face/5.gif">）
+有人可能会有疑问，我们平时经常在11对战平台上和全国各地的人打`Dota`，你为什么说`Warcraft III`只支持局域网呢？这又是一个很有意思的话题，实际上，对战平台使用了虚拟局域网（VLAN）技术，通过进程注入，HOOK `WinSock`函数调用，将数据包发送到对战平台服务器上，由服务器分配虚拟IP，这里还能够进行天梯匹配等等，在随后的游戏过程中游戏数据包都是通过对战平台的服务器进行转发，但是这一切对`Warcraft III`进程本身来说是透明的，它依然感觉自己在一个局域网环境中。
 
 #0x01 为什么要有同步机制
 
@@ -91,9 +91,7 @@ Lockstep最初是军队行进中使用的，后来在19世纪的时候广泛在�
 
 举个例子，假设A、B、C是游戏中3个互相敌对的单位，攻击力都为100。在某一个turn内，A和B都右键点击了C（warcraft这类游戏好像都是右键普攻），C右键点击了A，这些操作指令都广播到了其他玩家电脑上，则该turn的输入为“A攻击C、B攻击C、C攻击A”。那么该turn结束后，每个人的电脑都开始计算，且计算结果是相同的，即“A损失100生命值，B不变，C损失200生命值”。
 
-这就是Lockstep同步机制，其实也没有多复杂是吧<img class="None" src="http://mat1.gtimg.com/www/mb/images/face/101.gif">
-
-这里还有几点需要注意：
+这就是Lockstep同步机制，其实也没有多复杂是吧~这里还有几点需要注意：
 
 - Lockstep把游戏过程划分成了一个个turn，为什么游戏不会出现卡顿的现象呢？回到前面动画的那个问题，人眼是容易被欺骗的，人的反应其实也是很慢的（相对电脑来说）。人眼的记忆时间为`0.1s`，只要每秒进行`10`turn，我们是感觉不出卡顿的。而通常游戏的帧数为60fps，即每秒60幅图像在屏幕上显示，你会感觉游戏非常流畅~当然“帧”和Lockstep中的“turn”并不是一一对应的，这里只是想说明一个turn的时间是非常短的，至少比我们的反应要快的多。
 
@@ -103,7 +101,7 @@ Lockstep最初是军队行进中使用的，后来在19世纪的时候广泛在�
 
 - Lockstep是非常严格的，要求每一步的的计算结果都完全一样，任何计算错误都有可能导致蝴蝶效应，产生严重的后果，因为状态不能同步的话游戏根本就没有办法进行下去，最终将崩溃退出。
 
-- [《Algorithms and Networking for Computer Games》](http://iclass.iuea.ac.ug/intranet/E-books/COMPUTER_BOOKS/John.Wiley.and.Sons.Algorithms.and.Networking.for.Computer.Games.Jul.2006.pdf)这本书中关于Lockstep的部分与本文的说法有些不同，我觉得也没有谁对谁错之分，Lockstep更多的是一种思想，算是不一样的理解吧，感兴趣的同学也可以看看书中的章节。书中将Lockstep分为commit和reveal两个阶段，并且采用了流水线的方式。如下图所示，
+- 《Algorithms and Networking for Computer Games》这本书中关于Lockstep的部分与本文的说法有些不同，我觉得也没有谁对谁错之分，Lockstep更多的是一种思想，算是不一样的理解吧，感兴趣的同学也可以看看书中的章节。书中将Lockstep分为commit和reveal两个阶段，并且采用了流水线的方式。如下图所示
 
 ![lockstep3](http://ac-cf2bfs1v.clouddn.com/sBEhIr9XvJJtC7vSfguIHHiILopdq0veg3lrLmbU.png)
 
@@ -171,14 +169,20 @@ Lockstep同步机制是非常严格的，中途加入游戏是从技术上来讲
 
 因此，Lockstep实际是一种理想的模型，如果在实际中使用会造成非常差的用户体验。那么`Warcraft III`使用的到底是什么同步机制呢？参考[What every programmer needs to know about game networking](http://gafferongames.com/networking-for-game-programmers/what-every-programmer-needs-to-know-about-game-networking/)这篇文章后面一个评论的说法
 
->TOADCOP
+>
+TOADCOP
+>
 FEBRUARY 10, 2010 AT 9:15 AM
+>
 btw afaik StarCraft don’t use peer-to-peer it uses client-server model with lockstep (at least warcraft 3 does so). It has the advantage what theoreticaly laggers will not affect gameplay/response latency at all (but to not let them fall behind server do timeouts so the lagger can catch up, also doing temporary local game speed increasing) and imo it’s the only and true way to do sync in RTS like games. (and for some reasons this technic isn’t good covered in the web)
 
 然后是作者的回复
 
->GLENN FIEDLER
+>
+GLENN FIEDLER
+>
 FEBRUARY 10, 2010 AT 10:20 AM
+>
 You are correct. Also something cool is that in a C/S RTS model the server could also theoretically arbitrate to ignore turns from lagging players, and kick them if they don’t catch up – removing various exploits where you can time-shift your packets and lag out other players.
 
 也就是说`Warcraft III`使用的是基于Client-Server的Lockstep模型。这就是为什么`Warcraft III`中有主机这个概念，当然这里主机的作用并不是完成所有计算和判定。
