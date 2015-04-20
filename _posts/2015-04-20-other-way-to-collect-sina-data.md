@@ -38,7 +38,7 @@ tags:
 
 这里我把新浪的一些子域名列出来供大家参考：
 
-- `[http://tw.weibo.com/](http://tw.weibo.com/)`（微博台湾站）
+- [http://tw.weibo.com/](http://tw.weibo.com/)（微博台湾站）
 - `http://hk.weibo.com/`（微博香港站）
 - `http://us.weibo.com/gb`（北美微博广场）
 - `http://overseas.weibo.com/`（微博国际）
