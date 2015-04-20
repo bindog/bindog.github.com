@@ -58,7 +58,7 @@ tags:
 - [http://weibo.com/rmrb](http://weibo.com/rmrb)
 - [http://weibo.com/u/1758509357](http://weibo.com/u/1758509357)
 
-对应的`tw.weibo.com`的域名为
+对应的`tw.weibo.com`的链接为
 
 - [http://tw.weibo.com/rmrb](http://tw.weibo.com/rmrb)
 - [http://tw.weibo.com/u/1758509357](http://tw.weibo.com/u/1758509357)
@@ -71,7 +71,7 @@ tags:
 
 - [http://weibo.com/2803301701/CeaOU15IT](http://weibo.com/2803301701/CeaOU15IT)
 
-对应的`tw.weibo.com`的域名为
+对应的`tw.weibo.com`的链接为
 
 - [http://tw.weibo.com/2803301701/3833781880260331](http://tw.weibo.com/2803301701/3833781880260331)
 
