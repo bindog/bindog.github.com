@@ -38,10 +38,10 @@ tags:
 
 这里我把新浪的一些子域名列出来供大家参考：
 
-- [http://tw.weibo.com/](http://tw.weibo.com/)（微博台湾站）
-- `http://hk.weibo.com/`（微博香港站）
-- `http://us.weibo.com/gb`（北美微博广场）
-- `http://overseas.weibo.com/`（微博国际）
+- [http://tw.weibo.com/]()（微博台湾站）
+- [http://hk.weibo.com/]()（微博香港站）
+- [http://us.weibo.com/gb]()（北美微博广场）
+- [http://overseas.weibo.com/]()（微博国际）
 
 那么如何把`weibo.com`域名下的链接转换成`tw.weibo.com`下的对应页面链接呢？简单在前面加一个`tw`是不行的，还需要对后面的一些参数进行转换。
 
@@ -53,13 +53,13 @@ tags:
 
 常见的用户主页链接就下面两种形式，后面一堆乱七八糟的参数可以省略……
 
-- `http://weibo.com/rmrb`
-- `http://weibo.com/u/1758509357`
+- [http://weibo.com/rmrb]()
+- [http://weibo.com/u/1758509357]()
 
 对应的`tw.weibo.com`的域名为
 
-- `http://tw.weibo.com/rmrb`
-- `http://tw.weibo.com/u/1758509357`
+- [http://tw.weibo.com/rmrb]()
+- [http://tw.weibo.com/u/1758509357]()
 
 用户主页的链接处理起来很简单，直接加上`tw`即可
 
@@ -67,11 +67,11 @@ tags:
 
 某条微博的链接如下，同样省略了后面的无关参数
 
-- `http://weibo.com/2803301701/CeaOU15IT`
+- [http://weibo.com/2803301701/CeaOU15IT]()
 
 对应的`tw.weibo.com`的域名为
 
-- `http://tw.weibo.com/2803301701/3833781880260331`
+- [http://tw.weibo.com/2803301701/3833781880260331]()
 
 如果对新浪开放平台的API不陌生的话，可知`2803301701`为用户的`uid`，`uid`是一个用户的唯一标识。
 
