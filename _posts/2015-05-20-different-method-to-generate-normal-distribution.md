@@ -321,7 +321,9 @@ $$\left\{\begin{matrix} x = {h_1}({u_1},{u_2})\\ y = {h_2}({u_1},{u_2}) \end{mat
 
 $$J=\begin{bmatrix} \frac{\partial x}{\partial u_1} & \frac{\partial x}{\partial u_2} \\ \frac{\partial y}{\partial u_1} & \frac{\partial y}{\partial u_2} \end{bmatrix} \ne 0$$
 
-则随机变量的二维联合密度为$f[h_1(u_1,u_2),h_2(u_1,u_2)] \cdot \left | J \right |$（回顾前面直角坐标和极坐标变换）
+则随机变量的二维联合密度为
+
+$$f[h_1(u_1,u_2),h_2(u_1,u_2)] \cdot \left | J \right |$$
 
 根据这个定理我们来证明一下，
 
