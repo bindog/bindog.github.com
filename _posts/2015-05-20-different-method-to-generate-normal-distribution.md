@@ -335,7 +335,7 @@ $$\left\{\begin{matrix} X_1 = e^{ - \frac{Y_1^2 + Y_2^2}{2}} \\ X_2 = \frac{1}{2
 
 计算Jacobian行列式
 
-$$\begin{align} J=\begin{vmatrix} \frac{\partial X_1}{\partial Y_1} & \frac{\partial X_1}{\partial Y_2} \\ \frac{\partial X_2}{\partial Y_1} & \frac{\partial X_2}{\partial Y_2} \end{vmatrix} & = \begin{vmatrix} -Y_1 \cdot e^{ -\frac{1}{2}(Y_1^2 + Y_2^2)} & -Y_2 \cdot e^{-\frac{1}{2}(Y_1^2 + Y_2^2)} \\ -\frac{Y_2}{2 \pi (Y_1^2+Y_2^2)} & \frac{Y_1}{2 \pi (Y_1^2+Y_2^2)} \end{vmatrix} \\ & =e^{-\frac{1}{2}(Y_1^2 + Y_2^2)}[\frac{-Y_1^2}{2 \pi (Y_1^2 + Y_2^2)}-\frac{Y_2^2}{2 \pi (Y_1^2 + Y_2^2)}] \\ & =-\frac{1}{2 \pi}e^{-\frac{1}{2}(Y_1^2 + Y_2^2)} \\ & =-(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_1^2})(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_2^2}) \end{align}$$
+$$\begin{align} \left | J \right | =\begin{vmatrix} \frac{\partial X_1}{\partial Y_1} & \frac{\partial X_1}{\partial Y_2} \\ \frac{\partial X_2}{\partial Y_1} & \frac{\partial X_2}{\partial Y_2} \end{vmatrix} & = \begin{vmatrix} -Y_1 \cdot e^{ -\frac{1}{2}(Y_1^2 + Y_2^2)} & -Y_2 \cdot e^{-\frac{1}{2}(Y_1^2 + Y_2^2)} \\ -\frac{Y_2}{2 \pi (Y_1^2+Y_2^2)} & \frac{Y_1}{2 \pi (Y_1^2+Y_2^2)} \end{vmatrix} \\ & =e^{-\frac{1}{2}(Y_1^2 + Y_2^2)}[\frac{-Y_1^2}{2 \pi (Y_1^2 + Y_2^2)}-\frac{Y_2^2}{2 \pi (Y_1^2 + Y_2^2)}] \\ & =-\frac{1}{2 \pi}e^{-\frac{1}{2}(Y_1^2 + Y_2^2)} \\ & =-(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_1^2})(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_2^2}) \end{align}$$
 
 由于$X_1,X_2$为$(0,1)$上的均匀分布，概率密度函数均为$1$，所以$Y_1,Y_2$的联合概率密度函数为$-(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_1^2})(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_2^2})$，熟悉二维正态分布的就知道是两个独立的正态分布，所以$Y_1,Y_2$是两个独立且服从正态分布的随机变量~
 
