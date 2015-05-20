@@ -114,6 +114,24 @@ $$f(x)=\begin{cases}\frac{1}{b - a} & \mathrm{for}\ a \le x \le b, \\[8pt]0 & \m
 
 [updf]()
 
+概率分布函数$F(x)$如下
+
+$$F(x)=\begin{cases} 0 & \text{for } x < a \\ \frac{x-a}{b-a} & \text{for } x \in [a,b) \\ 1 & \text{for } x \ge b \end{cases}$$
+
+[ucdf]()
+
+期望为$\tfrac{1}{2}(a+b)$，方差为$\tfrac{1}{12}(b-a)^2$
+
+正态分布的概率密度函数$f(x)$如下
+
+$$f(x) = \frac{1}{\sqrt{2\pi\sigma^2} } e^{ -\frac{(x-\mu)^2}{2\sigma^2} }$$
+
+[npdf]()
+
+标准正态分布中，$\mu=0,\sigma=1$，$f(x) = \frac{1}{\sqrt{2\pi} } e^{ -\frac{x^2}{2} }$
+
+正态分布的概率分布函数不太好求，不信自己去积分试试…
+
 
 
 
