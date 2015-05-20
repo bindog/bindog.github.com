@@ -208,6 +208,73 @@ $$\int\!\!\!\int\limits_D {f(x,y)dxdy}  = \int\!\!\!\int\limits_D {f(r\cos \thet
 
 现在知道那个多出来的$r$是怎么回事了吧？雅可比行列式相当于两个不同坐标系中微小区域面积的缩放倍数
 
+##拒绝采样(Rejection Sampling)
+
+这个方法有的时候也称接收-拒绝采样，使用场景是有些函数$p(x)$太复杂在程序中没法直接采样，那么可以设定一个程序可抽样的分布$q(x)$比如正态分布等等，然后按照一定的方法拒绝某些样本，达到接近$p(x)$分布的目的：
+
+具体操作如下，设定一个方便抽样的函数$q(x)$，以及一个常量$k$，使得$p(x)$总在$kq(x)$的下方。（参考上图）
+
+[rejection-sampling]()
+
+- $x$轴方向：从$q(x)$分布抽样得到$a$
+- $y$轴方向：从均匀分布$(0, kq(a))$中抽样得到$u$
+- 如果刚好落到灰色区域：$u>p(a)$，拒绝；否则接受这次抽样
+- 重复以上过程
+
+证明过程就不细说了，知道怎么用就行了，感兴趣的可以看看这个文档[]()
+
+不过在高维的情况下，拒绝采样会出现两个问题，第一是合适的$q$分布比较难以找到，第二是很难确定一个合理的$k$值。这两个问题会**导致拒绝率很高，无用计算增加**。
+
+#0x03 暴力生成正态分布
+
+根据中心极限定理，生成正态分布就非常简单粗暴了，直接生成`n`个独立同分布的随机变量，求和即可。注意，**无论**你使用什么分布，当`n`趋近于无穷大时，它们和的分布都会趋近正态分布！
+
+以最简单的均匀分布为例，看代码
+
+{% highlight python %}
+
+# -*- coding: utf-8 -*-
+import matplotlib.pyplot as plt
+import numpy as np
+
+def getNormal(SampleSize,n):
+    xsum = []
+    for i in range(SampleSize):
+        # 利用中心极限定理，[0,1)均匀分布期望为0.5，方差为1/12
+        tsum = (np.mean(np.random.uniform(0,1,n))-0.5)*np.sqrt(12*n)
+        xsum.append(tsum)
+    return xsum
+
+# 生成10000个数，观察它们的分布情况
+SampleSize = 10000
+# 观察n选不同值时，对最终结果的影响
+N = [1,2,10,1000]
+
+plt.figure(figsize=(10,20))
+subi = 220
+for index,n in enumerate(N):
+    subi += 1
+    plt.subplot(subi)
+    normalsum = getNormal(SampleSize, n)
+    # 绘制直方图
+    plt.hist(normalsum,np.linspace(-4,4,80),facecolor="green",label="n={0}".format(n))
+    plt.ylim([0,450])
+    plt.legend()
+
+plt.show()
+
+{% endhighlight %}
+
+得到结果如下图所示
+
+[clt_normal]()
+
+可以看到，`n=1`时其实就是均匀分布，`n=2`时有正态分布的样子了，但不够平滑，随着`n`逐渐增大，直方图轮廓越来越接近正态分布了~因此利用中心极限定理暴力生成服从正态分布的随机数是可行的
+
+但是这样生成正态分布速度是非常慢的，因为要生成若干个同分布随机变量，然后求和、计算，效率非常低。那有没有其他办法呢？
+
+当然有！利用反变换法
+
 
 
 
