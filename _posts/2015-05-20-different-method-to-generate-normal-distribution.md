@@ -329,9 +329,7 @@ $$\left\{\begin{matrix} X_1 = e^{ - \frac{Y_1^2 + Y_2^2}{2}} \\ X_2 = \frac{1}{2
 
 计算Jacobian行列式
 
-$$J=\begin{vmatrix} \frac{\partial X_1}{\partial Y_1} & \frac{\partial X_1}{\partial Y_2} \\ \frac{\partial X_2}{\partial Y_1} & \frac{\partial X_2}{\partial Y_2} \end{vmatrix}$$
-
-$$=\begin{vmatrix} -Y_1 \cdot e^{ -\frac{1}{2}(Y_1^2 + Y_2^2)} & -Y_2 \cdot e^{-\frac{1}{2}(Y_1^2 + Y_2^2)} \\ -\frac{Y_2}{2 \pi (Y_1^2+Y_2^2)} & \frac{Y_1}{2 \pi (Y_1^2+Y_2^2)} \end{vmatrix}$$
+$$J=\begin{vmatrix} \frac{\partial X_1}{\partial Y_1} & \frac{\partial X_1}{\partial Y_2} \\ \frac{\partial X_2}{\partial Y_1} & \frac{\partial X_2}{\partial Y_2} \end{vmatrix} = \begin{vmatrix} -Y_1 \cdot e^{ -\frac{1}{2}(Y_1^2 + Y_2^2)} & -Y_2 \cdot e^{-\frac{1}{2}(Y_1^2 + Y_2^2)} \\ -\frac{Y_2}{2 \pi (Y_1^2+Y_2^2)} & \frac{Y_1}{2 \pi (Y_1^2+Y_2^2)} \end{vmatrix}$$
 
 $$=e^{-\frac{1}{2}(Y_1^2 + Y_2^2)}[\frac{-Y_1^2}{2 \pi (Y_1^2 + Y_2^2)}-\frac{Y_2^2}{2 \pi (Y_1^2 + Y_2^2)}]=-\frac{1}{2 \pi}e^{-\frac{1}{2}(Y_1^2 + Y_2^2)}=-(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_1^2})(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_2^2})$$
 
