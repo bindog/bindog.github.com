@@ -325,6 +325,8 @@ $$J=\begin{bmatrix} \frac{\partial x}{\partial u_1} & \frac{\partial x}{\partial
 
 $$f[h_1(u_1,u_2),h_2(u_1,u_2)] \cdot \left | J \right |$$
 
+$$(F(x,y)=\iint f(x,y) dxdy = \iint f[h_1(u_1,u_2),h_2(u_1,u_2)] \cdot \left | J \right | du_1du_2)$$
+
 根据这个定理我们来证明一下，
 
 $$\left\{\begin{matrix} Y_1 = \sqrt {- 2\log X_1} \cos (2\pi X_2) \\ Y_2 = \sqrt {- 2\log X_1} \sin (2\pi X_2) \end{matrix}\right.$$
