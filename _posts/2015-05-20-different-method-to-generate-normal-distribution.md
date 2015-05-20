@@ -104,7 +104,7 @@ protected int next(int bits) {
 
 >设随机变量$X$的分布函数为$F(x)$，若存在非负实函数$f(x)$，使对任意实数$x$，有$F(x) = \int_{-\infty}^{x} f(x)\,dx$，则称$X$为连续型随机变量，$f(x)$称为$X$的概率密度函数,简称概率密度或密度函数
 
-看下面这张图也非常清楚
+看下面这张图也非常清楚，概率分布函数$F(x)$是**cumulative distribution function(CDF)**，概率密度函数$f(x)$是**probability density function(PDF)**
 
 ![cdf-and-pdf](http://ac-cf2bfs1v.clouddn.com/onJpBW4CUFRVNrczhI65EKdFpijBWulJhIlMDM4e.gif)
 
