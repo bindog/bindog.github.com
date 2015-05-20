@@ -178,7 +178,7 @@ plt.show()
 
 那么为什么$F^{-1}(U)$会服从$F$给出的分布呢？其实很好证明，$P(F^{-1}(U) \le x)$，两边同时取$F$得到$P(F^{-1}(U) \le x)=P(U \le F(x))$，根据均匀分布的定义$P(U < y) = y$，所以$P(U \le F(x)) = F(x)$，即$P(F^{-1}(U) \le x)=F(x)$，刚好是随机变量服从某个分布的定义，证毕~
 
-$$\begin{align} P(F^{-1}(U) \le x) & =P(U \le F(x)) \\ & = P(U \le F(x)) \\ & = F(x) \end{align}$$
+$$\begin{align} P(F^{-1}(U) \le x) & =P(U \le F(x)) \\ & = F(x) \end{align}$$
 
 ## 雅可比矩阵与雅可比行列式
 
