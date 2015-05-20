@@ -18,7 +18,11 @@ tags:
 
 <!--more-->
 
-#0x01 均匀分布
+#0x01 知识回顾
+
+为了防止你对接下来的内容一头雾水，我觉得还是有必要回顾一下我们曾经学过的高数和概率统计知识
+
+##均匀分布
 
 均匀分布是生成其他分布的基础，基本上只要是个编程语言，其标准函数库里面肯定有一个随机生成$[0,1)$之间浮点数的函数，原理很简单，使用的是**线性同余法（linear congruential generator, LCG）**，依据下面这个递推公式
 
@@ -93,10 +97,6 @@ protected int next(int bits) {
 现在回头看看`nextseed = (oldseed * multiplier + addend) & mask`这行代码可以理解了吧？
 
 关于均匀分布的更多细节可以参考[JDK源码分析——从java.util.Random源码分析线性同余算法](http://www.yangyong.me/jdk%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%BB%8Ejava-util-random%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E7%AE%97%E6%B3%95/)
-
-#0x02 知识回顾
-
-为了防止你对接下来的内容一头雾水，我觉得还是有必要回顾一下我们曾经学过的高数和概率统计知识
 
 ##概率分布函数和概率密度函数
 
@@ -182,7 +182,7 @@ plt.show()
 
 这个东西在高数课本中有，只怪当初学习不用功……
 
-设$\mathbf{f}:\mathbb{R}^n\rightarrow \mathbb{R}^m$是一个向量函数，输入为$\mathbf{x}\in \mathbb{R}^n$，输出为$\mathbf{f(x)}\in \mathbb{R}^m$
+设$\mathbf{f}:\mathbb{R}^n\rightarrow \mathbb{R}^m$是一个向量函数，输入为$\mathbf{x}\in \mathbb{R}^n$，输出为$\mathbf{f(x)}\in \mathbb{R}^m$，雅可比矩阵可以写成如下形式：
 
 $$\mathbf J = \frac{d\mathbf f}{d\mathbf x} = \begin{bmatrix} \dfrac{\partial \mathbf{f}}{\partial x_1} & \cdots & \dfrac{\partial \mathbf{f}}{\partial x_n} \end{bmatrix} = \begin{bmatrix} \dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n}\\ \vdots & \ddots & \vdots\\ \dfrac{\partial f_m}{\partial x_1} & \cdots & \dfrac{\partial f_m}{\partial x_n} \end{bmatrix}$$
 
@@ -225,9 +225,9 @@ $$\int\!\!\!\int\limits_D {f(x,y)dxdy}  = \int\!\!\!\int\limits_D {f(r\cos \thet
 
 - [Acceptance-Rejection Method](http://ac-cf2bfs1v.clouddn.com/eS5xc2TSUPdjJwn3phQV7h6knPXXAQ0oRr4aSlLQ.pdf)
 
-不过在高维的情况下，拒绝采样会出现两个问题，第一是合适的$q$分布比较难以找到，第二是很难确定一个合理的$k$值。这两个问题会**导致拒绝率很高，无用计算增加**。
+不过在高维的情况下，拒绝采样会出现两个问题，第一是合适的$q$分布比较难以找到，第二是很难确定一个合理的$k$值。这两个问题会造成图中灰色区域的面积变大，从而**导致拒绝率很高，无用计算增加**。
 
-#0x03 暴力生成正态分布
+#0x02 暴力生成正态分布
 
 根据中心极限定理，生成正态分布就非常简单粗暴了，直接生成`n`个独立同分布的随机变量，求和即可。注意，**无论**你使用什么分布，当`n`趋近于无穷大时，它们和的分布都会趋近正态分布！
 
@@ -277,7 +277,7 @@ plt.show()
 
 当然有！利用反变换法
 
-#0x04 反变换法生成正态分布
+#0x03 反变换法生成正态分布
 
 正态分布的概率分布函数(CDF)不好求，不过我们可以利用计算机把它画出来，如下图所示
 
@@ -287,7 +287,7 @@ plt.show()
 
 当然这只是个想法而已，具体怎么实现我也不知道
 
-#0x05 Box–Muller方法
+#0x04 Box–Muller方法
 
 说来也巧，某天闲的无聊突然很好奇`python`是如何生成服从正态分布的随机数的，于是就看了看`random.py`的代码，具体实现的代码就不贴了，大家自己去看，注释中有下面几行
 
@@ -369,9 +369,11 @@ plt.show()
 
 这里抽样次数达到1千万次，1秒左右就完成了，速度比暴力生成正态分布要快的多~
 
-#0x06 Ziggurat Algorithm
+ps:由于`Box–Muller`算法一次性生成了两个独立且服从正态分布的随机数，所以可以把其中一个保存起来，下次直接使用即可。本文刚开始的那段代码中`nextNextGaussian`就是用来保存它的~
 
-`Box–Muller`方法虽然快了许多，但是由于用到了三角函数和对数函数，相对来说还是比较耗时的，如果想要更快一点有没有办法呢？
+#0x05 Ziggurat Algorithm
+
+`Box–Muller`算法虽然快了许多，但是由于用到了三角函数和对数函数，相对来说还是比较耗时的，如果想要更快一点有没有办法呢？
 
 当然有，这就是`Ziggurat`算法，不仅可以用于快速生成正态分布，还可以生成指数分布等等。其基本思想就是利用**拒绝采样**，其高效的秘密在于构造了一个非常精妙的$q(x)$，看下面这张图
 
@@ -398,17 +400,17 @@ plt.show()
 
 ![speed-up](http://ac-cf2bfs1v.clouddn.com/Rz5BI3C5Qh0a0gjbF710wCAw9GsyhdF6fEUinGgz.png)
 
-#0x07 总结
+#0x06 总结
 
 本文介绍了多种生成正态分布的方法，其中`Box-muller`算法应对一般的需求足够了，但是要生成大量服从正态分布的随机数时，`Ziggurat`算法效率会更高一点~
 
 再说点题外话，作为一名普通的程序员，对于很多东西往往不需要了解的非常深入，说白了“会用就行了”。但是有的时候探寻其背后的原理往往能发现别人领会不到的数学之美，这也是写程序之余的一点乐趣吧~
 
-#0x08 参考资料
+#0x07 参考资料
 
 - [大数定律与中心极限定理](http://ac-cf2bfs1v.clouddn.com/71ErfPP72vdJRcCTIcC9iOVnAPEOVFDveKI1JMO1.pdf)
 - [Jacobian 矩陣與行列式](https://ccjou.wordpress.com/2012/11/26/jacobian-%E7%9F%A9%E9%99%A3%E8%88%87%E8%A1%8C%E5%88%97%E5%BC%8F/)
-- [从随机过程到马尔科夫链蒙特卡洛方法]http://www.cnblogs.com/daniel-D/p/3388724.html)
+- [从随机过程到马尔科夫链蒙特卡洛方法](http://www.cnblogs.com/daniel-D/p/3388724.html)
 - [随机数产生原理](http://ac-cf2bfs1v.clouddn.com/uPcW0ce2E0FIDIt53mLwHGJ5s6xTadE4mqVCpsWd.ppt)
 - [Transformed Random Variables](http://www.mathematik.uni-ulm.de/numerik/teaching/ss09/NumFin/Script/chap2_4-2_5.pdf)
 - [Box-Muller Transform Normality](http://math.stackexchange.com/questions/1005236/box-muller-transform-normality)
