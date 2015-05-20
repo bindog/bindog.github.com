@@ -325,7 +325,7 @@ $$\left\{\begin{matrix} {{Y_1} = \sqrt { - 2\log {X_1}} \cos (2\pi {X_2})} \\ {{
 
 求反函数得
 
-$$\left\{\begin{matrix} {{X_1} = {e^{ - {{Y_1^2 + Y_2^2} \over 2}}}} \\ {{X_2} = {1 \over {2\pi }}\arctan {{{Y_2}} \over {{Y_1}}}} \end{matrix}\right.$$
+$$\left\{\begin{matrix} {X_1} = e^{ - {{Y_1^2 + Y_2^2} \over 2}} \\ {X_2} = 1 \over {2 \pi} \arctan Y_2 \over Y_1 \end{matrix}\right.$$
 
 计算Jacobian行列式
 
