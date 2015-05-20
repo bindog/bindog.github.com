@@ -323,7 +323,7 @@ $$J=\begin{bmatrix} \frac{\partial x}{\partial u_1} & \frac{\partial x}{\partial
 
 则随机变量$(X,Y)$的二维联合密度为（回顾直角坐标和极坐标变换）：
 
-$$f[h_1(u_1,u_2),h_2(u_1,u_2)] \cdot \left | J \right |$$
+$$f[h_1(u_1,u_2),h_2(u_1,u_2)] \cdot \left | J \right | = \left | J \right |$$
 
 根据这个定理我们来证明一下，
 
