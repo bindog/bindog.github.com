@@ -146,7 +146,7 @@ $$P\left \{ \frac{X_1+X_2+\cdots+X_n-n\mu}{\sigma \sqrt n} \leq x \right \} \rig
 
 ## 反变换法(Inverse transform sampling)
 
-假设$u=F(x)$是一个概率分布函数(CDF)，$F^{-1}$是它的反函数，若$U$是一个服从(0,1)均匀分布的随机变量，则$F^{-1}(U)$服从函数$F给出的分布
+假设$u=F(x)$是一个概率分布函数(CDF)，$F^{-1}$是它的反函数，若$U$是一个服从(0,1)均匀分布的随机变量，则$F^{-1}(U)$服从函数$F$给出的分布
 
 例如要生成一个服从指数分布的随机变量，我们知道指数分布的概率分布函数(CDF)为$F(x)=1 - e^{ - \lambda x}$，其反函数为$F^{ - 1}(x) = -\frac{\ln (1-x)}{\lambda}$，写程序实现一下
 
@@ -178,6 +178,35 @@ plt.show()
 
 那么为什么$F^{-1}(U)$会服从$F$给出的分布呢？其实很好证明，$P(F^{-1}(U) \le x)$，两边同时取$F$得到$P(F^{-1}(U) \le x)=P(U \le F(x))$，根据均匀分布的定义$P(U < y) = y$，所以$P(U \le F(x)) = F(x)$，即$P(F^{-1}(U) \le x)=F(x)$，刚好是随机变量服从某个分布的定义，证毕~
 
+## 雅可比矩阵与雅可比行列式
+
+这个东西在高数课本中有，只怪当初学习不用功……
+
+设$\mathbf{f}:\mathbb{R}^n\rightarrow \mathbb{R}^m$是一个向量函数，输入为$\mathbf{x}\in \mathbb{R}^n$，输出为$\mathbf{f(x)}\in \mathbb{R}^m$
+
+$$\mathbf J = \frac{d\mathbf f}{d\mathbf x} = \begin{bmatrix} \dfrac{\partial \mathbf{f}}{\partial x_1} & \cdots & \dfrac{\partial \mathbf{f}}{\partial x_n} \end{bmatrix} = \begin{bmatrix} \dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n}\\ \vdots & \ddots & \vdots\\ \dfrac{\partial f_m}{\partial x_1} & \cdots & \dfrac{\partial f_m}{\partial x_n} \end{bmatrix}$$
+
+当$m=n$时，雅可比矩阵为一个方阵，我们可以取它的行列式
+
+$$\mathrm{det}\,J=\begin{vmatrix} \dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n}\\ \vdots & \ddots & \vdots\\ \dfrac{\partial f_m}{\partial x_1} & \cdots & \dfrac{\partial f_m}{\partial x_n} \end{vmatrix}$$
+
+以咱们熟悉的平面直角坐标与极坐标转换为例吧，
+
+$$\left\{\begin{matrix} x=r \cos \theta \\ y=r \sin \theta \end{matrix}\right.$$
+
+求雅可比矩阵，
+
+$$J=\begin{bmatrix} \frac{\partial x}{\partial r} & \frac{\partial x}{\partial \theta} \\ \frac{\partial y}{\partial r} & \frac{\partial y}{\partial \theta} \end{bmatrix} = \begin{bmatrix} {\mathrm{cos} \theta }&{-r\mathrm{sin} \theta}\\ {\mathrm{sin} \theta} & {r\mathrm{cos} \theta} \end{bmatrix}$$
+
+取行列式
+
+$$\mathrm{det}\,J=r\mathrm{cos}^2 \theta+r\mathrm{sin}^2 \theta=r$$
+
+回顾当初学习二重积分时，利用极坐标变换时的式子如下
+
+$$\int\!\!\!\int\limits_D {f(x,y)dxdy}  = \int\!\!\!\int\limits_D {f(r\cos \theta ,r\sin \theta )rdrd\theta}$$
+
+现在知道那个多出来的$r$是怎么回事了吧？雅可比行列式相当于两个不同坐标系中微小区域面积的缩放倍数
 
 
 
