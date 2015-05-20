@@ -144,39 +144,7 @@ $$P\left \{ \frac{X_1+X_2+\cdots+X_n-n\mu}{\sigma \sqrt n} \leq x \right \} \rig
 
 说人话就是，$n$个相互独立同分布的随机变量之和的分布近似于正态分布，$n$越大，近似程度越好
 
-## 反变换法(Inverse transform sampling)
 
-假设$u=F(x)$是一个概率分布函数(CDF)，$F^{-1}$是它的反函数，若$U$是一个服从(0,1)均匀分布的随机变量，则$F^{-1}(U)$服从函数$F给出的分布
-
-例如要生成一个服从指数分布的随机变量，我们知道指数分布的概率分布函数(CDF)为$F(x)=1 - e^{ - \lambda x}$，其反函数为$F^{ - 1}(x) =  - {{\ln (1 - x)} \over \lambda }$，写程序实现一下
-
-{% highlight python %}
-
-# -*- coding: utf-8 -*-
-import matplotlib.pyplot as plt
-import numpy as np
-
-def getExponential(SampleSize,p_lambda):
-    result = -np.log(1-np.random.uniform(0,1,SampleSize))/p_lambda
-    return result
-
-# 生成10000个数，观察它们的分布情况
-SampleSize = 10000
-es = getExponential(SampleSize, 1)
-plt.hist(es,np.linspace(0,5,50),facecolor="green")
-plt.show()
-
-{% endhighlight %}
-
-得到如下结果
-
-[Exponential distribution]()
-
-对比维基百科里面标准的指数分布
-
-[standard Exponential distribution]()
-
-那么为什么$F^{-1}(U)$会服从$F$给出的分布呢？其实很好证明，$P(F^{-1}(U) \le x)$，两边同时取$F$得到$P(F^{-1}(U) \le x)=P(U \le F(x))$，根据均匀分布的定义$P(U < y) = y$，所以$P(U \le F(x)) = F(x)$，即$P(F^{-1}(U) \le x)=F(x)$，刚好是随机变量服从某个分布的定义，证毕~
 
 
 
