@@ -275,6 +275,90 @@ plt.show()
 
 当然有！利用反变换法
 
+#0x04 反变换法生成正态分布
+
+正态分布的概率分布函数(CDF)不好求，不过我们可以利用计算机把它画出来，如下图所示
+
+[CDF_normal]()
+
+此时在`y`轴上产生服从(0,1)均匀分布的随机数，水平向右投影到曲线上，然后垂直向下投影到`x`轴，这样在`x`轴上就得到了正态分布，大家可以自行脑补这个过程
+
+当然这只是个想法而已，具体怎么实现我也不知道
+
+#0x05 Box–Muller方法
+
+说来也巧，某天闲的无聊突然很好奇`python`是如何生成服从正态分布的随机数的，于是就看了看`random.py`的代码，具体实现的代码就不贴了，大家自己去看，注释中有下面几行
+
+{% highlight python %}
+
+# When x and y are two variables from [0, 1), uniformly
+# distributed, then
+#
+#    cos(2*pi*x)*sqrt(-2*log(1-y))
+#    sin(2*pi*x)*sqrt(-2*log(1-y))
+#
+# are two *independent* variables with normal distribution
+
+{% endhighlight %}
+
+顿时感觉非常科幻，也就是说当$x$和$y$是两个独立且服从[0,1)均匀分布的随机变量时，$\cos (2\pi x) \cdot \sqrt { - 2\ln (1 - y)}$和$\sin (2\pi x) \cdot \sqrt { - 2\ln (1 - y)} $是两个独立且服从正态分布的随机变量！
+
+后来查了查这个公式，发现这个方法叫做`Box–Muller`，其实本质上也是应用了反变换法，证明方法比较多，这里我们选取一种比较好理解的
+
+我们把反变换法推广到二维的情况，设$U_1,U_2$为(0,1)上的均匀分布随机变量，且有
+
+$$\left\{\begin{matrix} {U_1} = {g_1}(X,Y)\\ {U_2} = {g_2}(X,Y) \end{matrix}\right.$$
+
+其中，$g_1,g_2$的逆变换存在，记为
+
+$$\left\{\begin{matrix} x = {h_1}({u_1},{u_2})\\ y = {h_2}({u_1},{u_2}) \end{matrix}\right.$$
+
+且存在一阶偏导数，设$J$为Jacobian矩阵的行列式
+
+$$J = \begin{bmatrix} {{{\partial x} \over {\partial {u_1}}}} & {{{\partial x} \over {\partial {u_2}}}} \\ {{{\partial y} \over {\partial {u_1}}}} & {{{\partial y} \over {\partial {u_2}}}} \end{bmatrix} \ne 0$$
+
+则随机变量的二维联合密度为$f\left[ {{h_1}({u_1},{u_2}),{h_2}({u_1},{u_2})} \right] \cdot \left| J \right|$
+
+根据这个定理我们来证明一下，
+
+$$\left\{\begin{matrix} {{Y_1} = \sqrt { - 2\log {X_1}} \cos (2\pi {X_2})} \\ {{Y_2} = \sqrt { - 2\log {X_1}} \sin (2\pi {X_2})} \end{matrix}\right.$$
+
+求反函数得
+
+$$\left\{\begin{matrix} {{X_1} = {e^{ - {{Y_1^2 + Y_2^2} \over 2}}}} \\ {{X_2} = {1 \over {2\pi }}\arctan {{{Y_2}} \over {{Y_1}}}} \end{matrix}\right.$$
+
+计算Jacobian行列式
+
+$$J=\begin{vmatrix} {{\partial {X_1}} \over {\partial {Y_1}}} & {{\partial {X_1}} \over {\partial {Y_2}}}\\ {{\partial {X_2}} \over {\partial {Y_1}}} & {{\partial {X_2}} \over {\partial {Y_2}}} \end{vmatrix}=\begin{vmatrix} { - {Y_1} \cdot {e^{ - {1 \over 2}(Y_1^2 + Y_2^2)}}} & { - {Y_2} \cdot {e^{ - {1 \over 2}(Y_1^2 + Y_2^2)}}}\\ {{{ - {Y_2}} \over {2\pi (Y_1^2 + Y_2^2)}}} & {{{{Y_1}} \over {2\pi (Y_1^2 + Y_2^2)}}} \end{vmatrix}$$
+
+$$ = {e^{ - {1 \over 2}(Y_1^2 + Y_2^2)}}[{{ - Y_1^2} \over {2\pi (Y_1^2 + Y_2^2)}} - {{Y_2^2} \over {2\pi (Y_1^2 + Y_2^2)}}] =  - {1 \over {2\pi }}{e^{ - {1 \over 2}(Y_1^2 + Y_2^2)}} =  - ({1 \over {\sqrt {2\pi } }}{e^{ - {1 \over 2}Y_1^2}}) \cdot ({1 \over {\sqrt {2\pi } }}{e^{ - {1 \over 2}Y_2^2}})$$
+
+由于$X_1,X_2$为(0,1)上的均匀分布，概率密度函数均为1，所以$Y_1，Y_2$的联合概率密度函数为$ - ({1 \over {\sqrt {2\pi } }}{e^{ - {1 \over 2}Y_1^2}}) \cdot ({1 \over {\sqrt {2\pi } }}{e^{ - {1 \over 2}Y_2^2}})$，熟悉二维正态分布的就知道是两个独立的正态分布，所以$Y_1,Y_2$是两个独立且服从正态分布的随机变量~
+
+写程序实现一下
+
+{% highlight python %}
+
+# -*- coding: utf-8 -*-
+import matplotlib.pyplot as plt
+import numpy as np
+
+def getNormal(SampleSize):
+    iid = np.random.uniform(0,1,SampleSize)
+    normal1 = np.cos(2*np.pi*iid[0:SampleSize/2-1])*np.sqrt(-2*np.log(iid[SampleSize/2:SampleSize-1]))
+    normal2 = np.sin(2*np.pi*iid[0:SampleSize/2-1])*np.sqrt(-2*np.log(iid[SampleSize/2:SampleSize-1]))
+    return np.hstack((normal1,normal2))
+
+# 生成10000000个数，观察它们的分布情况
+SampleSize = 10000000
+es = getNormal(SampleSize)
+plt.hist(es,np.linspace(-4,4,80),facecolor="green")
+plt.show()
+
+{% endhighlight %}
+
+这里抽样次数达到1千万次，1秒左右就完成了，速度比暴力生成正态分布要快的多~
+
 
 
 
