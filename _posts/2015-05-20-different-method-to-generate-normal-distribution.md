@@ -309,7 +309,7 @@ plt.show()
 
 后来查了查这个公式，发现这个方法叫做`Box–Muller`，其实本质上也是应用了反变换法，证明方法比较多，这里我们选取一种比较好理解的
 
-我们把反变换法推广到二维的情况，设$U_1,U_2$为$(0,1)$上的均匀分布随机变量，且有
+我们把反变换法推广到二维的情况，设$U_1,U_2$为$(0,1)$上的均匀分布随机变量，$(U_1,U_2)$的联合概率密度函数为$f(u_1,u_2)=1(0 \le u_1,u_2 \le 1)$，若有：
 
 $$\left\{\begin{matrix} {U_1} = {g_1}(X,Y)\\ {U_2} = {g_2}(X,Y) \end{matrix}\right.$$
 
@@ -321,7 +321,7 @@ $$\left\{\begin{matrix} x = {h_1}({u_1},{u_2})\\ y = {h_2}({u_1},{u_2}) \end{mat
 
 $$J=\begin{bmatrix} \frac{\partial x}{\partial u_1} & \frac{\partial x}{\partial u_2} \\ \frac{\partial y}{\partial u_1} & \frac{\partial y}{\partial u_2} \end{bmatrix} \ne 0$$
 
-则随机变量的二维联合密度为（回顾直角坐标和极坐标变换）：
+则随机变量$(X,Y)$的二维联合密度为（回顾直角坐标和极坐标变换）：
 
 $$f[h_1(u_1,u_2),h_2(u_1,u_2)] \cdot \left | J \right |$$
 
