@@ -321,7 +321,7 @@ $$J=\begin{bmatrix} \frac{\partial x}{\partial u_1} & \frac{\partial x}{\partial
 
 根据这个定理我们来证明一下，
 
-$$\left\{\begin{matrix} {Y_1 = \sqrt { - 2\log {X_1}} \cos (2\pi {X_2})} \\ {{Y_2} = \sqrt { - 2\log {X_1}} \sin (2\pi {X_2})} \end{matrix}\right.$$
+$$\left\{\begin{matrix} {Y_1 = \sqrt { - 2\log {X_1}} \cos (2\pi {X_2})} \\ Y_2 = \sqrt { - 2\log {X_1}} \sin (2\pi {X_2}) \end{matrix}\right.$$
 
 求反函数得
 
