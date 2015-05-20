@@ -321,19 +321,21 @@ $$J=\begin{bmatrix} \frac{\partial x}{\partial u_1} & \frac{\partial x}{\partial
 
 根据这个定理我们来证明一下，
 
-$$\left\{\begin{matrix} {Y_1 = \sqrt { - 2\log {X_1}} \cos (2\pi {X_2})} \\ Y_2 = \sqrt { - 2\log {X_1}} \sin (2\pi {X_2}) \end{matrix}\right.$$
+$$\left\{\begin{matrix} Y_1 = \sqrt {- 2\log X_1} \cos (2\pi X_2) \\ Y_2 = \sqrt {- 2\log X_1} \sin (2\pi X_2) \end{matrix}\right.$$
 
 求反函数得
 
-$$\left\{\begin{matrix} {X_1} = e^{ - {{Y_1^2 + Y_2^2} \over 2}} \\ {X_2} = 1 \over {2 \pi} \arctan Y_2 \over Y_1 \end{matrix}\right.$$
+$$\left\{\begin{matrix} X_1 = e^{ - \frac{Y_1^2 + Y_2^2}{2}} \\ X_2 = \frac{1}{{2 \pi} \arctan Y_2 \over Y_1} \end{matrix}\right.$$
 
 计算Jacobian行列式
 
-$$J=\begin{vmatrix} {{\partial {X_1}} \over {\partial {Y_1}}} & {{\partial {X_1}} \over {\partial {Y_2}}}\\ {{\partial {X_2}} \over {\partial {Y_1}}} & {{\partial {X_2}} \over {\partial {Y_2}}} \end{vmatrix}=\begin{vmatrix} { - {Y_1} \cdot {e^{ - {1 \over 2}(Y_1^2 + Y_2^2)}}} & { - {Y_2} \cdot {e^{ - {1 \over 2}(Y_1^2 + Y_2^2)}}}\\ {{{ - {Y_2}} \over {2\pi (Y_1^2 + Y_2^2)}}} & {{{{Y_1}} \over {2\pi (Y_1^2 + Y_2^2)}}} \end{vmatrix}$$
+$$J=\begin{vmatrix} \frac{\partial X_1}{\partial Y_1} & \frac{\partial X_1}{\partial Y_2} \\ \frac{\partial X_2}{\partial Y_1} & \frac{\partial X_2}{\partial Y_2} \end{vmatrix}$$
 
-$$ = {e^{ - {1 \over 2}(Y_1^2 + Y_2^2)}}[{{ - Y_1^2} \over {2\pi (Y_1^2 + Y_2^2)}} - {{Y_2^2} \over {2\pi (Y_1^2 + Y_2^2)}}] =  - {1 \over {2\pi }}{e^{ - {1 \over 2}(Y_1^2 + Y_2^2)}} =  - ({1 \over {\sqrt {2\pi } }}{e^{ - {1 \over 2}Y_1^2}}) \cdot ({1 \over {\sqrt {2\pi } }}{e^{ - {1 \over 2}Y_2^2}})$$
+$$=\begin{vmatrix} -Y_1 \cdot e^{ -\frac{1}{2}(Y_1^2 + Y_2^2)} & -Y_2 \cdot e^{-\frac{1}{2}(Y_1^2 + Y_2^2)} \\ -\frac{Y_2}{2 \pi (Y_1^2+Y_2^2)} & \frac{Y_1}{2 \pi (Y_1^2+Y_2^2)} \end{vmatrix}$$
 
-由于$X_1,X_2$为(0,1)上的均匀分布，概率密度函数均为1，所以$Y_1，Y_2$的联合概率密度函数为$ - ({1 \over {\sqrt {2\pi } }}{e^{ - {1 \over 2}Y_1^2}}) \cdot ({1 \over {\sqrt {2\pi } }}{e^{ - {1 \over 2}Y_2^2}})$，熟悉二维正态分布的就知道是两个独立的正态分布，所以$Y_1,Y_2$是两个独立且服从正态分布的随机变量~
+$$=e^{-\frac{1}{2}(Y_1^2 + Y_2^2)}[\frac{-Y_1^2}{2 \pi (Y_1^2 + Y_2^2)}-\frac{Y_2^2}{2 \pi (Y_1^2 + Y_2^2)}]=-\frac{1}{2 \pi}e^{-\frac{1}{2}(Y_1^2 + Y_2^2)}=-(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_1^2})(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_2^2})$$
+
+由于$X_1,X_2$为(0,1)上的均匀分布，概率密度函数均为1，所以$Y_1，Y_2$的联合概率密度函数为$-(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_1^2})(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_2^2})$，熟悉二维正态分布的就知道是两个独立的正态分布，所以$Y_1,Y_2$是两个独立且服从正态分布的随机变量~
 
 写程序实现一下
 
