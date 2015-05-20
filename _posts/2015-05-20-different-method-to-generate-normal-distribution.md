@@ -190,7 +190,7 @@ $$\mathbf J = \frac{d\mathbf f}{d\mathbf x} = \begin{bmatrix} \dfrac{\partial \m
 
 当$m=n$时，雅可比矩阵为一个方阵，我们可以取它的行列式
 
-$$\mathrm{det}\,J=\begin{vmatrix} \dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n}\\ \vdots & \ddots & \vdots\\ \dfrac{\partial f_m}{\partial x_1} & \cdots & \dfrac{\partial f_m}{\partial x_n} \end{vmatrix}$$
+$$ \left | J \right | =\begin{vmatrix} \dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n}\\ \vdots & \ddots & \vdots\\ \dfrac{\partial f_m}{\partial x_1} & \cdots & \dfrac{\partial f_m}{\partial x_n} \end{vmatrix}$$
 
 以咱们熟悉的平面直角坐标与极坐标转换为例吧，
 
@@ -202,7 +202,7 @@ $$J=\begin{bmatrix} \frac{\partial x}{\partial r} & \frac{\partial x}{\partial \
 
 取行列式
 
-$$\mathrm{det}\,J=r\mathrm{cos}^2 \theta+r\mathrm{sin}^2 \theta=r$$
+$$ \left | J \right | =r\mathrm{cos}^2 \theta+r\mathrm{sin}^2 \theta=r$$
 
 回顾当初学习二重积分时，利用极坐标变换时的式子如下
 
@@ -319,7 +319,7 @@ $$\left\{\begin{matrix} x = {h_1}({u_1},{u_2})\\ y = {h_2}({u_1},{u_2}) \end{mat
 
 且存在一阶偏导数，设$J$为Jacobian矩阵的行列式
 
-$$J=\begin{bmatrix} \frac{\partial x}{\partial u_1} & \frac{\partial x}{\partial u_2} \\ \frac{\partial y}{\partial u_1} & \frac{\partial y}{\partial u_2} \end{bmatrix} \ne 0$$
+$$ \left | J \right | =\begin{vmatrix} \frac{\partial x}{\partial u_1} & \frac{\partial x}{\partial u_2} \\ \frac{\partial y}{\partial u_1} & \frac{\partial y}{\partial u_2} \end{vmatrix} \ne 0$$
 
 则随机变量$(X,Y)$的二维联合密度为（回顾直角坐标和极坐标变换）：
 
