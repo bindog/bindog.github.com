@@ -325,11 +325,9 @@ $$J=\begin{bmatrix} \frac{\partial x}{\partial u_1} & \frac{\partial x}{\partial
 
 $$f[h_1(u_1,u_2),h_2(u_1,u_2)] \cdot \left | J \right |$$
 
-$$(F(x,y)=\iint f(x,y) dxdy = \iint f[h_1(u_1,u_2),h_2(u_1,u_2)] \cdot \left | J \right | du_1du_2)$$
-
 根据这个定理我们来证明一下，
 
-$$\left\{\begin{matrix} Y_1 = \sqrt {- 2\log X_1} \cos (2\pi X_2) \\ Y_2 = \sqrt {- 2\log X_1} \sin (2\pi X_2) \end{matrix}\right.$$
+$$\left\{\begin{matrix} Y_1 = \sqrt {- 2\ln X_1} \cos (2\pi X_2) \\ Y_2 = \sqrt {- 2\ln X_1} \sin (2\pi X_2) \end{matrix}\right.$$
 
 求反函数得
 
@@ -340,6 +338,8 @@ $$\left\{\begin{matrix} X_1 = e^{ - \frac{Y_1^2 + Y_2^2}{2}} \\ X_2 = \frac{1}{2
 $$\begin{align} J=\begin{vmatrix} \frac{\partial X_1}{\partial Y_1} & \frac{\partial X_1}{\partial Y_2} \\ \frac{\partial X_2}{\partial Y_1} & \frac{\partial X_2}{\partial Y_2} \end{vmatrix} & = \begin{vmatrix} -Y_1 \cdot e^{ -\frac{1}{2}(Y_1^2 + Y_2^2)} & -Y_2 \cdot e^{-\frac{1}{2}(Y_1^2 + Y_2^2)} \\ -\frac{Y_2}{2 \pi (Y_1^2+Y_2^2)} & \frac{Y_1}{2 \pi (Y_1^2+Y_2^2)} \end{vmatrix} \\ & =e^{-\frac{1}{2}(Y_1^2 + Y_2^2)}[\frac{-Y_1^2}{2 \pi (Y_1^2 + Y_2^2)}-\frac{Y_2^2}{2 \pi (Y_1^2 + Y_2^2)}] \\ & =-\frac{1}{2 \pi}e^{-\frac{1}{2}(Y_1^2 + Y_2^2)} \\ & =-(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_1^2})(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_2^2}) \end{align}$$
 
 由于$X_1,X_2$为$(0,1)$上的均匀分布，概率密度函数均为$1$，所以$Y_1,Y_2$的联合概率密度函数为$-(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_1^2})(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_2^2})$，熟悉二维正态分布的就知道是两个独立的正态分布，所以$Y_1,Y_2$是两个独立且服从正态分布的随机变量~
+
+
 
 写程序实现一下
 
