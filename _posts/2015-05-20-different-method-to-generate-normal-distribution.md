@@ -212,16 +212,18 @@ $$\int\!\!\!\int\limits_D {f(x,y)dxdy}  = \int\!\!\!\int\limits_D {f(r\cos \thet
 
 这个方法有的时候也称接收-拒绝采样，使用场景是有些函数$p(x)$太复杂在程序中没法直接采样，那么可以设定一个程序可抽样的分布$q(x)$比如正态分布等等，然后按照一定的方法拒绝某些样本，达到接近$p(x)$分布的目的：
 
-具体操作如下，设定一个方便抽样的函数$q(x)$，以及一个常量$k$，使得$p(x)$总在$kq(x)$的下方。（参考上图）
-
 ![rejection-sampling](http://ac-cf2bfs1v.clouddn.com/q5UDjegq496sJpkua7rmAhS0jqj8VIB96s4Y5scb.png)
+
+具体操作如下，设定一个方便抽样的函数$q(x)$，以及一个常量$k$，使得$p(x)$总在$kq(x)$的下方。（参考上图）
 
 - $x$轴方向：从$q(x)$分布抽样得到$a$
 - $y$轴方向：从均匀分布$(0, kq(a))$中抽样得到$u$
 - 如果刚好落到灰色区域：$u>p(a)$，拒绝；否则接受这次抽样
 - 重复以上过程
 
-证明过程就不细说了，知道怎么用就行了，感兴趣的可以看看这个文档[]()
+证明过程就不细说了，知道怎么用就行了，感兴趣的可以看看这个文档
+
+- [Acceptance-Rejection Method](http://ac-cf2bfs1v.clouddn.com/eS5xc2TSUPdjJwn3phQV7h6knPXXAQ0oRr4aSlLQ.pdf)
 
 不过在高维的情况下，拒绝采样会出现两个问题，第一是合适的$q$分布比较难以找到，第二是很难确定一个合理的$k$值。这两个问题会**导致拒绝率很高，无用计算增加**。
 
@@ -317,7 +319,7 @@ $$\left\{\begin{matrix} x = {h_1}({u_1},{u_2})\\ y = {h_2}({u_1},{u_2}) \end{mat
 
 $$J=\begin{bmatrix} \frac{\partial x}{\partial u_1} & \frac{\partial x}{\partial u_2} \\ \frac{\partial y}{\partial u_1} & \frac{\partial y}{\partial u_2} \end{bmatrix} \ne 0$$
 
-则随机变量的二维联合密度为$f\left[ {h_1}({u_1},{u_2}),{h_2}({u_1},{u_2}) \right] \cdot \left| J \right|$
+则随机变量的二维联合密度为$f[h_1(u_1,u_2),h_2(u_1,u_2)] \cdot |J|$
 
 根据这个定理我们来证明一下，
 
@@ -325,17 +327,19 @@ $$\left\{\begin{matrix} Y_1 = \sqrt {- 2\log X_1} \cos (2\pi X_2) \\ Y_2 = \sqrt
 
 求反函数得
 
-$$\left\{\begin{matrix} X_1 = e^{ - \frac{Y_1^2 + Y_2^2}{2}} \\ X_2 = \frac{1}{2 \pi \arctan Y_2 \over Y_1} \end{matrix}\right.$$
+$$\left\{\begin{matrix} X_1 = e^{ - \frac{Y_1^2 + Y_2^2}{2}} \\ X_2 = \frac{1}{2 \pi} \arctan \frac{Y_2}{Y_1} \end{matrix}\right.$$
 
 计算Jacobian行列式
 
 $$J=\begin{vmatrix} \frac{\partial X_1}{\partial Y_1} & \frac{\partial X_1}{\partial Y_2} \\ \frac{\partial X_2}{\partial Y_1} & \frac{\partial X_2}{\partial Y_2} \end{vmatrix} = \begin{vmatrix} -Y_1 \cdot e^{ -\frac{1}{2}(Y_1^2 + Y_2^2)} & -Y_2 \cdot e^{-\frac{1}{2}(Y_1^2 + Y_2^2)} \\ -\frac{Y_2}{2 \pi (Y_1^2+Y_2^2)} & \frac{Y_1}{2 \pi (Y_1^2+Y_2^2)} \end{vmatrix}$$
 
-$$=e^{-\frac{1}{2}(Y_1^2 + Y_2^2)}[\frac{-Y_1^2}{2 \pi (Y_1^2 + Y_2^2)}-\frac{Y_2^2}{2 \pi (Y_1^2 + Y_2^2)}]=-\frac{1}{2 \pi}e^{-\frac{1}{2}(Y_1^2 + Y_2^2)}$$
+$$=e^{-\frac{1}{2}(Y_1^2 + Y_2^2)}[\frac{-Y_1^2}{2 \pi (Y_1^2 + Y_2^2)}-\frac{Y_2^2}{2 \pi (Y_1^2 + Y_2^2)}]$$
+
+$$=-\frac{1}{2 \pi}e^{-\frac{1}{2}(Y_1^2 + Y_2^2)}$$
 
 $$=-(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_1^2})(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_2^2})$$
 
-由于$X_1,X_2$为(0,1)上的均匀分布，概率密度函数均为1，所以$Y_1，Y_2$的联合概率密度函数为$-(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_1^2})(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_2^2})$，熟悉二维正态分布的就知道是两个独立的正态分布，所以$Y_1,Y_2$是两个独立且服从正态分布的随机变量~
+由于$X_1,X_2$为$(0,1)$上的均匀分布，概率密度函数均为$1$，所以$Y_1,Y_2$的联合概率密度函数为$-(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_1^2})(\frac{1}{\sqrt{2 \pi}}e^{-\frac{1}{2}Y_2^2})$，熟悉二维正态分布的就知道是两个独立的正态分布，所以$Y_1,Y_2$是两个独立且服从正态分布的随机变量~
 
 写程序实现一下
 
@@ -401,6 +405,15 @@ plt.show()
 再说点题外话，作为一名普通的程序员，对于很多东西往往不需要了解的非常深入，说白了“会用就行了”。但是有的时候探寻其背后的原理往往能发现别人领会不到的数学之美，这也是写程序之余的一点乐趣吧~
 
 #0x08 参考资料
+
+- [大数定律与中心极限定理](http://ac-cf2bfs1v.clouddn.com/71ErfPP72vdJRcCTIcC9iOVnAPEOVFDveKI1JMO1.pdf)
+- [Jacobian 矩陣與行列式](https://ccjou.wordpress.com/2012/11/26/jacobian-%E7%9F%A9%E9%99%A3%E8%88%87%E8%A1%8C%E5%88%97%E5%BC%8F/)
+- [从随机过程到马尔科夫链蒙特卡洛方法]http://www.cnblogs.com/daniel-D/p/3388724.html)
+- [随机数产生原理](http://ac-cf2bfs1v.clouddn.com/uPcW0ce2E0FIDIt53mLwHGJ5s6xTadE4mqVCpsWd.ppt)
+- [Transformed Random Variables](http://www.mathematik.uni-ulm.de/numerik/teaching/ss09/NumFin/Script/chap2_4-2_5.pdf)
+- [Box-Muller Transform Normality](http://math.stackexchange.com/questions/1005236/box-muller-transform-normality)
+- [The Ziggurat Method for Generating Random Variables](http://ac-cf2bfs1v.clouddn.com/nNPPeDafleeRW3U073UA4mPbYiAxhgb0soziU5Uo.pdf)
+- [The Ziggurat Algorithm for Random Gaussian Sampling](http://heliosphan.org/zigguratalgorithm/zigguratalgorithm.html)
 
 
 
