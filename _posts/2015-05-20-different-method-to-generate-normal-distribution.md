@@ -315,7 +315,7 @@ $$\left\{\begin{matrix} x = {h_1}({u_1},{u_2})\\ y = {h_2}({u_1},{u_2}) \end{mat
 
 且存在一阶偏导数，设$J$为Jacobian矩阵的行列式
 
-$$J = \begin{bmatrix} {{{\partial x} \over {\partial {u_1}}}} & {{{\partial x} \over {\partial {u_2}}}} \\ {{{\partial y} \over {\partial {u_1}}}} & {{{\partial y} \over {\partial {u_2}}}} \end{bmatrix} \ne 0$$
+$$J=\begin{bmatrix} \frac{\partial x}{\partial u_1} & \frac{\partial x}{\partial u_2} \\ \frac{\partial y}{\partial u_1} & \frac{\partial y}{\partial u_2} \end{bmatrix} \ne 0$$
 
 则随机变量的二维联合密度为$f\left[ {{h_1}({u_1},{u_2}),{h_2}({u_1},{u_2})} \right] \cdot \left| J \right|$
 
