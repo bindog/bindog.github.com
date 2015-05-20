@@ -186,7 +186,7 @@ $$\begin{align} P(F^{-1}(U) \le x) & =P(U \le F(x)) \\ & = F(x) \end{align}$$
 
 设$\mathbf{f}:\mathbb{R}^n\rightarrow \mathbb{R}^m$是一个向量函数，输入为$\mathbf{x}\in \mathbb{R}^n$，输出为$\mathbf{f(x)}\in \mathbb{R}^m$，雅可比矩阵可以写成如下形式：
 
-$$\mathbf J = \frac{d\mathbf f}{d\mathbf x} = \begin{bmatrix} \dfrac{\partial \mathbf{f}}{\partial x_1} & \cdots & \dfrac{\partial \mathbf{f}}{\partial x_n} \end{bmatrix} = \begin{bmatrix} \dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n}\\ \vdots & \ddots & \vdots\\ \dfrac{\partial f_m}{\partial x_1} & \cdots & \dfrac{\partial f_m}{\partial x_n} \end{bmatrix}$$
+$$J = \frac{d\mathbf f}{d\mathbf x} = \begin{bmatrix} \dfrac{\partial \mathbf{f}}{\partial x_1} & \cdots & \dfrac{\partial \mathbf{f}}{\partial x_n} \end{bmatrix} = \begin{bmatrix} \dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n}\\ \vdots & \ddots & \vdots\\ \dfrac{\partial f_m}{\partial x_1} & \cdots & \dfrac{\partial f_m}{\partial x_n} \end{bmatrix}$$
 
 当$m=n$时，雅可比矩阵为一个方阵，我们可以取它的行列式
 
