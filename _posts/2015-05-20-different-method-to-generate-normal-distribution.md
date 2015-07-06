@@ -281,13 +281,39 @@ plt.show()
 
 #0x03 反变换法生成正态分布
 
-正态分布的概率分布函数(CDF)不好求，不过我们可以利用计算机把它画出来，如下图所示
+正态分布的概率分布函数(CDF)如下图所示，
 
 ![ncdf](http://ac-cf2bfs1v.clouddn.com/XMOSOlOIBnVMf2nkIhxTIfrr65e9A8HPmRSG3gXB.png)
 
-此时在`y`轴上产生服从(0,1)均匀分布的随机数，水平向右投影到曲线上，然后垂直向下投影到`x`轴，这样在`x`轴上就得到了正态分布，大家可以自行脑补这个过程
+在`y`轴上产生服从(0,1)均匀分布的随机数，水平向右投影到曲线上，然后垂直向下投影到`x`轴，这样在`x`轴上就得到了正态分布。
 
-当然这只是个想法而已，具体怎么实现我也不知道
+当然正态分布的概率分布函数不方便直接用数学形式写出，求反函数也无从说起，不过好在`scipy`中有相应的函数，我们直接使用即可
+
+{% highlight python %}
+
+# -*- coding: utf-8 -*-
+
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import norm
+
+def getNormal(SampleSize):
+    iid = np.random.uniform(0,1,SampleSize)
+    result = norm.ppf(iid)
+    return result
+
+SampleSize = 10000000
+normal = getNormal(SampleSize)
+plt.hist(normal,np.linspace(-4,4,81),facecolor="green")
+plt.show()
+
+{% endhighlight %}
+
+结果如下图所示，
+
+![inverse-transform](http://ac-cf2bfs1v.clouddn.com/qPb1d5zfQTBiLTq9ab1JhH9GWwXUtaxctIPgoBNd.png)
+
+以上两个方法虽然方便也容易理解，但是效率实在太低，并不实用，那么在实际中到底是如何生成正态分布的呢？
 
 #0x04 Box–Muller算法
 
