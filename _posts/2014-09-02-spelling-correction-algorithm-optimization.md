@@ -4,6 +4,7 @@ date: 2014-09-02 15:54+08:00
 layout: post
 title: "用对称思想优化拼写校正算法"
 description: ""
+comments : true
 categories:
 - 理论
 tags:

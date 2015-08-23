@@ -4,6 +4,7 @@ date: 2014-11-18 12:35+08:00
 layout: post
 title: "HTTP Referer安全与反反盗链"
 description: ""
+comments : true
 categories:
 - 工程
 tags:

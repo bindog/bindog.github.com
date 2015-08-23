@@ -4,6 +4,7 @@ date: 2015-03-10 10:54+08:00
 layout: post
 title: "游戏中的网络同步机制——Lockstep"
 description: ""
+comments : true
 categories:
 - 工程
 tags:

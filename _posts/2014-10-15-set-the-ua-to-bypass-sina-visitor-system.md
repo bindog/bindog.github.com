@@ -4,6 +4,7 @@ date: 2014-10-15 11:40+08:00
 layout: post
 title: "小技巧绕过Sina Visitor System(新浪访客系统)"
 description: ""
+comments : true
 categories:
 - 工程
 tags:

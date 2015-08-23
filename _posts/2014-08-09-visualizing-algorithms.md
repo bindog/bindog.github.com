@@ -4,6 +4,7 @@ date: 2014-08-09 23:18+08:00
 layout: post
 title: "算法可视化"
 description: ""
+comments : true
 categories:
 - 理论
 tags:

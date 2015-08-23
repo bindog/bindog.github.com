@@ -4,6 +4,7 @@ date: 2015-02-14 09:56+08:00
 layout: post
 title: "如何科学的计数？"
 description: ""
+comments : true
 categories:
 - 理论
 tags:

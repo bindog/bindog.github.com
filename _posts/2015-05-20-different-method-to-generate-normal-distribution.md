@@ -4,6 +4,7 @@ date: 2015-05-20 10:20+08:00
 layout: post
 title: "花式生成正态分布"
 description: ""
+comments : true
 categories:
 - 学术
 tags:

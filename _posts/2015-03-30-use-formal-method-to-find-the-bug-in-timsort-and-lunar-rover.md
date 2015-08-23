@@ -4,6 +4,7 @@ date: 2015-03-30 10:12+08:00
 layout: post
 title: "形式化方法的逆袭——如何找出Timsort算法和玉兔月球车中的Bug？"
 description: ""
+comments : true
 categories:
 - 工程
 tags:

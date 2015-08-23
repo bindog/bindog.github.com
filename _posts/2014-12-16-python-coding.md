@@ -4,6 +4,7 @@ date: 2014-12-16 16:42+08:00
 layout: post
 title: "一个例子搞懂编码问题"
 description: ""
+comments : true
 categories:
 - 工程
 tags:

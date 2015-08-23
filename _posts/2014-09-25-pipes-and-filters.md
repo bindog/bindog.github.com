@@ -4,6 +4,7 @@ date: 2014-09-25 16:13+08:00
 layout: post
 title: "管道与Unix哲学"
 description: ""
+comments : true
 categories:
 - 理论
 tags:
