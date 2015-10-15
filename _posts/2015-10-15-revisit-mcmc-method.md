@@ -46,15 +46,11 @@ tags:
 
 这里以Beta分布为例，Beta分布的概率密度函数PDF是$f(x) = Cx^{\alpha -1}(1-x)^{\beta -1}$，其中$C=1/B(\alpha,\beta)$，回顾《花式生成正态分布》里面提到的方法，如果采用反变换法，则需要对这个函数求积分和反函数，非常麻烦。如果采用拒绝采样就简单直观了，对照千岛湖植物考察的例子，为了对Beta分布进行采样，需要定义转移概率矩阵和接受概率，这里可以忽略转移概率矩阵(不同状态之间的转移概率是相同的)，只考虑接受概率
 
-\begin{align*}
-a_{ij} & = \min(1,\pi_jp_{ji}/\pi_{i}p_{ij}) \\ 
-& = \min(1,\pi_j/\pi_i)
-\end{align*}
+$$\begin{align*} a_{ij} & = \min(1,\pi_jp_{ji}/\pi_{i}p_{ij}) \\ & = \min(1,\pi_j/\pi_i) \end{align*}$$
+
 $\pi_i$和$\pi_j$为平稳分布概率，与Beta分布的概率密度是一致的，因此
-\begin{align*}
-\pi_i & =Ci^{\alpha -1}(1-i)^{\beta -1} \\ 
-\pi_j & =Cj^{\alpha -1}(1-j)^{\beta -1}
-\end{align*}
+
+$$\begin{align*} \pi_i & =Ci^{\alpha -1}(1-i)^{\beta -1} \\ \pi_j & =Cj^{\alpha -1}(1-j)^{\beta -1} \end{align*}$$
 
 {% highlight python %}
 # -*- coding: utf-8 -*-
