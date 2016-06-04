@@ -12,19 +12,28 @@ tags:
 - 可视化
 ---
 
+本文谢绝转载，如有需要请联系bindog###outlook.com，###换成@
+
 # 0x00 前言
+
 数据可视化是大数据领域非常倚重的一项技术，但由于业内浮躁的大环境影响，这项技术的地位渐渐有些尴尬。尤其是在诸如态势感知、威胁情报等应用中，简陋的可视化效果太丑，过于华丽的可视化效果只能忽悠忽悠外行，而给内行的感觉就是刻意为之、华而不实。
 曾几何时，可视化技术不过是一种数据分析的手段罢了。惭愧的说就是我们的算法还不够智能，必须依靠人类的智慧介入分析。所以，需要通过可视化技术把高维空间中的数据以二维或三维的形式展示给我们这样的低维生物看，展示的效果如何也就直接决定着我们分析的难度。
 <!--more-->
 抛开浮躁的大环境，在数据可视化领域还是有人踏踏实实做研究的，比如深度学习大牛Hinton(SNE)、Maaten(t-SNE)还有[唐建大神](http://research.microsoft.com/en-us/people/jiatang/)(LargeVis，新鲜出炉，*WWW'16*最佳论文提名)，下面言归正传，我们从简单的基础知识开始。
+
 # 0x01 预备知识
+
 说实在的，想要彻底搞清楚这些算法的原理并不轻松，需要长时间关注和积累。这里我把所需要知识和资料简要列出，供大家有针对性的了解。
+
 ## 降维
+
 降维顾名思义就是把数据或特征的维数降低，一般分为线性降维和非线性降维，比较典型的如下：
 - 线性降维：PCA(Principal Components Analysis)、LDA(Linear Discriminant Analysis)、MDS(Classical Multidimensional Scaling)
 - 非线性降维：Isomap(Isometric Mapping)、LLE(Locally Linear Embedding)、LE(Laplacian Eigenmaps)
 大家可能对线性降维中的一些方法比较熟悉了，但是对非线性降维并不了解，非线性降维中用到的方法大多属于流形学习方法。
+
 ## 流形学习
+
 流形学习(Manifold Learning)听名字就觉得非常深奥，涉及微分流行和黎曼几何等数学知识。当然，想要了解流形学习并不需要我们一行一行的去推导公式，通过简单的例子也能够有一个直观的认识。关于流行学习的科普文章首推pluskid写的[《浅谈流行学习》](http://blog.pluskid.org/?p=533)，里面有很多通俗易懂的例子和解释。
 简单来说，地球表面就是一个典型的流形，在流形上计算距离与欧式空间有所区别。例如，计算南极与北极点之间的距离不是从地心穿一个洞计算直线距离，而是沿着地球表面寻找一条最短路径，这样的一条路径称为**测地线**。如下面所示的三幅图
 
@@ -32,7 +41,9 @@ tags:
 
 其中第一张图为原始数据点分布，红色虚线是欧式距离，蓝色实线是沿着流形的真实测地线距离。第二张图是在原始数据点的基础上基于欧式距离构造的kNN图（灰色线条，下面还会具体介绍kNN图），红色实线表示kNN图中两点之间的最短路径距离。第三张图是将流形展开后的效果，可以看到，kNN图中的最短路径距离（红色实线）要略长于真实测地线距离（蓝色实线）。
 在实际应用中，真实测地距离较难获得，一般可以通过构造kNN图，在kNN图中寻找最短路径距离作为真实测地线距离的近似。
+
 ## t分布
+
 大家在概率与统计课程中都接触过$t$分布的概念，从正态总体中抽取容量为$N$的随机样本，若该正态总体的均值为$\mu$，方差为${\sigma}^2$。随机样本均值为$\bar{x}$，方差为$s^2=\frac{1}{N-1}\sum_{i=1}^{N}(x_i-\bar{x})^2$，随机变量$t$可表示为：
 $$t=\frac{\bar{x}-\mu}{s/\sqrt{N}}$$
 此时我们称$t$服从自由度为$n-1$的$t$分布，即$t \sim t(n-1)$
@@ -41,7 +52,9 @@ $$t=\frac{\bar{x}-\mu}{s/\sqrt{N}}$$
 ![正态分布与t分布](http://ac-cf2bfs1v.clouddn.com/823840b0a7738efb.png)
 
 从图中还可以看出，$t$分布比正态分布要“胖”一些，尤其在尾部两端较为平缓。$t$分布是一种典型的长尾分布。实际上，在[稳定分布](https://en.wikipedia.org/wiki/Stable_distribution)家族中，除了正态分布，其他均为长尾分布。长尾分布有什么好处呢？在处理小样本和一些异常点的时候作用就突显出来了。下文介绍t-sne算法时也会涉及到t分布的长尾特性。
+
 ## kNN图
+
 kNN图(k-Nearest Neighbour Graph)实际上是在经典的kNN(k-Nearest Neighbor)算法上增加了一步构图过程。假设空间中有$n$个节点，对节点$v_i$，通过某种距离度量方式（欧式距离、编辑距离）找出距离它最近的$k$个邻居${v_1,v_2,\cdots,v_k}$，然后分别将$v_i$与这$k$个邻居连接起来，形成$k$条有向边。对空间中所有顶点均按此方式进行，最后就得到了kNN图。
 当然，为方便起见，在许多场景中我们往往将kNN图中的有向边视为无向边处理。如下图是一个二维空间中以欧式距离为度量的kNN图。
 
@@ -49,7 +62,9 @@ kNN图(k-Nearest Neighbour Graph)实际上是在经典的kNN(k-Nearest Neighbor)
 
 kNN图的一种用途上文已经提到过：在计算流形上的测地线距离时，可以构造基于欧式距离的kNN图得到一个近似。原因很简单，我们可以把一个流形在很小的局部邻域上近似看成欧式的，也就是局部线性的。这一点很好理解，比如我们所处的地球表面就是一个流形，在范围较小的日常生活中依然可以使用欧式几何。但是在航海、航空等范围较大的实际问题中，再使用欧式几何就不合适了，使用黎曼几何更加精确。
 kNN图还可用于异常点检测。在大量高维数据点中，一般正常的数据点会聚集为一个个簇，而异常数据点与正常数据点簇的距离较远。通过构建kNN图，可以快速找出这样的异常点。
+
 ## k-d树与随机投影树
+
 刚才说到kNN图在寻找流形的过程中非常有用，那么如何来构建一个kNN图呢？常见的方法一般有三类：第一类是空间分割树(space-partitioning trees)算法，第二类是局部敏感哈希(locality sensitive hashing)算法，第三类是邻居搜索(neighbor exploring techniques)算法。其中k-d树和随机投影树均属于第一类算法。
 很多同学可能不太熟悉随机投影树(Random Projection Tree)，但一般都听说过k-d树。k-d树是一种分割k维数据空间的数据结构，本质上是一棵二叉树。主要用于多维空间关键数据的搜索，如范围搜索、最近邻搜索等。那么如何使用k-d树搜索k近邻，进而构建kNN图呢？我们以二维空间为例进行说明，如下图所示：
 
@@ -73,6 +88,7 @@ kNN图还可用于异常点检测。在大量高维数据点中，一般正常�
 例如我们想搜索红点的k近邻，只需要在不同的随机投影树中搜索其所处的子空间(或者仅回溯一层父结点)，最后取并集即可。这样做虽然在构建随机投影树的过程中较为耗时耗空间，但是在搜索阶段无疑是非常高效的。
 
 ## LINE
+
 LINE，即Large-scale Information Network Embedding，是唐建大神2015年的一项工作(*www'15*)。内容依旧很好很强大，而且代码是开源的。
 一句话概括，LINE是“Embed Everything”思想在网络表示中的发扬光大。自从Mikolov开源word2vec以来，词向量(word embedding)的概念在NLP界可谓是火的一塌糊涂，embedding的概念更是快速渗透到其他各研究领域。entity embedding、relation embedding...等如雨后春笋般涌现，更是有人在Twitter上犀利的吐槽：
 
@@ -85,7 +101,9 @@ LINE，即Large-scale Information Network Embedding，是唐建大神2015年的�
 
 其中节点8与节点9之间的一阶相似性为较高，因为其直接连接边的权值较高。节点1与节点7有着绝大多数相同的邻居，因此两者的二阶相似性非常高。
 边采样算法的思路来源于Mikolov在word2vec中使用的**负采样**优化技术。既提高了训练的效率，也解决了网络表示中带权值边在训练过程中造成的梯度剧增问题，具体的边采样算法在下文涉及的地方进行介绍。
+
 ## 负采样
+
 了解word2vec的同学一定对负采样(Negative sampling)不陌生，Mikolov在word2vec中集成了CBOW和Skip-gram两种词向量模型，在训练过程中使用到了多项优化技术，负采样正是其中一种优化技术。我们以Skip-gram模型为例进行说明，Skip-gram模型的思路是从目标词预测上下文，用一个上下文窗口限定文本范围，如下图所示：
 
 ![Skip-gram](http://ac-cf2bfs1v.clouddn.com/f6397e4873f8c449.png)
@@ -102,7 +120,9 @@ Skip-gram模型需要最大化“做了”“一点”“的”“贡献”等�
 $$\log \sigma (v_{w_c}^T \cdot v_w)+\sum_{i=1}^k\ _{E_{w_i}\sim P_n(f)}[\log \sigma(-v_{w_i}^T\cdot v_w)]$$
 其中$w$表示目标词，$w_c$表示目标词周围上下文窗口中的词(正样本)，$w_i$表示未出现在上下文窗口中的词(负样本)，$k$表示抽取的负样本个数，$P_n(f)$是用于负样本生成的噪声分布，$f$表示词频，$P_n(f)\propto f^{0.75}$，不要问我0.75怎么来的，Mikolov做实验得出来的，直接用原始词频效果不好，加个0.75次幂效果较好。
 word2vec里面还有许多有意思的细节，感兴趣的同学可以去看看peghoty写的《[word2vec中的数学原理](http://blog.csdn.net/itplus/article/details/37998797)》~
+
 # 0x02 从SNE说起
+
 了解完预备知识后，我们可以从SNE开始本趟可视化算法之旅了。SNE即stochastic neighbor embedding，是Hinton老人家2002年提出来的一个算法，出发点很简单：在高维空间相似的数据点，映射到低维空间距离也是相似的。常规的做法是用欧式距离表示这种相似性，而SNE把这种距离关系转换为一种条件概率来表示相似性。什么意思呢？考虑高维空间中的两个数据点$x_i$和$x_j$，$x_i$以条件概率$p_{j|i}$选择$x_j$作为它的邻近点。考虑以$x_i$为中心点的高斯分布，若$x_j$越靠近$x_i$，则$p_{j|i}$越大。反之，若两者相距较远，则$p_{j|i}$极小。因此，我们可以这样定义$p_{j|i}$：
 
 $$p_{j|i}=\frac{\exp (-\left \| x_i-x_j \right \|^2/2 \sigma_{i}^2)}{\sum_{k \neq i}\exp (-\left \| x_i-x_k \right \|^2/2 \sigma_{i}^2)}$$
@@ -129,9 +149,13 @@ SNE算法中还有一个细节是关于高维空间中以点$x_i$为中心的正
 ![sne效果图](http://ac-cf2bfs1v.clouddn.com/5eddecaad72424c3.png)
 
 从图中可以看出，SNE的可视化效果还算可以，同一类别的数据点映射到二维空间后基本都能聚集在一起，但是不同簇之间的边界过于模糊。老实说，如果不是这个图上把不同类别用不同颜色和符号标识出来，根本没法把边界处的数据点区分开来，做可视化分析也非常不方便。这个问题下面我们还会详细分析。
+
 # 0x03 从SNE到t-SNE——小小的t分布，迈进了一大步
+
 SNE算法的思路是不错的，但是它的可视化效果大家也看到了，存在很大改进空间。如何改进它呢？我们一步一步来，先看看如何解决SNE中的不对称问题。
+
 ## 对称SNE
+
 在原始的SNE中，$p_{i|j}$与$p_{j|i}$是不相等的，低维空间中$q_{i|j}$与$q_{j|i}$也是不相等的。所以如果能得出一个更加通用的联合概率分布更加合理，即分别在高维和低维空间构造联合概率分布P和Q，使得对任意$i,j$，均有$p_{ij}=p_{ji},q_{ij}=q_{ji}$。
 在低维空间中，我们可以这样定义$q_{ij}$：
 
@@ -155,7 +179,9 @@ $$C=KL(P||Q)=\sum_i \sum_j p_{ij}\log \frac{p_{ij}}{q_{ij}}$$
 $$\frac{\delta C}{\delta y_i}=4\sum_{j}(p_{ij}-q_{ij})(y_i-y_j)$$
 
 相比刚才定义的公式，这个梯度更加简化，计算效率更高。但是别高兴的太早，虽然我们解决了SNE中的不对称问题，得到了一个更为简单的梯度公式，但是Maaten指出，对称SNE的效果只是略微优于原始SNE的效果，依然没有从根本上解决问题。
+
 ## 拥挤问题(The Crowding Problem)
+
 所谓拥挤问题，顾名思义，看看SNE的可视化效果，不同类别的簇挤在一起，无法区分开来，这就是拥挤问题。有的同学说，是不是因为SNE更关注局部结构，而忽略了全局结构造成的？这的确有一定影响，但是别忘了使用对称SNE时同样存在拥挤问题。实际上，拥挤问题的出现与某个特定算法无关，而是由于高维空间距离分布和低维空间距离分布的差异造成的。
 我们生活在一个低维的世界里，所以有些时候思维方式容易受到制约。比如在讨论流形学习问题的时候，总喜欢拿一个经典的“Swiss roll”作为例子，这只不过是把一个简单的二维流形嵌入到三维空间里而已。实际上真实世界的数据形态远比“Swiss roll”复杂，比如一个10维的流形嵌入到更高维度的空间中，现在我们的问题是把这个10维的流形找出来，并且映射到二维空间上可视化。在进行可视化时，问题就来了，在10维流形上可以存在11个点且两两之间距离相等。在二维空间中呢？我们最多只能使三个点两两之间距离相等，想将高维空间中的距离关系完整保留到低维空间是不可能的。
 这里通过一个实验进一步说明，假设一个以数据点$x_i$为中心，半径为$r$的$m$维球(二维空间就是圆，三维空间就是球)，其体积是按$r^m$增长的，假设数据点是在$m$维球中均匀分布的，我们来看看其他数据点与$x_i$的距离随维度增大而产生的变化。
@@ -192,7 +218,9 @@ plt.show()
 ![高维空间距离分布](http://ac-cf2bfs1v.clouddn.com/11bf4eea600c0fb6.png)
 
 从图中可以看到，随着维度的增大，大部分数据点都聚集在$m$维球的表面附近，与点$x_i$的距离分布极不均衡。如果直接将这种距离关系保留到低维，肯定会出现拥挤问题。如何解决呢？这个时候就需要请出$t$分布了。
+
 ## 神奇的长尾——t分布
+
 刚才预备知识部分说到，像$t$分布这样的长尾分布，在处理小样本和异常点时有着非常明显的优势，例如下面这个图：
 
 ![异常点与t分布](http://ac-cf2bfs1v.clouddn.com/119b8b66f320da19.png)
@@ -222,6 +250,7 @@ $$\frac{\delta C}{\delta y_i}=4\sum_{j}(p_{ij}-q_{ij})(y_i-y_j)(1 + \left \| y_i
 ![t-sne动画](http://ac-cf2bfs1v.clouddn.com/fe6782ce2f1b7875.gif)
 
 # 0x04 t-SNE的改进——各种树算法轮番上阵
+
 2014年的时候，Maaten又写了一篇论文对t-SNE算法进行了改进，使用了各种基于树的算法，具体包括两部分内容：一是采用了kNN图来表示高维空间中点的相似性；二是优化了梯度的求解过程，将梯度计算分为引力和斥力两部分，同样使用了一些优化技巧。下面我们简单看看这两项优化的基本思路，具体用到的树算法这里只是简单提一下，不作深入介绍了，感兴趣的同学直接到文末的参考资料中找对应的论文即可。
 ## 用kNN图表示高维空间中点的相似性
 在t-SNE中，我们用高斯分布描述了高维空间中整体的距离分布关系，注意表达式是这样的一个形式：
@@ -243,6 +272,7 @@ $$p_{ij}=\frac{p_{j|i}+p_{i|j}}{2n}$$
 这样就大大降低了计算量，但也引入了一个新的问题，我们必须先构建一个高维空间的kNN图。Maaten采用了VP树(vantage-point tree)来构建这个kNN图，可以在$O(uNlogN)$的时间复杂度内得到一个精确的kNN图。
 
 ## 梯度中斥力的近似
+
 在介绍t-SNE梯度的物理意义时，提到可以将梯度视为所有点对$y_i$的合力作用，这里我们利用这个特点对梯度进行变换，令$Z=\sum_{k \ne l}(1 + \left \| y_k-y_l \right \|^2)^{-1}$
 
 $$\frac{\delta C}{\delta y_i}=4\sum_{j}(p_{ij}-q_{ij})(y_i-y_j)(1 + \left \| y_i-y_j \right \|^2)^{-1}=4\sum_{j}(p_{ij}-q_{ij})q_{ij}Z(y_i-y_j)$$
@@ -261,6 +291,7 @@ $$\frac{\delta C}{\delta y_i}=4(F_{attr}+F_{rep})=4(\sum_{j \ne i} p_{ij}q_{ij}Z
 对上图的情形，假设区域$A$中的5个点对$y_i$产生的斥力都是近似相等的，那么我们可以计算这5个点的中心点(虚构的点)产生的斥力$F_{A_c}$，区域$A$产生的总斥力为$5F_{A_c}$。Maaten使用了四叉树来完成区域搜索任务，并用该区域中心点产生的斥力作为整个区域的代表值，当然，并非所有区域都满足这个近似条件，这里使用Barnes-Hut算法搜索并验证符合近似条件的点-区域对。
 
 ## 从点-区域到区域-区域
+
 在上面的近似中，我们考虑的是一个点与一个区域之间斥力的近似，事实上，我们可以更进一步的优化，考虑一个区域与另一个区域之间斥力的近似。如下图这种情形，$A$和$B$两个区域之间任意两个节点产生的斥力均可用$F_{AB_c}$近似。
 
 ![区域-区域](http://ac-cf2bfs1v.clouddn.com/e1f825520462f9bb.png)
@@ -268,13 +299,16 @@ $$\frac{\delta C}{\delta y_i}=4(F_{attr}+F_{rep})=4(\sum_{j \ne i} p_{ij}q_{ij}Z
 同样，也需要判断两个区域之间的斥力是否满足近似的条件，Maaten采用了Dual-tree算法搜索并验证符合近似条件的区域-区域对。
 
 # 0x05 从t-SNE再到LargeVis——厚积薄发
+
 虽然t-SNE算法和它的改进算法都得到广泛应用，但存在两个不足：一是处理大规模高维数据时，t-SNE的效率显著降低(包括改进后的算法)；二是t-SNE中的参数对不同数据集较为敏感，我们辛辛苦苦的在一个数据集上调好了参数，得到了一个不错的可视化效果，却发现不能在另一个数据集上适用，还得花费大量时间寻找合适的参数。
 唐建提出的LargeVis基本思路与t-SNE改进算法大致相同，如下图所示：
 
 ![LargeVis思路](http://ac-cf2bfs1v.clouddn.com/eecf348a369a5512.png)
 
 但是LargeVis用到了几个非常漂亮的优化技巧，包括他之前在LINE上的工作。我们分别来看看这些另人耳目一新的优化技术。
+
 ## 高效kNN图构建算法
+
 在t-SNE的改进算法中，高维空间距离相似性我们只考虑与$x_i$最接近的若干个邻居点，这实质上就是一个构建kNN图的过程。Maaten使用了VP树来构建一个精确的kNN图，但是效率依然堪忧。而LargeVis采用了一种更巧妙的方式，不追求一步到位，先近似再提高准确率。
 在预备知识部分我们说到，构建kNN图一般有三类方法，LargeVis的做法是将第一类方法和第三类方法相结合。具体来说，第一步先利用随机投影树得到一个空间划分，在此基础上寻找每个点的$k$近邻，得到一个初步kNN图，这个kNN图不要求完全准确。第二步根据“邻居的邻居可能也是我的邻居”的思想，利用邻居搜索算法寻找潜在的邻居，计算邻居与当前点、邻居的邻居与当前点的距离并放入一个小根堆之中，取距离最小的k个节点作为k近邻，最终得到一个精确的kNN图。
 ## 低维空间可视化算法
@@ -322,25 +356,39 @@ $$O=\sum_{(i,j) \in E}w_{ij}(p(e_{ij}=1)+\sum_{k=1}^M\ _{E_{j_k}\sim P_n(j)}\gam
 ![LargeVis与t-SNE对比准确率和时间](http://ac-cf2bfs1v.clouddn.com/e174418deebd3c69.png)
 
 不过到目前为止，LargeVis的代码还没有放出来。还请大家多点耐心，拭目以待。
+
 # 0x06 总结
+
 从SNE到t-SNE再到LargeVis，SNE奠定了一个非常牢靠的基础，却遗留了一个棘手的拥挤问题；t-SNE用$t$分布巧妙的解决了拥挤问题，并采用了多种树算法改进算法效率；LargeVis在t-SNE改进算法的基础上，参考了近年来较为新颖的优化技巧，如随机投影树、负采样、边采样(实质也是负采样)等，直接将训练的时间复杂度降至线性级。
 在表示学习和深度学习如此火热的年代，任何一种经典的模型或方法都有可能在其他领域发挥不可思议的妙用。word2vec中的Skip-gram模型和负采样优化技术在LargeVis中的应用就是很好的证明。
 值得一提的是，Maaten提出t-SNE的时间是2008年，进一步改进t-SNE的时间是2014年，唐建提出LINE和LargeVis的时间分别是2015年和2016年。从这个角度看，t-SNE还是一个非常经典的算法，毕竟傲视群雄了这么多年……不过从另一个角度看，科研之路漫漫，一项值得称道的技术或改进不是一蹴而就的，是要经过长时间积累和沉淀的。
 希望有更多的有志青年不要为浮躁的大环境所影响，踊跃跳进数据可视化的大坑之中！如果本文能够在跳坑之路上助你一臂之力，请支付宝打赏我一杯咖啡钱(๑•̀ㅂ•́)و✧
 
+![支付宝二维码](http://ac-cf2bfs1v.clouddn.com/444358c43e61ab55.png)
+
 # 0x07 参考资料
+
 ## SNE
+
 - [Hinton G E, Roweis S T. **Stochastic neighbor embedding**[C]//Advances in neural information processing systems. 2002: 833-840.](http://machinelearning.wustl.edu/mlpapers/paper_files/AA45.pdf)
+
 ## t-SNE
+
 - [Van der Maaten L, Hinton G. **Visualizing data using t-SNE**[J]. Journal of Machine Learning Research, 2008, 9(2579-2605): 85.](http://siplab.tudelft.nl/sites/default/files/vandermaaten08a.pdf)
 - [Van Der Maaten L. **Accelerating t-sne using tree-based algorithms**[J]. The Journal of Machine Learning Research, 2014, 15(1): 3221-3245.](https://lvdmaaten.github.io/publications/papers/JMLR_2014.pdf)
+
 ## LINE&LargeVis
+
 - [Tang J, Qu M, Wang M, et al. **Line: Large-scale information network embedding**[C]//Proceedings of the 24th International Conference on World Wide Web. International World Wide Web Conferences Steering Committee, 2015: 1067-1077.](http://arxiv.org/pdf/1503.03578.pdf)
 - [Tang J, Liu J, Zhang M, et al. **Visualizing Large-scale and High-dimensional Data**[C]//Proceedings of the 25th International Conference on World Wide Web. International World Wide Web Conferences Steering Committee, 2016: 287-297.](http://arxiv.org/pdf/1602.00370.pdf)
+
 ## word2vec
+
 - [Mikolov T, Sutskever I, Chen K, et al. **Distributed representations of words and phrases and their compositionality**[C]//Advances in neural information processing systems. 2013: 3111-3119.](https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf)
 - [Goldberg Y, Levy O. **word2vec explained: Deriving mikolov et al.'s negative-sampling word-embedding method**[J]. arXiv preprint arXiv:1402.3722, 2014.](http://arxiv.org/pdf/1402.3722.pdf)
+
 ## 其他(引用了图或者例子)
+
 - [Heylen R, Parente M, Gader P. **A review of nonlinear hyperspectral unmixing methods**[J]. Selected Topics in Applied Earth Observations and Remote Sensing, IEEE Journal of, 2014, 7(6): 1844-1868.](https://www.researchgate.net/profile/Rob_Heylen/publication/264564339_A_Review_of_Nonlinear_Hyperspectral_Unmixing_Methods/links/53f485700cf2888a7491048d.pdf)
 - [Freund Y, Dasgupta S, Kabra M, et al. **Learning the structure of manifolds using random projections**[C]//Advances in Neural Information Processing Systems. 2007: 473-480.](http://machinelearning.wustl.edu/mlpapers/paper_files/NIPS2007_133.pdf)
 - [Characterizing a Distribution](http://work.thaslwanter.at/Stats/html/statsDistributions.html#t-distribution)
