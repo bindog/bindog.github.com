@@ -11,7 +11,7 @@ tags:
 - 网络
 ---
 
-#0x00 前言
+# 0x00 前言
 
 最近用`Python`非常多，确实感受到了`Python`的强大与便利。但同时我并没有相见恨晚的感觉，相反我很庆幸自己没有太早接触到`Python`，而是基本按着`C`→`C++`→`Java`→`Python`这条路学习下来的，因为过早使用太便利的方法有可能使你对底层细节一无所知。
 
@@ -21,7 +21,7 @@ tags:
 
 好了，如果你对HTTP协议不太熟悉的话，强烈建议你先去看看相关知识，也可以看看[《图解HTTP》](http://book.douban.com/subject/25863515/)，会有一个更全面的了解。
 
-#0x01 Referer简介
+# 0x01 Referer简介
 
 简单来说，Referer是HTTP协议中的一个请求报头，用于告知服务器用户的来源页面。比如说你从Google搜索结果中点击进入了某个页面，那么该次HTTP请求中的Referer就是Google搜索结果页面的地址。如果你的某篇博客中引用了其他地方的一张图片，那么对该图片的HTTP请求中的Referer就是你那篇博客的地址。
 
@@ -37,7 +37,7 @@ tags:
 
 当然你可以通过在Chrome或者Firefox浏览器中安装一些插件去除Referer甚至进行Referer欺骗。如果是自己写爬虫的话，Referer是完全受我们掌控的，想怎么改就怎么改~
 
-#0x02 Referer的安全问题
+# 0x02 Referer的安全问题
 
 严格来说Referer并非一些安全问题的根源，只不过充当了一个帮凶。咱们以新浪微博曾经的一个漏洞（[新浪微博gsid劫持](http://www.wooyun.org/bugs/wooyun-2012-014221)）为例说明吧~
 
@@ -49,7 +49,7 @@ tags:
 
 当然防范这种攻击的方法很多，了解更多请戳[新浪微博gsid劫持](http://www.wooyun.org/bugs/wooyun-2012-014221)
 
-#0x03 反反盗链
+# 0x03 反反盗链
 
 反盗链的方法这里就不多说了，网上一搜一箩筐，不同平台有不同的实现方法。
 
@@ -106,7 +106,7 @@ document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http:
 
 再仔细看代码，发现iframe中src的值为`javascript:"<!doctype html>......"`，原来是把iframe中的HTML代码全部放到了src中，使用这种方法就可以去掉Referer。其实乌云早有大神给出了方法，只不过没有工具化罢了，详情请戳[json hijack如何丢掉referer](http://zone.wooyun.org/content/744)，注意看[@Sogili](http://zone.wooyun.org/user/Sogili)和[@gainover](http://zone.wooyun.org/user/gainover)同学的回复。
 
-#0x04 总结
+# 0x04 总结
 
 本篇博客中的Referer和上一篇博客中涉及到的User-Agent都与HTTP协议有关。当遇到一些与底层协议相关的问题时，如果对其不了解，往往只能束手无策或者要浪费很多时间。
 

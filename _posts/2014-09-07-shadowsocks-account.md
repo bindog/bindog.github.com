@@ -11,7 +11,8 @@ tags:
 - Python
 ---
 
-#0x00 前言
+# 0x00 前言
+
 PS:本文获取的账号全部来自[ShadowSocks公益组织](https://www.shadowsocks.net/)，套用他们官网的话，再次感谢那些无私奉献ShadowSocks帐号的人！
 
 对实现细节不感兴趣的朋友可以直接拖到最后，有下载链接~
@@ -30,7 +31,7 @@ PS:本文获取的账号全部来自[ShadowSocks公益组织](https://www.shadow
 
 好了，废话不多说了，我们来看看怎么来写这么一个小工具
 
-#0x01 步骤
+# 0x01 步骤
 整体思路其实很简单~
 
 1. 获取网站上所有的二维码
@@ -38,13 +39,13 @@ PS:本文获取的账号全部来自[ShadowSocks公益组织](https://www.shadow
 3. 配置账号信息并测试延迟
 4. 把可用的账号输出到文件
 
-##获取网站上所有的二维码
+## 获取网站上所有的二维码
 
 <script src="http://gist.stutostu.com/bindog/2b24e2c11e2fe37b4de8.js"> </script>
 
 这个没什么好说的，就是正则表达式匹配
 
-##解析二维码获得账号信息
+## 解析二维码获得账号信息
 
 <script src="http://gist.stutostu.com/bindog/8e0536716fe7e8b5f7b9.js"> </script>
 
@@ -54,7 +55,7 @@ PS:本文获取的账号全部来自[ShadowSocks公益组织](https://www.shadow
 
 随后的过程就是`Base64`解码以及转换成`JSON`了，至于为什么要转换成`JSON`往下看就知道了
 
-##配置账号信息并测试延迟
+## 配置账号信息并测试延迟
 账号什么的都有了，下面就差测试延迟了
 
 <script src="http://gist.stutostu.com/bindog/83b66002ca62ba83d8bf.js"> </script>
@@ -65,7 +66,7 @@ ShadowsSocks的客户端程序多种多样，毕竟人家是开源的嘛~程序�
 
 最后，输出到文件就不列代码了，具体可以参考完整代码
 
-#0x02 urllib2使用socks代理
+# 0x02 urllib2使用socks代理
 刚才说了说整体流程，但是还有一个很重要的环节没有涉及到，那就是程序中如何使用`socks`代理，这可不是启动了`shadowsocks-local.exe`就行了，毕竟不是`VPN`=。=
 
 Google了一下发现了如下解决方案，使用[SocksiPy](http://sourceforge.net/projects/socksipy/)这个模块就可以了~
@@ -105,10 +106,10 @@ socket.create_connection = create_connection
 
 其实也没有多复杂啦，只不过把原来的`sock`替换为我们导入的模块中的`socks.socksocket()`，让它来接管`DNS`查询、连接等后续操作，最后返回可用的`socket`就可以了
 
-#0x03 资源下载
+# 0x03 资源下载
 最后就是发福利了~
 
-##说明
+## 说明
 
 1. 源码中运行`SSAccount.py`即可，此外我用`PyInstaller`将程序打包成了一个`exe`工具，方便没有安装`Python`的小伙伴
 2. `zbar`和`shadowsocks`文件夹中存放的是文中提到的两个命令行工具

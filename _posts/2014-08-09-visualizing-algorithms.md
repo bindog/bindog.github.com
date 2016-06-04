@@ -20,11 +20,11 @@ tags:
 function uniformRandomSampler(width,height,numSamplesMax){var numSamples=0;return function(){if(++numSamples>numSamplesMax){return}return[Math.random()*width,Math.random()*height]}}function bestCandidateSampler(width,height,numCandidates,numSamplesMax){var numSamples=0;var quadtree=d3.geom.quadtree().extent([[0,0],[width,height]])([[Math.random()*width,Math.random()*height]]);return function(){if(++numSamples>numSamplesMax){return}var bestCandidate,bestDistance=0;for(var i=0;i<numCandidates;++i){var c=[Math.random()*width,Math.random()*height],d=distance(quadtree.find(c[0],c[1]),c);if(d>bestDistance){bestDistance=d;bestCandidate=c}}quadtree.add(bestCandidate);return bestCandidate};function distance(a,b){var dx=a[0]-b[0],dy=a[1]-b[1];return dx*dx+dy*dy}}function poissonDiscSampler(width,height,radius){var k=30,radius2=radius*radius,R=3*radius2,cellSize=radius*Math.SQRT1_2,gridWidth=Math.ceil(width/cellSize),gridHeight=Math.ceil(height/cellSize),grid=new Array(gridWidth*gridHeight),queue=[],queueSize=0,sampleSize=0;return function(){if(!sampleSize){return sample(Math.random()*width,Math.random()*height)}while(queueSize){var i=Math.random()*queueSize|0,s=queue[i];for(var j=0;j<k;++j){var a=2*Math.PI*Math.random(),r=Math.sqrt(Math.random()*R+radius2),x=s[0]+r*Math.cos(a),y=s[1]+r*Math.sin(a);if(0<=x&&x<width&&0<=y&&y<height&&far(x,y)){return sample(x,y)}}queue[i]=queue[--queueSize];queue.length=queueSize}};function far(x,y){var i=x/cellSize|0,j=y/cellSize|0,i0=Math.max(i-2,0),j0=Math.max(j-2,0),i1=Math.min(i+3,gridWidth),j1=Math.min(j+3,gridHeight);for(j=j0;j<j1;++j){var o=j*gridWidth;for(i=i0;i<i1;++i){if(s=grid[o+i]){var s,dx=s[0]-x,dy=s[1]-y;if(dx*dx+dy*dy<radius2){return false}}}}return true}function sample(x,y){var s=[x,y];queue.push(s);grid[gridWidth*(y/cellSize|0)+(x/cellSize|0)]=s;++sampleSize;++queueSize;return s}}function minHeap(compare){var heap={},array=[],size=0;heap.empty=function(){return !size};heap.push=function(value){up(array[size]=value,size++);return size};heap.pop=function(){if(size<=0){return}var removed=array[0],value;if(--size>0){value=array[size],down(array[0]=value,0)}return removed};function up(value,i){while(i>0){var j=((i+1)>>1)-1,parent=array[j];if(compare(value,parent)>=0){break}array[i]=parent;array[i=j]=value}}function down(value,i){while(true){var r=(i+1)<<1,l=r-1,j=i,child=array[j];if(l<size&&compare(array[l],child)<0){child=array[j=l]}if(r<size&&compare(array[r],child)<0){child=array[j=r]}if(j===i){break}array[i]=child;array[i=j]=value}}return heap}!function(){function n(n){function e(){for(;i=a<c.length&&n>p;){var u=a++,e=c[u],o=t.call(e,1);o.push(l(u)),++p,e[0].apply(null,o)}}function l(n){return function(u,t){--p,null==s&&(null!=u?(s=u,a=d=0/0,o()):(c[n]=t,--d?i||e():o()))}}function o(){null!=s?m(s):f?m(s,c):m.apply(null,[s].concat(c))}var r,i,f,c=[],a=0,p=0,d=0,s=null,m=u;return n||(n=1/0),r={defer:function(){return s||(c.push(arguments),++d,e()),r},await:function(n){return m=n,f=!1,d||o(),r},awaitAll:function(n){return m=n,f=!0,d||o(),r}}}function u(){}var t=[].slice;n.version="1.0.7","function"==typeof define&&define.amd?define(function(){return n}):"object"==typeof module&&module.exports?module.exports=n:this.queue=n}();!function(){function t(t){return function(e,i){e=d3.hsl(e),i=d3.hsl(i);var r=(e.h+120)*a,h=(i.h+120)*a-r,s=e.s,l=i.s-s,o=e.l,u=i.l-o;return isNaN(l)&&(l=0,s=isNaN(s)?i.s:s),isNaN(h)&&(h=0,r=isNaN(r)?i.h:r),function(a){var e=r+h*a,i=Math.pow(o+u*a,t),c=(s+l*a)*i*(1-i);return"#"+n(i+c*(-0.14861*Math.cos(e)+1.78277*Math.sin(e)))+n(i+c*(-0.29227*Math.cos(e)-0.90649*Math.sin(e)))+n(i+c*1.97294*Math.cos(e))}}}function n(t){var n=(t=0>=t?0:t>=1?255:0|255*t).toString(16);return 16>t?"0"+n:n}var a=Math.PI/180;d3.scale.cubehelix=function(){return d3.scale.linear().range([d3.hsl(300,0.5,0),d3.hsl(-240,0.5,1)]).interpolate(d3.interpolateCubehelix)},d3.interpolateCubehelix=t(1),d3.interpolateCubehelix.gamma=t}();(function(){var color=d3.scale.cubehelix().domain([0,180,360]).range([d3.hsl(-100,0.75,0.35),d3.hsl(80,1.5,0.8),d3.hsl(260,0.75,0.35)]);floodColor=function(distance){return color(distance%360)}})();(function(){var count=0,overshoot=300;function whenBoundsVisible(computeBounds,callback){var id=".visible-"+ ++count,self=d3.select(window),bounds;if(document.readyState==="loading"){self.on("load"+id,loaded)}else{loaded()}function loaded(){self.on("resize"+id,resized).on("scroll"+id,scrolled).each(resized)}function resized(){bounds=computeBounds();if(bounds[1]<bounds[0]){bounds.reverse()}scrolled()}function scrolled(){if(bounds[0]<=pageYOffset&&pageYOffset<=bounds[1]){callback(null);self.on(id,null)}}}beforeVisible=function(element,callback){return whenBoundsVisible(function(){var rect=element.getBoundingClientRect();return[rect.top+pageYOffset-innerHeight-overshoot,rect.bottom+pageYOffset+overshoot]},callback)};whenFullyVisible=function(element,callback){return whenBoundsVisible(function(){var rect=element.getBoundingClientRect();return[rect.bottom+pageYOffset-innerHeight,rect.top+pageYOffset]},callback)}})();
 </script>
 
-#0x00 前言
+# 0x00 前言
 最近读到一篇老外的文章[《Visualizing Algorithms》](http://bost.ocks.org/mike/algorithms/)，表示被里面各种算法炫酷的展示亮瞎了眼，一时冲动决定要将这篇文章翻译成中文，但是由于原文较长而且很文艺（我会告诉你们是我的英语太渣了么-\_-），我打算以解读的形式来展示原文而并非翻译，如果感兴趣可以直接看原版。最后我会整合其他一些算法可视化的素材。好了，闲话不多说，Let's begin~
 <!--more-->
 
-#0x01 采样
+# 0x01 采样
 首先我们来欣赏一下梵高同学的名画《星空》的一部分
 
 ![星空](http://bindog.qiniudn.com/visualizing-algorithms/starry-night-detail.jpg)
@@ -141,7 +141,7 @@ function distance(a, b) {
 
 美不胜收！
 
-#0x02 洗牌
+# 0x02 洗牌
 正如扑克的洗牌一样，洗牌算法是对一组元素的随机重排列的过程。一个好的洗牌算法应该是无偏的，即每一种排列都是等可能的。
 
 下面我们来看看`Fisher–Yates`洗牌算法，它可是最优洗牌算法哦~它不仅是无偏的，而且时间复杂度是`O(n)`，空间复杂度是`O(1)`，同时也非常容易实现，代码如下
@@ -212,7 +212,7 @@ function shuffle(array) {
 
 只能说惨不忍睹！当然这并不意味着`Chrome`比`Firefox`要强，只能说明我们所使用的算法是有问题的，导致其结果是不确定的。而浏览器内部的不同实现更直观的把这个问题暴露出来了。
 
-#0x03 排序
+# 0x03 排序
 排序呢大家都很熟悉了，我们先来看看耳熟能详的快速排序
 
 <p id="quicksort" class="animation shuffle"><script>(function() {var n = 120,    array = d3.shuffle(d3.range(n));var margin = {top: 60, right: 60, bottom: 60, left: 60},    width = 960 - margin.left - margin.right,    height = 180 - margin.top - margin.bottom;var x = d3.scale.ordinal()    .domain(d3.range(n))    .rangePoints([0, width]);var a = d3.scale.linear()    .domain([0, n - 1])    .range([-45, 45]);var p = d3.select("#quicksort")    .on("click", click);var svg = p.append("svg")    .attr("width", width + margin.left + margin.right)    .attr("height", height + margin.top + margin.bottom)  .append("g")    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");var gLine = svg.append("g")    .attr("class", "line");gLine.selectAll("line")    .data(array)  .enter().append("line")    .attr("class", "line--inactive")    .attr("transform", transform)    .attr("y2", -height);p.append("button")    .text("▶ Play");whenFullyVisible(p.node(), click);function click() {  var actions = quicksort(array.slice()).reverse();  var line = gLine.selectAll("line")      .attr("transform", transform)      .attr("class", "line--inactive")      .interrupt();  var transition = svg.transition()      .duration(150)      .each("start", function start() {        var action = actions.pop();        switch (action.type) {          case "swap": {            var i = action[0],                j = action[1],                li = line[0][i],                lj = line[0][j];            line[0][i] = lj;            line[0][j] = li;            transition.each(function() { line.transition().attr("transform", transform); });            break;          }          case "partition": {            line.attr("class", function(d, i) {              return i === action.pivot ? "line--active"                  : action.left<= i && i< action.right ? "line--inactive"                  : null;            });            break;          }        }        if (actions.length) transition = transition.transition().each("start", start);        else transition.each("end", function() { line.attr("class", "line--inactive"); });      });}function transform(d, i) {  return "translate(" + x(i) + "," + height + ")rotate(" + a(d) + ")";}function quicksort(array) {  var actions = [];  function partition(left, right, pivot) {    var v = array[pivot];    swap(pivot, --right);    for (var i = left; i< right; ++i) if (array[i]< v) swap(i, left++);    swap(left, right);    return left;  }  function swap(i, j) {    if (i === j) return;    var t = array[i];    array[i] = array[j];    array[j] = t;    actions.push({type: "swap", "0": i, "1": j});  }  function recurse(left, right) {    if (left< right - 1) {      var pivot = (left + right) >> 1;      actions.push({type: "partition", "left": left, "pivot": pivot, "right": right});      pivot = partition(left, right, pivot);      recurse(left, pivot);      recurse(pivot + 1, right);    }  }  recurse(0, array.length);  return actions;}})()</script></p>
@@ -309,7 +309,7 @@ function merge(a0, a1, left, right, end) {
 
 当然想真正理解一个算法还是要阅读它的源码，算法可视只不过是辅助我们理解它的一个手段，而不是万能的银弹。
 
-#0x04 迷宫生成
+# 0x04 迷宫生成
 我们讨论的最一个问题是迷宫生成，它可能不如前面的洗牌或者排序应用的广泛，但它比较有趣。本节所有算法生成的迷宫本质上是一个二维矩阵网络形式的生成树，也就是说其中没有回路，同时从左下角的起点到迷宫中的每一点都有且仅有一条路径。
 
 迷宫生成的原理也比较简单，主要就是用到了生成树的一些算法，如果你对广度优先遍历、深度优先遍历、`Kruskal`算法、`Prim`算法这些不是很熟悉的话强烈建议你先去看看相应的资料。我们先来看看随机遍历
@@ -386,7 +386,7 @@ function merge(a0, a1, left, right, end) {
 
 这里两棵生成树的结点数都为`3239`。用这种方式展示是不是非常直观呢？不过要注意，由于为了适应大小，我们把第二张图缩小了，其生成树的实际深度要远远高于`Wilson`算法。两张图的生成树的最大深度分别为`310`和`832`，而在更大规模的迷宫中，例如有`480,000`个结点的迷宫，两棵生成树最大深度的有可能会相差10~20倍！所以使用随机深度优先遍历要谨慎啊~
 
-#0x05 小结&补充
+# 0x05 小结&补充
 OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤部分了（-\_-||），什么**use vision to think**，用视觉思考？好吧，如果你感兴趣可以去看原文~
 
 这里还是谈谈我的感受吧，回想当初学习数据结构和算法的主要方法就是啃代码，极其枯燥。而且我们的教学形式很久都没有变化了，现在的学生们估计还是要硬生生的去理解代码（-\_-），不过这篇《*Visualizing Algorithms*》却给我们提供了一个很好的思路，那就是把算法变得直观、有趣，从不同角度和层面去剖析一个算法。
@@ -395,7 +395,7 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 
 我这里再把原文中列出的一些其他算法可视化方面的资源放在这里
 
-##排序
+## 排序
 
 * [Aldo Cortesi’s sorting visualizations](http://sortvis.org/visualisations.html)
 * [sorting-algorithms.com](http://www.sorting-algorithms.com/)
@@ -404,19 +404,19 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 
 个人比较喜欢最后一个~
 
-##光影效果
+## 光影效果
 
 * [2D visibility](http://www.redblobgames.com/articles/visibility/)
 * [2D visibility and shadow effects](http://ncase.me/sight-and-light/)
 
-##迷宫&寻路
+## 迷宫&寻路
 
 * [maze generation algorithms](http://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap)
 * [pathfinding](http://www.redblobgames.com/pathfinding/tower-defense/)
 * [polygonal map generation](http://www-cs-students.stanford.edu/~amitp/game-programming/polygon-map-generation/)
 * [GPU-based path finding implementation](http://nullprogram.com/blog/2014/06/22/)
 
-##数学
+## 数学
 
 * [Lloyd’s Relaxation](http://www.jasondavies.com/lloyd/)
 * [Coalescing Soap Bubbles](http://www.jasondavies.com/bubbles/)
@@ -450,7 +450,7 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 
 ![快速排序](http://bindog.qiniudn.com/visualizing-algorithms/Quick_Sort.gif)
 
-#0x06 后记
+# 0x06 后记
 折腾这篇文章真的太辛苦了，首先原文实在是太长了，其次是那些动画和图片，本来想把那些动画用`GIF`录制器录制下来，但是发现有些动画实在太长，这样会导致`GIF`文件很大，而且录制出来的效果也不是很好。
 
 所以我决定将原文中的动画原汁原味的保留下来，这个过程太辛酸，`20`多个动画的样式和脚本一个一个的复制和微调（为了适应我这个博客的主题），纯手工操作（本人比较菜，也只会这个方法了），不过仍有一些瑕疵——一些动画的位置有很小的偏移，不过不影响大家的观看啦~
