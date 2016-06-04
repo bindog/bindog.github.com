@@ -1,5 +1,18 @@
 ---
-title: 从SNE到t-SNE再到LargeVis
+author: 宾狗
+date: 2016-06-04 10:51+08:00
+layout: post
+title: "从SNE到t-SNE再到LargeVis"
+description: ""
+comments : true
+categories:
+- 学术
+tags:
+- 机器学习
+- 可视化
+---
+---
+title: 
 author: 宾狗
 categories:
   - 学术
