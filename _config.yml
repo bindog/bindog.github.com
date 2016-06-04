@@ -1,7 +1,5 @@
 # Configurations
 markdown: kramdown
-kramdown:
-  math_engine: mathjax
 markdown_ext:  markdown,mkdown,mkdn,mkd,md
 highlighter: pygments
 
