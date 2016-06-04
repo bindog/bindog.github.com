@@ -11,7 +11,7 @@ tags:
 - 数学
 ---
 
-#0x00 前言
+# 0x00 前言
 
 最初了解到MCMC方法是因为学习LDA算法。我的博客中也有好几篇文章均涉及到了MCMC方法(Markov Chain Monte Carlo Methods)，它是一组用马氏链从随机分布取样的算法。MCMC中第一个MC指的是马尔可夫链，这个就是**随机过程**课程里面的东西了。第二个MC指的是蒙特卡洛方法。蒙特卡洛方法是一种随机模拟方法。随机模拟的思想由来已久，蒲丰投针就是一个非常典型的应用。
 
@@ -19,7 +19,7 @@ tags:
 
 <!--more-->
 
-#0x01 MCMC方法简介(千岛湖植物考查)
+# 0x01 MCMC方法简介(千岛湖植物考查)
 
 关于MCMC方法网上已有非常丰富的资料，认真研究一下就很容易搞懂。这里借用一个非常形象的例子描述MCMC中最比较常用的`M-H算法`的基本流程。
 
@@ -42,7 +42,7 @@ tags:
 
 可以看到最终科学家们在每个岛屿停留时间的分布与每个到植物数量的分布是一致的，这就是MCMC方法的神奇之处~
 
-#0x02 MCMC模拟Beta分布
+# 0x02 MCMC模拟Beta分布
 
 在[花式生成正态分布](http://bindog.github.io/blog/2015/05/20/different-method-to-generate-normal-distribution)中，提到了一种拒绝采样的方法，这背后蕴含的其实就是蒙特卡洛方法的思想。
 
@@ -141,7 +141,8 @@ for i in range(100000):
 print multidimi/100000.0
 {% endhighlight %}
 
-#0x04 破解凯撒密码
+# 0x04 破解凯撒密码
+
 斯坦福统计学教授Persi Diaconis是一位传奇式的人物，统计之都上有关于他的介绍，[Persi Diaconis (1)](http://cos.name/2012/08/persi-diaconis-1/)，[Persi Diaconis(2)](http://cos.name/2012/09/persi-diaconis2/). 下面要讲的这个故事，是Diaconis 在他的文章The Markov Chain Monte Carlo Revolution中给出的破译犯人密码的例子。 一天，一位研究犯罪心理学的心理医生来到斯坦福拜访Diaconis。他带来了一个囚犯所写的密码信息。他希望Diaconis帮助他把这个密码中的信息找出来。 这个密码里的每个符号应该对应着某个字母，但是如何把这些字母准确地找出来呢？Diaconis和他的学生Marc采用了一种叫做MCMC（马尔科夫链蒙特卡洛）的方法解决了这个问题。
 
 ![凯撒密码](http://ac-cf2bfs1v.clouddn.com/93d23123d7b53b4a.jpg)
