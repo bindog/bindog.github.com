@@ -53,16 +53,25 @@ print repr(teststr.encode("gbk"))
 # '\xc1\xaa\xcd\xa8'
 {% endhighlight %}
 然后再来看看记事本是怎么存储这两个字的，`Windows`下记事本支持4种编码方式，如图
+
 ![4-coding](http://ac-cf2bfs1v.clouddn.com/b6d8cbc61d4755fdd1fe.png)
+
 其中默认的是`ANSI`，我们分别用这4种方式保存“联通”两个字并用`010Editor`打开查看
 
 以`ANSI`编码保存(中文字符其实就是用`GBK`编码)
+
 ![ansi-coding](http://ac-cf2bfs1v.clouddn.com/dd5cdbc10a9782d5be40.png)
+
 以`Unicode`编码保存
+
 ![unicode-coding](http://ac-cf2bfs1v.clouddn.com/5a2ad3213492ffa8c6e7.png)
+
 以`Unicode big endian`编码保存
+
 ![unicode-big-endian-coding](http://ac-cf2bfs1v.clouddn.com/95500c9ddeac22ec218b.png)
+
 以`utf-8`编码保存
+
 ![utf8-coding](http://ac-cf2bfs1v.clouddn.com/1eb865a1d7e23f7a3d08.png)
 
 你看，字符在计算机中的存储形式的确与它们的编码表示略有不同，这里不再赘述，看完第一部分中推荐的文章你自然就明白了。

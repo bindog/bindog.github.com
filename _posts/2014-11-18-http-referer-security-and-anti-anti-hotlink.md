@@ -17,7 +17,10 @@ tags:
 
 现在我对HTTP协议的了解完全要归功于当初用`Java`写爬虫时遇到的各种问题，如果我很早就开始使用`Python`的`urllib2`或者`requests`，那么我现在对HTTP协议的认识可能依然非常肤浅。
 
-<!--more-->
+
+
+
+
 
 好了，如果你对HTTP协议不太熟悉的话，强烈建议你先去看看相关知识，也可以看看[《图解HTTP》](http://book.douban.com/subject/25863515/)，会有一个更全面的了解。
 
@@ -76,11 +79,11 @@ document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http:
 
 显示盗链的图片
 
-![显示盗链的图片抓包](http://bindog.qiniudn.com/http-referer/hotlink.png)
+![显示盗链的图片抓包](http://ac-cf2bfs1v.clouddn.com/a397266c3ee473c0cb5e.png)
 
 正常显示的图片
 
-![正常显示的图片抓包](http://bindog.qiniudn.com/http-referer/nothotlink.png)
+![正常显示的图片抓包](http://ac-cf2bfs1v.clouddn.com/c0678b3da6a2e8732a4a.png)
 
 看到了吗？正常显示的那张图片的HTTP请求中没有Referer，所以我们得到了正常的结果
 
