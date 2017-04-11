@@ -17,7 +17,10 @@ tags:
 
 下面正式开始~
 
-<!--more-->
+
+
+
+
 
 管道(Pipelines)是现代软件工程中一个非常有用架构模型，最早使用在Unix系统中，有句话是这么说的
 
@@ -74,7 +77,7 @@ cowsay -f tux                   # Put the resulting word into Tux's mouth
 
 为了更直观的展示这个过程，我们把上述步骤画在一张图上
 
-![pipeline_diagram](http://bindog.qiniudn.com/pipes/pipeline_diagram.png)
+![pipeline_diagram](http://ac-cf2bfs1v.clouddn.com/27f42833d5fc22dc2f50.png)
 
 # 0x02 性能和复杂度
 管道的另一个优点就是它天生的高性能。我们对上面的命令稍作修改以观察其中每一个过滤器组件的内存和CPU占用率
@@ -93,7 +96,7 @@ cowsay -f tux                   # Put the resulting word into Tux's mouth
 
 在运行完上述命令后，通过查看输出文件里面的相关信息，我们可以画出下面几张图
 
-![pipeline_graphs](http://bindog.qiniudn.com/pipes/pipeline_graphs.png)
+![pipeline_graphs](http://ac-cf2bfs1v.clouddn.com/027309e21c00590146ed.png)
 
 * 其中内存占用最大的过滤器是`cowsay`，占用了`2,830,336`字节，因为它是用`Perl`实现的(在我的机器上仅启动`Perl`的解释器就要占用`1,126,400`字节的内存)，内存占用最小的是`tail`，只占用了`389,120`字节
 * 尽管我们的源文件(`/usr/share/dict/words`)有`2.4MB`，但是大部分的过滤器都没有占用大于源文件1/5的内存，这得益于我们之前所提到的：管道只保存它所能处理的最大数据量，一旦超过这个值，相关进程将被阻塞，直到下一级进程将数据取走并清空缓存。这个特性决定了管道是一个非常节省内存空间的轻量级解决方案，无论处理多大的文件，管道占用的都是一块恒定的内存空间
@@ -311,7 +314,7 @@ for line in sys.stdin:
 
 把这个流程也画成一张图，红色的线代表`stderr`
 
-![pipeline_stderr](http://bindog.qiniudn.com/pipes/pipeline_stderr.png)
+![pipeline_stderr](http://ac-cf2bfs1v.clouddn.com/7d75487ea5e84377a67b.png)
 
 # 0x05 分布式管道
 
