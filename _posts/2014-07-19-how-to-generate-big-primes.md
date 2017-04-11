@@ -4,7 +4,7 @@ date: 2014-07-19 14:30+08:00
 layout: post
 title: "RSA周边——大素数是怎样生成的？"
 description: ""
-comments : true
+mathjax: true
 categories:
 - 理论
 tags:
@@ -14,7 +14,10 @@ tags:
 # 0x00 前言
 学计算机的童鞋们一定知道RSA算法，学数学的小伙们更是不用说了（人家就是学这个好么-\_-）。当然这次我们不讨论RSA算法本身（什么你还不懂RSA是怎么回事？！自己面壁思过去>\_<），关于RSA算法的教材、代码满天飞，互联网上科普文更是一抓一大把，且不管它们质量如何，反正这口冷饭再炒也没什么意思，能真正攻破它才是王道……好吧，扯远了，对于我们这些普通程序员来说能用好RSA算法就行了，当然能理解它就更好了。
 
-<!--more-->
+
+
+
+
 
 下面进入正题，我们都知道，RSA算法基于一个十分简单的数论事实：将两个大素数相乘十分容易，但是想要对其乘积进行因式分解却极其困难。那么也就是说要使用RSA算法，前提是必须有两个大素数才行，那么你有没有想过大素数是怎么生成的呢？更进一步，考虑到RSA算法的高效性和安全性，怎样快速生成一个大素数呢？如果这些问题成功的引起了你的好奇心，那就接着往下看吧~
 
@@ -94,7 +97,22 @@ tags:
 ##Miller-Rabin素性测试的实现
 了解了Miller-Rabin素性测试的基本原理就可以用程序来实现它，先来看看伪代码
 
-<script src="http://gist.stutostu.com/bindog/5b4a1d765c5d17afdf83.js"> </script>
+```python
+Input: n > 3, an odd integer to be tested for primality; 
+Input: k, a parameter that determines the accuracy of the test
+Output: composite if n is composite, otherwise probably prime
+write n - 1 as 2^s·d with d odd by factoring powers of 2 from n - 1
+LOOP: repeat k times:
+   pick a randomly in the range [2, n - 2]
+   x ← a^d mod n
+   if x = 1 or x = n - 1 then do next LOOP
+   for r = 1 .. s - 1
+      x ← x^2 mod n
+      if x = 1 then return composite
+      if x = n - 1 then do next LOOP
+   return composite
+return probably prime
+```
 
 思路很简单，对照前面的解释很容易看懂~
 
@@ -108,7 +126,44 @@ public boolean isProbablePrime(int certainty)
 
 我们来看看用`Python`怎么实现Miller-Rabin素性测试
 
-<script src="http://gist.stutostu.com/bindog/7a7e457e7c0dced3f1d4.js"> </script>
+```python
+def is_probable_prime(n, trials = 5):
+    assert n >= 2
+    # 2是素数~
+    if n == 2:
+        return True
+    # 先判断n是否为偶数，用n&1==0的话效率更高
+    if n % 2 == 0:
+        return False
+    # 把n-1写成(2^s)*d的形式
+    s = 0
+    d = n - 1
+    while True:
+        quotient, remainder = divmod(d, 2)
+        if remainder == 1:
+            break
+        s += 1
+        d = quotient
+    assert(2 ** s * d == n - 1)
+ 
+    # 测试以a为底时，n是否为合数
+    def try_composite(a):
+        if pow(a, d, n) == 1: # 相当于(a^d)%n
+            return False
+        for i in range(s):
+            if pow(a, 2 ** i * d, n) == n - 1: #相当于(a^((2^i)*d))%n
+                return False
+        return True # 以上条件都不满足时，n一定是合数
+    
+    # trials为测试次数，默认测试5次
+    # 每次的底a是不一样的，只要有一次未通过测试，则判定为合数
+    for i in range(trials):
+        a = random.randrange(2, n)
+        if try_composite(a):
+            return False
+
+    return True #通过所有测试，n很大可能为素数
+```
 
 代码的解释在注释中写的很详细了，这里就不再啰嗦了~
 
@@ -129,7 +184,45 @@ public boolean isProbablePrime(int certainty)
 
 下面我们来看看网上的一个开源`Javascript`[加密函数库](http://www-cs-students.stanford.edu/~tjw/jsbn/)（新浪微博和网易微博都在使用这个库）是如何实现的
 
-<script src="http://gist.stutostu.com/bindog/9e40489d942ce2436072.js"> </script>
+```javascript
+// 生成长度为B bits的随机私钥，E就是RSA公钥(n,e)中的那个e，通常取3或者65537
+function RSAGenerate(B,E) {
+  var rng = new SecureRandom();
+  //私钥的长度为B bits，相应的p和q的长度大概为B/2
+  var qs = B>>1;
+  this.e = parseInt(E,16);
+  var ee = new BigInteger(E,16);
+  for(;;) {
+    //生成质数p
+    for(;;) {
+      this.p = new BigInteger(B-qs,1,rng);
+      //这里利用了e与p-1互质的特性
+      if(this.p.subtract(BigInteger.ONE).gcd(ee).compareTo(BigInteger.ONE) == 0 && this.p.isProbablePrime(10)) break;
+    }
+    //生成质数q
+    for(;;) {
+      this.q = new BigInteger(qs,1,rng);
+      //这里利用了e与q-1互质的特性
+      if(this.q.subtract(BigInteger.ONE).gcd(ee).compareTo(BigInteger.ONE) == 0 && this.q.isProbablePrime(10)) break;
+    }
+    if(this.p.compareTo(this.q) <= 0) {
+      var t = this.p;
+      this.p = this.q;
+      this.q = t;
+    }
+    var p1 = this.p.subtract(BigInteger.ONE);
+    var q1 = this.q.subtract(BigInteger.ONE);
+    var phi = p1.multiply(q1);
+    if(phi.gcd(ee).compareTo(BigInteger.ONE) == 0) {
+      this.n = this.p.multiply(this.q);
+      this.d = ee.modInverse(phi);
+      this.dmp1 = this.d.mod(p1);
+      this.dmq1 = this.d.mod(q1);
+      this.coeff = this.q.modInverse(this.p);
+      break;
+    }
+  }
+```
 
 明白了原理，是不是觉得非常简单呢？^\_^
 
