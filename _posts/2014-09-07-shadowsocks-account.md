@@ -17,7 +17,10 @@ PS:本文获取的账号全部来自[ShadowSocks公益组织](https://www.shadow
 
 对实现细节不感兴趣的朋友可以直接拖到最后，有下载链接~
 
-<!--more-->
+
+
+
+
 
 关于ShadowSocks这里不再多说了，用途很多，比如科学上网=。=如果你没有用过的话，推荐你看看[ShadowSocks—科学上网之瑞士军刀](http://www.jianshu.com/p/08ba65d1f91a)，里面说的非常详细。当然，说来说去账号是关键，要么是你自己搭一个服务器，自己设定端口、密码和加密方式等等，要么就使用一些别人共享的免费账号，比如可以去[ShadowSocks公益组织](https://www.shadowsocks.net/)这个网站上去找一些账号。
 
@@ -32,6 +35,7 @@ PS:本文获取的账号全部来自[ShadowSocks公益组织](https://www.shadow
 好了，废话不多说了，我们来看看怎么来写这么一个小工具
 
 # 0x01 步骤
+
 整体思路其实很简单~
 
 1. 获取网站上所有的二维码
@@ -41,13 +45,66 @@ PS:本文获取的账号全部来自[ShadowSocks公益组织](https://www.shadow
 
 ## 获取网站上所有的二维码
 
-<script src="http://gist.stutostu.com/bindog/2b24e2c11e2fe37b4de8.js"> </script>
+```python
+#下载文件
+def downloadfile(url, filename):
+    print("downloading " + url + "...")
+    data = urllib2.urlopen(url)
+    with open(filename, "wb") as img:
+        img.write(data.read())
+    print("done")
+#下载shadowsocks.net网页中所有二维码
+def downloadallqrcode():
+    s = urllib2.urlopen("https://www.shadowsocks.net/get").read()
+    pattern = re.compile(r"window.open\('media/qr/(.*?)'")  #正则表达式匹配
+    it = re.finditer(pattern, s)
+    qrlist = []
+    for match in it:
+        qrlist.append(match.group(1))
+    qrprefix = r"https://www.shadowsocks.net/media/qr/"
+    for qrname in qrlist:
+        downloadfile(qrprefix + qrname, "qrcode/"+qrname)
+```
 
 这个没什么好说的，就是正则表达式匹配
 
 ## 解析二维码获得账号信息
 
-<script src="http://gist.stutostu.com/bindog/8e0536716fe7e8b5f7b9.js"> </script>
+```python
+#把所有二维码解析为JSON格式的字符串
+def parseallqrcode():
+    filelist = os.listdir("qrcode")
+    sslist = []
+    for filename in filelist:
+        #使用zbar这个命令行工具解析二维码
+        cmd = ["zbar/zbarimg.exe","-D","qrcode/"+filename]
+        #使用subprocess~可以获取控制台输出
+        output = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()[0]
+        print filename+"-->"+output.rstrip()
+        index = output.find("ss://")
+        if index != -1:
+            ss64 = output[index+5:].rstrip()
+            #base64解码
+            missing_padding = 4 - len(ss64) % 4
+            if missing_padding:
+                ss64 += b'='* missing_padding
+            ss = base64.decodestring(ss64)
+            print ss
+            #分割字符串 获取配置信息
+            pattern = re.compile(r"(?P<method>.*?):(?P<password>.*?)@(?P<ip>((?:(2[0-4]\d)|(25[0-5])|([01]?\d\d?))\.){3}(?:(2[0-4]\d)|(255[0-5])|([01]?\d\d?))):(?P<port>.*)")
+            match = re.match(pattern, ss.replace(" ",""))
+            if match:
+                smethod = match.group("method")
+                spassword = match.group("password")
+                sserver = match.group("ip")
+                sserver_port = match.group("port")
+                #转换成JSON格式字符串
+                d = dict(server=sserver,server_port=int(sserver_port),password=spassword,method=smethod,local_port=1080,timeout=600)            
+                jsonstring = json.dumps(d)
+                print jsonstring
+                sslist.append(jsonstring)
+    return sslist
+```
 
 这里我将所有二维码下载到`qrcode`这个文件夹中，`Python`中有许多二维码生成的库，但是二维码解析的库很少而且安装起来都比较麻烦。所以有两种偷懒的办法，一种是使用在线的`API`服务，国外有一个叫QR code API，国内有草料API，不过我都没用过=。=另一种办法就是我这里用的了，使用现成的命令行工具~
 
@@ -58,7 +115,52 @@ PS:本文获取的账号全部来自[ShadowSocks公益组织](https://www.shadow
 ## 配置账号信息并测试延迟
 账号什么的都有了，下面就差测试延迟了
 
-<script src="http://gist.stutostu.com/bindog/83b66002ca62ba83d8bf.js"> </script>
+```python
+#测试某个访问某个url的延迟 默认最大为5s
+def getlatency(url):
+    print ("test the latency of "+url+"...")
+    start = time.time()
+    try:
+        r = urllib2.urlopen(url,timeout=5)
+    except:
+        print ("this socks proxy may be invalid")
+        return 5
+    end = time.time()
+    print r.read()
+    latency = end - start
+    print ("the latency of "+url+" is "+str(latency))
+    return latency
+#获取平均延迟 一般>=5s就可以认为这个代理无效
+def getaveragelatency():
+    urls=["https://www.google.com","https://twitter.com"]
+    latencysum = 0
+    for url in urls:
+        latencysum += getlatency(url)
+    averagelatency = latencysum/len(urls)
+    print("the average latency is "+str(averagelatency))
+    return averagelatency
+#获取可用代理 并加上它们的延迟信息
+def getavailableproxy():
+    sslist = parseallqrcode()
+    availables = []
+    for ss in sslist:
+        print "Testing "+ss+"..."
+        #设置config.json文件
+        f = open("shadowsocks/config.json","w")
+        f.write(ss)
+        f.close()
+        #启动shadowsocks代理程序
+        cmd = ["shadowsocks/shadowsocks-local.exe","-c","shadowsocks/config.json"]
+        p = subprocess.Popen(cmd)
+        time.sleep(0.5)
+        a = getaveragelatency()
+        #平均延迟小于5s则认为该代理有效 并加上延迟信息
+        if a < 5:
+            availables.append("latency:"+str(a)+"--->"+ss)
+        p.kill()
+        time.sleep(0.5)
+    return availables
+```
 
 这里我测试的是平均延迟，这样结果可靠一点，测试的是`Google`和`Twitter`，都是被墙的=。=
 
