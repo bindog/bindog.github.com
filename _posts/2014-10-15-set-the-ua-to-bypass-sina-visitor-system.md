@@ -23,7 +23,11 @@ tags:
 
 应该是今年的早些时候，新浪引入了一个Sina Visitor System(新浪访客系统)，也不知道是为了提高用户体验还是为了反爬虫，或许是兼而有之。实际结果就是，爬虫取回来的页面全部变成Sina Visitor System了
 
-<!--more-->
+
+
+
+
+
 
 怎么办呢，我们先来看看这个Sina Visitor System是怎么回事
 
@@ -31,13 +35,138 @@ tags:
 
 也许有人没有见过这个页面，那说明你的浏览器里存有新浪微博的`cookie`，你可以打开浏览器的隐身模式，然后进入新浪微博首页，就可以看到下面这个样子
 
-![sina visitor system](http://bindog.qiniudn.com/sina-visitor/sina-visitor-system.png)
+![sina visitor system](http://ac-cf2bfs1v.clouddn.com/a7a8a9f5f77a342a4bc0.png)
 
 大概过上几秒钟才能进入正常的页面，访问其他`weibo.com`下的页面如某个用户的主页也是同样的情况
 
 我们可以通过Sina Visitor System的网页源码来看看它到底做了什么
 
-<script src="http://gist.stutostu.com/bindog/3aaf8a67da2b8ab48cfa.js"> </script>
+```html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=gb2312"/>
+    <title>Sina Visitor System</title>
+</head>
+<body>
+<span id="message"></span>
+<script type="text/javascript" src="/js/visitor/mini.js"></script>
+<script type="text/javascript">
+    var url = url || {};
+    (function () {
+        this.l = function (u, c) {
+            try {
+                var s = document.createElement("script");
+                s.type = "text/javascript";
+                s[document.all ? "onreadystatechange" : "onload"] = function () {
+                    if (document.all && this.readyState != "loaded" && this.readyState != "complete") {
+                        return
+                    }
+                    this[document.all ? "onreadystatechange" : "onload"] = null;
+                    this.parentNode.removeChild(this);
+                    if (c) {
+                        c()
+                    }
+                };
+                s.src = u;
+                document.getElementsByTagName("head")[0].appendChild(s)
+            } catch (e) {
+            }
+        };
+    }).call(url);
+    // 流程入口
+    wload(function () {
+        try {
+        	if (!Store.CookieHelper.get('SRF')) {
+        		// 尝试从cookie获取用户身份，获取失败走创建访客流程
+            	tid.get(function (tid, where, confidence) {
+                	incarnate(tid, where, confidence);
+            	});
+        	} else {
+        		// 用户身份存在，尝试恢复用户身份
+                restore();
+        	}
+        } catch (e) {
+            // 出错
+            error_back();
+        }
+    });
+    // 跳转回初始页面
+    var return_back = function (response) {
+        if (response['retcode'] == 20000000) {
+            var url = "http://weibo.com/";
+            if (url != "none") {
+                window.location.href = url;
+            }
+        } else {
+            // 出错
+            error_back(response['msg']);
+        }
+    };
+    // 向新浪域发送请求，为新浪域种下访客 cookie
+    var cross_domain = function (response) {
+    	var from = "weibo";
+        if (response['retcode'] == 20000000) {
+            var cross_domain_intr = "http://login.sina.com.cn/visitor/visitor?a=crossdomain&cb=return_back&s=" +
+                    encodeURIComponent(response['data']['sub']) + "&sp=" + encodeURIComponent(response['data']['subp']) + "&from=" + from + "&_rand=" + Math.random();
+            url.l(cross_domain_intr);
+        } else {
+            // 出错
+            error_back(response['msg']);
+        }
+    };
+    // 为用户赋予访客 cookie
+    var incarnate = function (tid, where, conficence) {
+        var gen_conf = "";
+        var from = "weibo";
+        var incarnate_intr = "http://passport.weibo.com/visitor/visitor?a=incarnate&t=" +
+                encodeURIComponent(tid) + "&w=" + encodeURIComponent(where) + "&c=" + encodeURIComponent(conficence) +
+                "&gc=" + encodeURIComponent(gen_conf) + "&cb=cross_domain&from=" + from + "&_rand=" + Math.random();
+        url.l(incarnate_intr);
+    };
+    
+    // 恢复用户在weibo域下的cookie
+    var restore = function () {
+    	var from = "weibo";
+        var restore_intr = "http://passport.weibo.com/visitor/visitor?a=restore&cb=restore_back&from=" + from + "&_rand=" + Math.random();
+        url.l(restore_intr);
+    };
+    var restore_back = function (response) {
+    	// 身份恢复成功走广播流程，否则走创建访客流程
+        if (response['retcode'] == 20000000) {
+        	var url = "http://weibo.com/";
+        	var alt = response['data']['alt'];
+        	var savestate = response['data']['savestate'];
+        	if (alt != '' && url != "none") {
+               	var params = 'entry=sso&alt=' + alt + '&returntype=META&url=' + url + '&gateway=1&savestate=' + savestate;
+                window.location.href = 'http://login.sina.com.cn/sso/login.php?' + params;
+        	} else {
+        		cross_domain(response);
+        	}
+        } else {
+        	tid.get(function (tid, where, confidence) {
+            	incarnate(tid, where, confidence);
+        	});
+        }
+    };
+    // 出错情况返回原页面
+    var error_back = function (msg) {
+        var url = "http://weibo.com/";
+        if (url != "none") {
+            if (url.indexOf('ssovie4c55=0') === -1) {
+                url += (((url.indexOf('?') === -1) ? '?' : '&') + 'ssovie4c55=0');
+            }
+            window.location.href = 'http://weibo.com/login.php';
+        } else {
+            document.getElementById('message').innerHTML = 'Error occurred' + (msg ? (': ' + msg) : '');
+        }
+    }
+</script>
+</body>
+</html>
+
+```
 
 代码不是很多，而且还有中文注释，新浪还真是照顾我们……
 
