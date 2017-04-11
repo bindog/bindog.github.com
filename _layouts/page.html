@@ -1,20 +1,28 @@
 ---
-layout: master
+layout: default
 ---
-<div class="container-fluid">
-  <div class="row">
-    {% if page.theme And page.theme != "" And page.theme != nil %}
-    <div class="hidden-xs col-md-2 col-sm-3 {{page.theme}} sidebar">
-    {% else %}
-    <div class="hidden-xs col-md-2 col-sm-3 purple sidebar">
-    {% endif %}
-        {% include sidemenu.html %}
-    </div>
-    <div class="col-md-10 col-sm-9 col-md-offset-2 col-sm-offset-3">
-      <h1>{{page.title}}</h1>
-      {{content}}
-      {% include footer.html %}
-    </div>  
-  </div> <!-- row -->
-</div> <!-- container -->
 
+<div class="page clearfix" post>
+    <div class="left">
+        <h1>{{page.title}}</h1>
+        <hr>
+        {{content}}
+    </div>
+    <button class="anchor"><i class="fa fa-anchor"></i></button>
+    <div class="right">
+        <div class="wrap">
+
+            <!-- Content -->
+            <div class="side content">
+                <div>
+                    Content
+                </div>
+                <ul id="content-side" class="content-ul">
+                </ul>
+            </div>
+            <!-- 其他div框放到这里 -->
+            <!-- <div class="side">bbbb</div> -->
+        </div>
+    </div>
+</div>
+<script src="{{ "/js/pageContent.js " | prepend: site.baseurl }}" charset="utf-8"></script>

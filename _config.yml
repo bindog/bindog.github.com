@@ -1,47 +1,60 @@
-# Configurations
-markdown: kramdown
-markdown_ext:  markdown,mkdown,mkdn,mkd,md
-highlighter: pygments
-
-# Permalinks
-permalink:        /blog/:year/:month/:day/:title
-
-
-# Themes are encouraged to use these universal variables 
-# so be sure to set them if your theme uses them.
+# Welcome to Jekyll!
 #
-title : 寂寞的宾狗
-tagline: A dog lives in winter
-description:      '宾狗的后院'
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
 
-# Navigation
-navigation:
-- text: About
-  url: /about/
-- text: Resume
-  url: /resume/
-- text: Blog
-  url: /blog/
-- text: Tags
-  url: /tags/
-- text: Archive
-  url : /archive/
+# Site settings
+title: bindog study
+brief-intro: Machine Learning & Security
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://bindog.github.io" # the base hostname & protocol for your site
 
-# Author Details
-author:         'bindog'
-linkedin:       'https://ae.linkedin.com/in/bindog/'
-twitter:        'https://twitter.com/bindog'
-facebook:       'https://www.facebook.com/bindog'
-gplus:          'https://plus.google.com/bindog'
+permalink: blog/:year/:month/:day/:title/
 
+# other links
+twitter_username: bindog
+facebook_username: bindog
+github_username:  bindog
+email: bindog@outlook.com
+weibo_username: wu
+zhihu_username: wu
+linkedIn_username: bindog
+dribbble_username:
 
-# Disqus
-disqushandler: 'bindog'
+description_footer: V2EX
 
-# Blog Configurations
-paginate: 3 # Posts per page on the blog index
-paginate_path: '/blog/page:num'
-destination: ./_site
+# comments
+# two ways to comment, only choose one, and use your own short name
+# 两种评论插件，选一个就好了，使用自己的 short_name
+duoshuo_shortname: #hygblog
+disqus_shortname: bindog
 
-# Custom vars
-version:          0.7.8
+# statistic analysis 统计代码
+# 百度统计 id，将统计代码替换为自己的百度统计id，即
+# hm.src = "//hm.baidu.com/hm.js?xxxxxxxxxxxx";
+# xxxxx字符串
+baidu_tongji_id: 080b55b6db602a74eb162ffca24da6e1
+# google_analytics_id: UA-72449510-4 # google 分析追踪id
+
+# Build settings
+markdown: kramdown
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# port
+# port: 1234
+
+# url
+category_dir: category/
+tag_dir: tag/
+
+# excerpt
+excerpt_separator: "\n\n\n\n"
+
+# paginate
+gems: [jekyll-paginate]
+paginate: 6
