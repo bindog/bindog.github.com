@@ -17,7 +17,10 @@ tags:
 
 最近在学习`Python`的过程中再次遇到了这个问题，决定认认真真把编码问题搞清楚，同时也把经验和心得分享给大家。如有谬误，欢迎大家批评指正~
 
-<!--more-->
+
+
+
+
 
 # 0x01 基础知识
 首先声明，本文不是科普，如果你对`Unicode`、`utf-8`、`gb2312`、`gbk`这样的概念非常陌生的话，强烈建议你先看下[字符编码的奥秘utf-8, Unicode](http://blog.csdn.net/hherima/article/details/8655200)和[速解UTF-8中文字符，方法和原理](http://jsfox.cn/blog/others/quick-translate-chinese-utf8-by-unicode.html)这两篇文章，图文并茂~
@@ -50,17 +53,17 @@ print repr(teststr.encode("gbk"))
 # '\xc1\xaa\xcd\xa8'
 {% endhighlight %}
 然后再来看看记事本是怎么存储这两个字的，`Windows`下记事本支持4种编码方式，如图
-![4-coding](http://7rfbbn.com1.z0.glb.clouddn.com/python-coding/notepad-coding.png)
+![4-coding](http://ac-cf2bfs1v.clouddn.com/b6d8cbc61d4755fdd1fe.png)
 其中默认的是`ANSI`，我们分别用这4种方式保存“联通”两个字并用`010Editor`打开查看
 
 以`ANSI`编码保存(中文字符其实就是用`GBK`编码)
-![ansi-coding](http://7rfbbn.com1.z0.glb.clouddn.com/python-coding/ansi-coding.png)
+![ansi-coding](http://ac-cf2bfs1v.clouddn.com/dd5cdbc10a9782d5be40.png)
 以`Unicode`编码保存
-![unicode-coding](http://7rfbbn.com1.z0.glb.clouddn.com/python-coding/unicode-coding.png)
+![unicode-coding](http://ac-cf2bfs1v.clouddn.com/5a2ad3213492ffa8c6e7.png)
 以`Unicode big endian`编码保存
-![unicode-big-endian-coding](http://7rfbbn.com1.z0.glb.clouddn.com/python-coding/unicode-big-endian-coding.png)
+![unicode-big-endian-coding](http://ac-cf2bfs1v.clouddn.com/95500c9ddeac22ec218b.png)
 以`utf-8`编码保存
-![utf8-coding](http://7rfbbn.com1.z0.glb.clouddn.com/python-coding/utf8-coding.PNG)
+![utf8-coding](http://ac-cf2bfs1v.clouddn.com/1eb865a1d7e23f7a3d08.png)
 
 你看，字符在计算机中的存储形式的确与它们的编码表示略有不同，这里不再赘述，看完第一部分中推荐的文章你自然就明白了。
 
@@ -69,7 +72,7 @@ print repr(teststr.encode("gbk"))
 我们继续回到这个问题，为什么再次打开以`ANSI`形式保存的“联通”两个字会出现乱码呢？这里就涉及到`Windows`记事本的处理策略了，当你打开一个文本文件时，记事本并不知道这个文件采用的是什么编码。此时可以采用两种策略，一种是询问用户以什么编码打开，当然这种方式是以降低用户体验为代价的，另一种方式就是猜了，也就是记事本所采用的方式。
 
 如果你看过了第一部分的基础知识，那么就应该清楚`utf-8`的编码规则
-![utf-8](http://7rfbbn.com1.z0.glb.clouddn.com/python-coding/utf-8.jpg)
+![utf-8](http://ac-cf2bfs1v.clouddn.com/645960dbc4b2e73d2243.png)
 
 可以看出来还是有一定规律的，我们可以写的一个正则表达式来匹配这种模式
 
@@ -79,7 +82,7 @@ print repr(teststr.encode("gbk"))
 
 相信你已经看晕了，没关系，我们用一个[正则表达式可视化工具](http://www.regexper.com/)来解析一下
 
-![regexper](http://7rfbbn.com1.z0.glb.clouddn.com/python-coding/regexper.png)
+![regexper](http://ac-cf2bfs1v.clouddn.com/3aa829c6d5de6913378e.png)
 
 根据这个图，再结合上面那张表，是不是一目了然呢？
 
@@ -252,7 +255,7 @@ DFB0	甙	弑	卟	叱	叽	叩	叨	叻	吒	吖	吆	呋	呒	呓	呔	呖
 (这里所说的方法适用`Python 2.X`，在`Python 3`中字符串已经不是老大难的问题了)
 
 `Python`中乱码处理的关键在于理解`str`和`unicode`的关系，它们都是`basestring`的子类，用下面一张图可以很好表示它们的关系
-![python-str-unicode](http://7rfbbn.com1.z0.glb.clouddn.com/python-coding/python-str-unicode.png)
+![python-str-unicode](http://ac-cf2bfs1v.clouddn.com/4640140841197eb661a0.png)
 
 一般情况下，如果你得到的数据在没有被加密或者压缩的情况下出现了乱码，那多半是没有被正确的编码解析罢了，剩下的事无非就是编码转换的问题了。
 

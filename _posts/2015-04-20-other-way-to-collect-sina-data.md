@@ -15,7 +15,12 @@ tags:
 
 有同学评论说之前[绕过新浪访客系统的方法](http://bindog.github.io/blog/2014/10/15/set-the-ua-to-bypass-sina-visitor-system)不能用了，我测试了一下，确实不能用了。原因很简单，新浪现在强制登录，没有cookie就是不行，即便是搜索引擎的爬虫也不行。
 
-<!--more-->
+
+
+
+
+
+
 
 现在用谷歌搜索出来的结果是这个样子的
 

@@ -17,7 +17,12 @@ tags:
 
 本文将介绍和分析**早期**广泛在RTS（即时策略）游戏中应用的同步机制——Lockstep
 
-<!--more-->
+
+
+
+
+
+
 
 RTS游戏有很多，比如我们都玩过的的`Warcraft III`（大家耳熟能详的`Dota`是它的一张地图）和`StarCraft`，还有EA的代表作命令与征服系列（Command & Conquer）等等，以及现在非常流行的`Dota2`和`LOL`
 
