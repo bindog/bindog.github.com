@@ -4,7 +4,7 @@ date: 2016-06-04 10:51+08:00
 layout: post
 title: "从SNE到t-SNE再到LargeVis"
 description: ""
-mathjax : true
+mathjax: true
 categories:
 - 学术
 tags:
