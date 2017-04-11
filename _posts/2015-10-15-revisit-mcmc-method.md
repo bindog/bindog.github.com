@@ -4,7 +4,7 @@ date: 2015-10-15 21:31+08:00
 layout: post
 title: "再谈MCMC方法"
 description: ""
-comments : true
+mathjax: true
 categories:
 - 学术
 tags:
@@ -17,7 +17,9 @@ tags:
 
 本文先简单介绍MCMC方法，再分别从几个具体场景(模拟分布、求积分、破解密码、最优化算法法)介绍MCMC方法的应用，最后讨论一下MCMC方法与模拟退火算法之间的联系。
 
-<!--more-->
+
+
+
 
 # 0x01 MCMC方法简介(千岛湖植物考查)
 
