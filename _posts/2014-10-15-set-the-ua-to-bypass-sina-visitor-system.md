@@ -42,7 +42,6 @@ tags:
 我们可以通过Sina Visitor System的网页源码来看看它到底做了什么
 
 ```html
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -165,7 +164,6 @@ tags:
 </script>
 </body>
 </html>
-
 ```
 
 代码不是很多，而且还有中文注释，新浪还真是照顾我们……
@@ -179,23 +177,52 @@ tags:
 
 说来也巧，刚好在知乎上看到这样的页面
 
-![zhihu](http://bindog.qiniudn.com/sina-visitor/zhihu-weibo.png)
+![zhihu](http://ac-cf2bfs1v.clouddn.com/86fcbccf1794a538a5ab.png)
 
 知乎会自动把用户发的链接转换成对应页面的标题，可以看到这里显示的也是Sina Visitor System，说明知乎的爬虫似乎也遇到问题了
 
 但是如果你有注意搜索引擎中新浪微博的结果，就会发现完全不是这样
 
-![google-weibo](http://bindog.qiniudn.com/sina-visitor/google-weibo.png)
+![google-weibo](http://ac-cf2bfs1v.clouddn.com/f48d09eaaaa441cce0fa.png)
 
 这说明了什么？说明新浪微博为了让自己的结果呈现在搜索引擎中，对来自搜索引擎的爬虫是“来者不拒”
 
 那么，我们就来试验一下。我用`Python`写了一个小程序，从一个微博用户的主页中取出该用户的昵称
 
-<script src="http://gist.stutostu.com/bindog/aaaeb76d4b9b81cff63d.js"> </script>
+```python
+import requests
+import re
+
+r = requests.get("http://weibo.com/rmrb")
+p_nick = re.compile(r"CONFIG\['onick'\]='(.*?)'")
+m_nick = re.findall(p_nick,r.text)
+if len(m_nick) == 1:
+    print m_nick[0]
+else:
+    print "Not found!"
+    
+#输出
+#Not found!
+```
 
 设置一下User-Agent，把自己伪装成搜索引擎爬虫，具体用什么随意啦~谷歌、必应都可以，或者仅仅用`spider`也行！
 
-<script src="http://gist.stutostu.com/bindog/04ce03860d2c18b3eeb6.js"> </script>
+```python
+import requests
+import re
+
+user_agent = {'User-agent': 'spider'}
+r = requests.get("http://weibo.com/rmrb",headers=user_agent)
+p_nick = re.compile(r"CONFIG\['onick'\]='(.*?)'")
+m_nick = re.findall(p_nick,r.text)
+if len(m_nick) == 1:
+    print m_nick[0]
+else:
+    print "Not found!"
+
+#输出
+#人民日报
+```
 
 # 0x03 总结
 
