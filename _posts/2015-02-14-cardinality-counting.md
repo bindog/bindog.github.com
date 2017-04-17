@@ -117,7 +117,7 @@ print 2.0*n/direct_needle(n)
 <script type="text/javascript">
     jwplayer.logo="/assets/images/favicon-16.png";
     jwplayer("Buffonneedle").setup({
-        file: "http://ac-cf2bfs1v.clouddn.com/1f55b857c15fc47973d1.mp4",
+        file: "",//"http://ac-cf2bfs1v.clouddn.com/1f55b857c15fc47973d1.mp4",
         image: "http://ac-cf2bfs1v.clouddn.com/9myrbFUJ8nFWyh2M016nMaajm9d5VOgBNnGg9k6b.png",
         width: 640,
         height: 480
