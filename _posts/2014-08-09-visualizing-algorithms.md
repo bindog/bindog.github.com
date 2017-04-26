@@ -10,6 +10,10 @@ categories:
 tags:
 - 算法
 ---
+
+* content
+{:toc}
+
 <style>.slide{margin:2em 0 2em 0}.slide iframe{background:#fff;border:solid 1px #ddd}.animation{position:relative;cursor:pointer;background-color:white}.animation--playing button{opacity:0}.animation button{cursor:pointer;position:absolute;padding:5px 10px;border-radius:5px;border:solid 1px #ccc;color:#333;background:#fff;bottom:20px;left:20px}.animation:not(.animation--playing) button{transition:opacity 250ms linear;transition-delay:2s}.animation:hover button{border-color:#000;color:#000;box-shadow:0 2px 4px rgba(0,0,0,.2)}.animation button:focus{outline:0}.animation--playing button,.animation:active button{box-shadow:inset 0 0 4px rgba(0,0,0,.2)!important}</style>
 
 <script>

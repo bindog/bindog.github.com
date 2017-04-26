@@ -11,6 +11,9 @@ tags:
 - 数学
 ---
 
+* content
+{:toc}
+
 # 0x00 前言
 
 >“So much of life, it seems to me, is determined by pure randomness.” – Sidney Poitier

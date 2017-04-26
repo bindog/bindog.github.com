@@ -12,6 +12,9 @@ tags:
 - 架构
 ---
 
+* content
+{:toc}
+
 # 0x00 前言
 最近看到一篇文章关于Unix管道的，讲的非常透彻，所以这次依然做一个简单的**翻译和解读**~原文地址请戳[这里](http://blog.petersobot.com/pipes-and-filters)
 

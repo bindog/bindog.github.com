@@ -11,6 +11,9 @@ tags:
 - Python
 ---
 
+* content
+{:toc}
+
 # 0x00 前言
 
 PS:本文获取的账号全部来自[ShadowSocks公益组织](https://www.shadowsocks.net/)，套用他们官网的话，再次感谢那些无私奉献ShadowSocks帐号的人！

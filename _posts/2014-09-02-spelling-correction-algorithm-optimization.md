@@ -12,6 +12,9 @@ tags:
 - 优化
 ---
 
+* content
+{:toc}
+
 # 0x00 前言
 > Premature optimization is the root of all evil（过早的优化是万恶之源）
 
