@@ -8,7 +8,7 @@ function sanitize(html, callback) {
   serviceWorkerReady.then(function() {
     var frame = document.createElement('iframe');
     frame.style.display = 'none';
-    frame.src = '/sandbox?html=' + encodeURIComponent(html);
+    frame.src = '/txs/sandbox?html=' + encodeURIComponent(html);
     document.body.appendChild(frame);
     addEventListener('message', function listener(msg) {
       if (msg.source != frame.contentWindow || msg.origin != location.origin) return;
