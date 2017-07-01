@@ -22,9 +22,9 @@ function sanitize(html, callback) {
 addEventListener('install', e => e.waitUntil(skipWaiting()));
 addEventListener('activate', e => e.waitUntil(clients.claim()));
 addEventListener('fetch', e => e.respondWith(clients.get(e.clientId).then(function(client) {
-  var isSandbox = url => (new URL(url)).pathname === '/sandbox';
+  var isSandbox = url => (new URL(url)).pathname === '/txs/sandbox';
   if (client && isSandbox(client.url)) {
-    if (e.request.url === location.origin + '/sanitize') {
+    if (e.request.url === location.origin + '/txs/sanitize') {
       return new Response(`
         onload = _=> setTimeout(_=> parent.postMessage(document.body.innerHTML, location.origin), 1000);
         remove = node => (node == document) ? document.body.innerHTML = '' : node.parentNode.removeChild(node);
