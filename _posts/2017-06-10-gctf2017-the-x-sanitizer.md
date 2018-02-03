@@ -138,7 +138,7 @@ addEventListener('fetch', e => e.respondWith(clients.get(e.clientId).then(functi
 
 我们通过调试来看看输入是怎样被处理的，假设我们输入的是`<script src='https://heihei.com'></script>`，那么处理流程如下：
 
-1. 输入内容经过url编码后，前面拼接上`/sandbox?html=`，并作为一个请求发出，此时访问的是`/sandbox?html=`链接，进入`Branch C`分支，返回的内容如下
+1、 输入内容经过url编码后，前面拼接上`/sandbox?html=`，并作为一个请求发出，此时访问的是`/sandbox?html=`链接，进入`Branch C`分支，返回的内容如下
 
 ```html
 <!doctype HTML>
@@ -149,7 +149,7 @@ addEventListener('fetch', e => e.respondWith(clients.get(e.clientId).then(functi
 
 此时进入沙盒内部，产生两个请求，分别为`https://sanitizer.web.ctfcompetition.com/sanitize`和`https://heihei.com/`
 
-2. 第一个请求进入`Branch A`分支，返回内容如下
+2、 第一个请求进入`Branch A`分支，返回内容如下
 
 ```html
 onload = _=> setTimeout(_=> parent.postMessage(document.body.innerHTML, location.origin), 1000);
@@ -160,7 +160,7 @@ document.write('<meta http-equiv="Content-Security-Policy" content="default-src 
 
 这里也设置了一个CSP策略，除了脚本以外不允许引入其他任何资源，违反该策略的元素将直接被移除，但是对脚本的域没有作限制
 
-3. 第二个请求进入`Brach B`分支，返回内容如下
+3、 第二个请求进入`Brach B`分支，返回内容如下
 
 ```js
 with(document) remove(document === currentScript.ownerDocument ? currentScript : querySelector('link[rel="import"]'));
