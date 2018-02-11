@@ -88,15 +88,15 @@ $$L_{Grad-CAM}^c=ReLU(\sum\limits_k\alpha_k^cA^k)$$
 
 Grad-CAM的整体结构如下图所示：
 
-![Grad-CAM结构](C:\Users\ck\Desktop\CLIME\Grad-CAM结构.jpg)
+![Grad-CAM结构](http://ac-cf2bfs1v.clouddn.com/531c1d38e0a0ddaf9553.jpg)
 
 注意这里和CAM的另一个区别是，Grad-CAM对最终的加权和加了一个ReLU，加这么一层ReLU的原因在于我们只关心**对类别$c$有正影响的那些像素点**，如果不加ReLU层，最终可能会带入一些属于其它类别的像素，从而影响解释的效果。使用Grad-CAM对分类结果进行解释的效果如下图所示：
 
-![effect1](C:\Users\ck\Desktop\CLIME\effect1.png)
+![effect1](http://ac-cf2bfs1v.clouddn.com/2318799bf6bcc13e5218.png)
 
 除了直接生成热力图对分类结果进行解释，Grad-CAM还可以与其他经典的模型解释方法如导向反向传播相结合，得到更细致的解释。
 
-![effect2](C:\Users\ck\Desktop\CLIME\effect2.png)
+![effect2](http://ac-cf2bfs1v.clouddn.com/9c1076aee75f1d4a98ef.png)
 
 这样就很好的解决了反卷积和导向反向传播对类别不敏感的问题。当然，Grad-CAM的神奇之处还不仅仅局限在对图片分类的解释上，任何与图像相关的深度学习任务，只要用到了CNN，就可以用Grad-CAM进行解释，如图像描述(Image Captioning)，视觉问答(Visual Question Answering)等，所需要做的只不过是把$y^c$换为对应模型中的那个值即可。限于篇幅，本文就不展开了，更多细节，强烈建议大家去读读[论文](https://arxiv.org/abs/1610.02391)，包括Grad-CAM与CAM权重等价的证明也在论文中。如果你只是想在自己的模型中使用Grad-CAM，可以参考这个[链接](https://github.com/Ankush96/grad-cam.tensorflow)，熟悉tensorflow的话实现起来真的非常简单，一看就明白。
 
