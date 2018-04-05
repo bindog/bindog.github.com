@@ -37,7 +37,7 @@ tags:
 
 也许有人没有见过这个页面，那说明你的浏览器里存有新浪微博的`cookie`，你可以打开浏览器的隐身模式，然后进入新浪微博首页，就可以看到下面这个样子
 
-![sina visitor system](http://ac-cf2bfs1v.clouddn.com/a7a8a9f5f77a342a4bc0.png)
+![sina visitor system](http://lc-cf2bfs1v.cn-n1.lcfile.com/a7a8a9f5f77a342a4bc0.png)
 
 大概过上几秒钟才能进入正常的页面，访问其他`weibo.com`下的页面如某个用户的主页也是同样的情况
 
@@ -179,13 +179,13 @@ tags:
 
 说来也巧，刚好在知乎上看到这样的页面
 
-![zhihu](http://ac-cf2bfs1v.clouddn.com/86fcbccf1794a538a5ab.png)
+![zhihu](http://lc-cf2bfs1v.cn-n1.lcfile.com/86fcbccf1794a538a5ab.png)
 
 知乎会自动把用户发的链接转换成对应页面的标题，可以看到这里显示的也是Sina Visitor System，说明知乎的爬虫似乎也遇到问题了
 
 但是如果你有注意搜索引擎中新浪微博的结果，就会发现完全不是这样
 
-![google-weibo](http://ac-cf2bfs1v.clouddn.com/f48d09eaaaa441cce0fa.png)
+![google-weibo](http://lc-cf2bfs1v.cn-n1.lcfile.com/f48d09eaaaa441cce0fa.png)
 
 这说明了什么？说明新浪微博为了让自己的结果呈现在搜索引擎中，对来自搜索引擎的爬虫是“来者不拒”
 

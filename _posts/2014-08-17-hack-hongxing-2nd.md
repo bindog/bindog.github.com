@@ -42,7 +42,7 @@ PS:如果你想了解什么是PAC脚本的话请先戳[科学上网之红杏插�
 
 下载好了之后我们就得到了一个`hongxing.crx`文件，我们把后缀改成`zip`，然后解压之后的目录结构大概是这个样子
 
-![红杏主目录](http://ac-cf2bfs1v.clouddn.com/4019eaaeffd55c00ede4.png)
+![红杏主目录](http://lc-cf2bfs1v.cn-n1.lcfile.com/4019eaaeffd55c00ede4.png)
 
 我们把`_metadata`这个文件夹删掉，否则一会儿加载进`Chrome`时会报错。
 
@@ -238,29 +238,29 @@ generatePacScript = function() {
 
 好了，把我们修改的部分保存一下，然后按照这个步骤把红杏插件加载进`Chrome`
 
-![加载开发中的红杏](http://ac-cf2bfs1v.clouddn.com/30063f561f2e256f4877.png)
+![加载开发中的红杏](http://lc-cf2bfs1v.cn-n1.lcfile.com/30063f561f2e256f4877.png)
 
 剩下的过程就是用一个**VIP账号**登陆红杏，然后进入这个页面守株待兔~
 
-![红杏主界面](http://ac-cf2bfs1v.clouddn.com/28998000f4966044c9b0.png)
+![红杏主界面](http://lc-cf2bfs1v.cn-n1.lcfile.com/28998000f4966044c9b0.png)
 
 按`F12`打开开发人员工具，不出意外的话你应该能看到下面这个字段（看不到可以等一会或者刷新页面），正是刚才我们放到`Local Storage`里面的`pac`
 
-![Loacl Storage](http://ac-cf2bfs1v.clouddn.com/2fc08dc35b89b1574b69.png)
+![Loacl Storage](http://lc-cf2bfs1v.cn-n1.lcfile.com/2fc08dc35b89b1574b69.png)
 
 把`pac`的值复制出来，保存到一个文件里面，比如`vip.pac`
 
-![pac文件](http://ac-cf2bfs1v.clouddn.com/e375ac7c494f30f07bb9.png)
+![pac文件](http://lc-cf2bfs1v.cn-n1.lcfile.com/e375ac7c494f30f07bb9.png)
 
 打码的部分是红杏在海外搭的代理服务器地址
 
 然后我们用另一款`Chrome`下的拓展`SwichySharp`加载`vip.pac`（如果打不开谷歌扩展商店可以从[百度网盘](http://pan.baidu.com/s/1o6Dhdai)下载，密码`ccae`），可以看到能够科学上网了
 
-![google](http://ac-cf2bfs1v.clouddn.com/975ebf13bcf907496e85.png)
+![google](http://lc-cf2bfs1v.cn-n1.lcfile.com/975ebf13bcf907496e85.png)
 
 但是当我访问非`HTTPS`的网站时就不行了，这也是我没有解决的问题，希望有大牛可以帮忙
 
-![scholar](http://ac-cf2bfs1v.clouddn.com/c170d7df56576da891e2.png)
+![scholar](http://lc-cf2bfs1v.cn-n1.lcfile.com/c170d7df56576da891e2.png)
 
 # 0x02 把自己改成VIP
 
@@ -375,9 +375,9 @@ this.load = function(data) {
 
 把所有修改保存一下，然后我们**重新加载**`DIY`的插件，这个时候就可以用**非VIP账号**登陆了，然后就是见证奇迹的时刻~Enjoy!
 
-![twitter](http://ac-cf2bfs1v.clouddn.com/88077aa7f9bb9316ccc6.png)
+![twitter](http://lc-cf2bfs1v.cn-n1.lcfile.com/88077aa7f9bb9316ccc6.png)
 
-![scholar](http://ac-cf2bfs1v.clouddn.com/27ea3f6b52775efabb07.png)
+![scholar](http://lc-cf2bfs1v.cn-n1.lcfile.com/27ea3f6b52775efabb07.png)
 
 如果你想把`DIY`之后的插件打包，请参考[科学上网之红杏插件的原理与破解](http://bindog.github.io/%E5%B7%A5%E7%A8%8B/2014/07/03/analysis-and-hack-of-hongxin/)中的`0x04`部分
 

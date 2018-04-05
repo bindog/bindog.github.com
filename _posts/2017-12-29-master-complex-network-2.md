@@ -45,11 +45,11 @@ tags:
 
 回顾一下上一篇文章对评价算法的描述，我们需要用到clusters来存储所有的集群和集群中的成员。先脑补一下变量clusters理论上的存储结构，如下图所示
 
-![clusters变量存储结构](http://ac-cf2bfs1v.clouddn.com/f96dd520e8ccb87ab087.png)
+![clusters变量存储结构](http://lc-cf2bfs1v.cn-n1.lcfile.com/f96dd520e8ccb87ab087.png)
 
 注意，图中每一个小的cluster应该都是可动态变化的数组，能够添加指定个数的节点(在cluster合并时需要加入多个节点)，看看官方的`groovy`版本是如何实现的，截取其中的一个代码片段，如下所示
 
-![groovy版本代码](http://ac-cf2bfs1v.clouddn.com/8fbd45962a75e676d529.PNG)
+![groovy版本代码](http://lc-cf2bfs1v.cn-n1.lcfile.com/8fbd45962a75e676d529.PNG)
 
 其中，变量`sumList`对应我们算法描述中的clusters，变量`vMap`对应算法描述中的node_clusterid，从变量定义中可以看出来，这里是用了`HashMap`数据结构存储所有集团及其集团成员。其中`Integer`对应了集团ID号，而`HashSet<Integer>`则用于存储该集团中的成员(也就是节点ID号)。
 
@@ -99,7 +99,7 @@ Linux的堆内存管理可谓博大精深，过于复杂的理论和实现细节
 
 那到底什么是fast bin？看下面这张示意图
 
-![fast bin示意图](http://ac-cf2bfs1v.clouddn.com/5dce87d5d15803fc4cd7.png)
+![fast bin示意图](http://lc-cf2bfs1v.cn-n1.lcfile.com/5dce87d5d15803fc4cd7.png)
 
 其中`main_arena.fastbinsY`对应的就是fast bin，而fast bin下方用链表串起来的块就是free chunk，为了和其他chunk区分开来，我们称之为fast chunk。乍一看，fast bin不就是个指针数组(链表)吗？数组中每一个元素都是一个指针，分别指向不同大小的fast chunk链表的头节点。没错，从本质上看fast bin就是一个简单的指针数组，但可别小看了fast bin，它是所有bin中操作速度最快的，这与它的用途和巧妙设计是分不开的。我认为fast bin的高效源于两个方面：
 
@@ -128,13 +128,13 @@ Linux的堆内存管理可谓博大精深，过于复杂的理论和实现细节
 
 那么具体该怎么实现？直接看我画的示意图：
 
-![clusters具体实现示意图](http://ac-cf2bfs1v.clouddn.com/e525246105f74acfe52a.png)
+![clusters具体实现示意图](http://lc-cf2bfs1v.cn-n1.lcfile.com/e525246105f74acfe52a.png)
 
 由于是示意图，我只画了三种大小的空闲块，大家领会意思即可。clusters在这里是作为索引所有cluster(无论是空闲的还是已经分配的cluster)的指针数组，在程序的开始阶段，就需要根据当前网络的规模，按上面的模式一次性申请完所有空闲块内存。其中，每个cluster的结构我也画在了图中，一目了然。
 
 下面就是最重要的部分：模拟实现堆内存管理。这里我模仿fast bin设计了一个freelist，如下图所示
 
-![freelist示意图](http://ac-cf2bfs1v.clouddn.com/539a3d9190942be435ad.png)
+![freelist示意图](http://lc-cf2bfs1v.cn-n1.lcfile.com/539a3d9190942be435ad.png)
 
 其原理不再赘述，就是把fast bin照搬过来。不过需要指出的是，freelist中实际存储的并非cluster或指向cluster的指针，而是空闲的cluster在clusters上的索引。基于freelist结构，很容易实现cluster的“申请”、“释放”与“合并”函数。
 
@@ -152,7 +152,7 @@ Linux的堆内存管理可谓博大精深，过于复杂的理论和实现细节
 
 但是，在搜索窗口中的寻找最优节点的过程就没有这个限制，如下图所示
 
-![并行化改造示意图](http://ac-cf2bfs1v.clouddn.com/57a713c14d41ec00dec3.png)
+![并行化改造示意图](http://lc-cf2bfs1v.cn-n1.lcfile.com/57a713c14d41ec00dec3.png)
 
 我们前面说过，寻找最优节点的过程并不修改当前网络结构，而是在找到最优节点后再将其添加到网络中。由于当前网络结构不变，因此每一次寻找并计算的过程都是互相独立的，这就很适合并行化改造。当然，这里的并行化改造并不要求大家有丰富的并行编程经验，也不需要使用`CUDA`之类的牛刀。我们可用简单方便的`OpenMP`库，只需要添加几行编译器指令就能够轻松实现并行化。关于`OpenMP`的使用，大家可以参考网上的诸多教程。在具体的使用过程中，要尽量避免数据依赖和竞争，设置好临界区。
 
@@ -164,7 +164,7 @@ Linux的堆内存管理可谓博大精深，过于复杂的理论和实现细节
 
 剩下的就是找最优的$k$值了，这个过程就是手工尝试了……依靠着诸多高效的改进和坚持不懈的努力，我最终刷到了第四名。当然还有继续上升的空间，不过限于时间没有做更多尝试了。
 
-![排行榜](http://ac-cf2bfs1v.clouddn.com/048ad1d6398d78cae399.PNG)
+![排行榜](http://lc-cf2bfs1v.cn-n1.lcfile.com/048ad1d6398d78cae399.PNG)
 
 仔细思考起来，在很多细节上还有可以进一步优化的地方，例如：
 
@@ -179,7 +179,7 @@ Linux的堆内存管理可谓博大精深，过于复杂的理论和实现细节
 
 如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱~
 
-![打赏](http://ac-cf2bfs1v.clouddn.com/bf93ca21e51fb4b0e7ca.png)
+![打赏](http://lc-cf2bfs1v.cn-n1.lcfile.com/bf93ca21e51fb4b0e7ca.png)
 
 <!--在下一篇文章中我会放出代码，有非常详尽的注释-->
 

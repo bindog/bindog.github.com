@@ -55,11 +55,11 @@ RTS游戏有很多，比如我们都玩过的的`Warcraft III`（大家耳熟能
 
 Lockstep最初是军队行进中使用的，后来在19世纪的时候广泛在美国监狱使用，成为那个时期美国监狱的一个标识。就像这样
 
-![lock step 1](http://ac-cf2bfs1v.clouddn.com/WAeN1vjpp6pDTWCO1J5QPhGlHRiJ60vKXuXxAmK1.jpg)
+![lock step 1](http://lc-cf2bfs1v.cn-n1.lcfile.com/WAeN1vjpp6pDTWCO1J5QPhGlHRiJ60vKXuXxAmK1.jpg)
 
 或者这样
 
-![lock step2](http://ac-cf2bfs1v.clouddn.com/rRiG7oC1Lma1suliNdBAU737nFDJnWt9LBHNCkF9.gif)
+![lock step2](http://lc-cf2bfs1v.cn-n1.lcfile.com/rRiG7oC1Lma1suliNdBAU737nFDJnWt9LBHNCkF9.gif)
 
 意思就是大家同步的走，谁超前了要等待，落后了的要赶上。后来就引申到游戏的网络同步机制上了
 
@@ -73,7 +73,7 @@ Lockstep最初是军队行进中使用的，后来在19世纪的时候广泛在�
 
 - 什么是动画？是会动的画吗？当然不是，人眼的记忆时间为`0.1s`，也就是大约`100ms`，只要把一帧一帧的静态图像快速播放一遍，我们就会感觉画面就动了起来，比如下面这样
 
-![动画](http://ac-cf2bfs1v.clouddn.com/PY28PKq2E3P24OWxeKV2GIRjxfoKCE5yeSf74bnY.gif)
+![动画](http://lc-cf2bfs1v.cn-n1.lcfile.com/PY28PKq2E3P24OWxeKV2GIRjxfoKCE5yeSf74bnY.gif)
 
 - 最容易实现同步的游戏类型是什么？当然是回合制游戏，比如棋类游戏和卡牌游戏，它们有严格的先后顺序，不容易出现逻辑错误，更不会出现不一致的情况；而且回合时间较长，能够容忍高延迟。
 
@@ -84,13 +84,13 @@ Lockstep最初是军队行进中使用的，后来在19世纪的时候广泛在�
 
 我们来看下面这张图
 
-![lockstep1](http://ac-cf2bfs1v.clouddn.com/VWRJNtLhYdWxr9bxLzDPfjwdSOl4CxFG12eJ42Fo.png)
+![lockstep1](http://lc-cf2bfs1v.cn-n1.lcfile.com/VWRJNtLhYdWxr9bxLzDPfjwdSOl4CxFG12eJ42Fo.png)
 
 图中是A、B、C三个玩家的时间轴，这个时间轴不是电脑上的本地时间，而是A、B、C联机时定义的一个时间轴。虚线分隔出来时间片称为turn，可以理解成一个回合。箭头表示该玩家将自己的操作指令广播给其他玩家。我们把一盘游戏看成一个大型的状态机，因为大家玩的是同一款的游戏，因此`F`是相同的，初始状态`S0`也是相同的。在第一个turn结束时，所有玩家都接收到了完全一样的输入`I`，注意这里的`I`不是一个值，而是包含了当前游戏中所有玩家的操作指令集合。`t1`时刻所有玩家的电脑自行计算结果。由于`F`、`S0`和`I`是固定的，所以每个玩家电脑上计算出的下一个状态`S1`一定是相同的。
 
 同理，第二个turn也是如此
 
-![lockstep2](http://ac-cf2bfs1v.clouddn.com/qzobYsq3v0JyMYKr9ma6mqjiVNWIddttuINF0cbx.png)
+![lockstep2](http://lc-cf2bfs1v.cn-n1.lcfile.com/qzobYsq3v0JyMYKr9ma6mqjiVNWIddttuINF0cbx.png)
 
 可以看出，Lockstep其实也是“回合制”的，当然这个所谓的回合与我们理解的棋类、卡牌游戏的回合是不太一样的。Lockstep的回合（也就是turn）中，所有玩家都可以采取行动，最终结果是在回合结束时统一计算的。在同一个turn接收到的操作指令，是不分行动先后顺序的，只要是在同一个turn里，就认为是同时发生的。
 
@@ -108,9 +108,9 @@ Lockstep最初是军队行进中使用的，后来在19世纪的时候广泛在�
 
 - 《Algorithms and Networking for Computer Games》这本书中关于Lockstep的部分与本文的说法有些不同，我觉得也没有谁对谁错之分，Lockstep更多的是一种思想，算是不一样的理解吧，感兴趣的同学也可以看看书中的章节。书中将Lockstep分为commit和reveal两个阶段，并且采用了流水线的方式。如下图所示
 
-![lockstep3](http://ac-cf2bfs1v.clouddn.com/sBEhIr9XvJJtC7vSfguIHHiILopdq0veg3lrLmbU.png)
+![lockstep3](http://lc-cf2bfs1v.cn-n1.lcfile.com/sBEhIr9XvJJtC7vSfguIHHiILopdq0veg3lrLmbU.png)
 
-![lockstep4](http://ac-cf2bfs1v.clouddn.com/gpok2fQ9LXAx8MAPhErQKE8kbJDndV0FNK0OktDJ.png)
+![lockstep4](http://lc-cf2bfs1v.cn-n1.lcfile.com/gpok2fQ9LXAx8MAPhErQKE8kbJDndV0FNK0OktDJ.png)
 
 
 

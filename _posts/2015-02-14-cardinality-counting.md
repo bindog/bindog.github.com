@@ -39,7 +39,7 @@ tags:
 ## 内切圆
 在平面上画一个正方形和一个内切圆，然后**随机**向正方形区域内撒$n$个点，统计落在圆内点的个数$m$，如下图所示
 
-![正方形内切圆撒点](http://ac-cf2bfs1v.clouddn.com/uvLJBJ3UbK8SogiJXRXMlCaMsVgwqYm9DCX1FJuV.gif)
+![正方形内切圆撒点](http://lc-cf2bfs1v.cn-n1.lcfile.com/uvLJBJ3UbK8SogiJXRXMlCaMsVgwqYm9DCX1FJuV.gif)
 
 可以认为我们随机撒的点服从均匀分布，因此点的个数与平面区域的面积有如下关系
 
@@ -63,15 +63,15 @@ print sum(1 if random()**2 + random()**2 < 1 else 0 for i in range(n))*4.0/n
 
 再来看第二种利用统计模拟计算$\pi$的方法，这就是大名鼎鼎的蒲丰投针问题(Buffon's needle)
 
-![蒲丰投针](http://ac-cf2bfs1v.clouddn.com/Ld7JYEtTYboUPMFKW1HYBGPv8YBeU8h9JW8jEBXQ.jpg)
+![蒲丰投针](http://lc-cf2bfs1v.cn-n1.lcfile.com/Ld7JYEtTYboUPMFKW1HYBGPv8YBeU8h9JW8jEBXQ.jpg)
 
 在平面上画上无数条平行线，间距为$d$， 取一根长度为$l(l < d)$的针，随机向该平面投掷$n$次
 
-![扔肥皂](http://ac-cf2bfs1v.clouddn.com/5DAxN6pX7VN34jjln9OhiLtdNYd8SPKfhjbRCt72.png)
+![扔肥皂](http://lc-cf2bfs1v.cn-n1.lcfile.com/5DAxN6pX7VN34jjln9OhiLtdNYd8SPKfhjbRCt72.png)
 
 然后统计与平行线相交的次数$m$，如下图所示
 
-![蒲丰投针结果](http://ac-cf2bfs1v.clouddn.com/wmXxOa57aQqC2UKqfP2llIs6DGVHML7U3vk8yApH.gif)
+![蒲丰投针结果](http://lc-cf2bfs1v.cn-n1.lcfile.com/wmXxOa57aQqC2UKqfP2llIs6DGVHML7U3vk8yApH.gif)
 
 那么$\pi$可以由下式算出
 
@@ -81,11 +81,11 @@ $$\pi=\frac{2l}{d}\cdot\frac{n}{m}$$
 
 首先我们把问题简化一下，只考察**两条平行线之间的半区域**（其他区域都是等价的）。容易观察出针与平行线是否相交取决于两个因素，针的位置和旋转的角度，我们用$x(0\le x \le \frac{d}{2})$表示针中心点到平行线的距离，用$\theta(0 < \theta < \pi)$表示针与平行线的夹角，如下图所示
 
-![蒲丰投针证明](http://ac-cf2bfs1v.clouddn.com/qvLxKdc5KdlakSzV5ALtWQcxqKCGXBCoD8Waez3Q.png)
+![蒲丰投针证明](http://lc-cf2bfs1v.cn-n1.lcfile.com/qvLxKdc5KdlakSzV5ALtWQcxqKCGXBCoD8Waez3Q.png)
 
 显然，当$x \le \frac{l}{2}\cdot sin\theta$时，针与平行线相交。如下图所示
 
-![蒲丰投针证明2](http://ac-cf2bfs1v.clouddn.com/bx5QI0X8JvPNB8HVnzo62SBEDmlW47wbYQeqsP4L.png)
+![蒲丰投针证明2](http://lc-cf2bfs1v.cn-n1.lcfile.com/bx5QI0X8JvPNB8HVnzo62SBEDmlW47wbYQeqsP4L.png)
 
 从图中可以看出，当$x$与$\theta$的取值落在区域$g$内时，上述条件即可满足，所以针与平行线相交的概率为
 
@@ -120,8 +120,8 @@ print 2.0*n/direct_needle(n)
 <script type="text/javascript">
     jwplayer.logo="/assets/images/favicon-16.png";
     jwplayer("Buffonneedle").setup({
-        file: "",//"http://ac-cf2bfs1v.clouddn.com/1f55b857c15fc47973d1.mp4",
-        image: "http://ac-cf2bfs1v.clouddn.com/9myrbFUJ8nFWyh2M016nMaajm9d5VOgBNnGg9k6b.png",
+        file: "",//"http://lc-cf2bfs1v.cn-n1.lcfile.com/1f55b857c15fc47973d1.mp4",
+        image: "http://lc-cf2bfs1v.cn-n1.lcfile.com/9myrbFUJ8nFWyh2M016nMaajm9d5VOgBNnGg9k6b.png",
         width: 640,
         height: 480
     });
@@ -225,7 +225,7 @@ $f(x)=-m\ln\frac{x}{m}$是可逆函数，$u$为$E(u)$的最大似然估计，所
 
 这里我们也要注意到，m的取值不能太小，不然很有可能bitmap上所有位都被映射到了，这样u就为0了，整个算法就失去了意义。原论文作者给出了一张表
 
-![linear counting table](http://ac-cf2bfs1v.clouddn.com/a31O15gKYEnkj90zGsx5JlIyILLgzNPET8ygyNwr.png)
+![linear counting table](http://lc-cf2bfs1v.cn-n1.lcfile.com/a31O15gKYEnkj90zGsx5JlIyILLgzNPET8ygyNwr.png)
 
 可以看出m大约为n的十分之一左右。
 

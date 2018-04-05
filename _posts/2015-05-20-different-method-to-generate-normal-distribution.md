@@ -113,19 +113,19 @@ protected int next(int bits) {
 
 看下面这张图也非常清楚，概率分布函数$F(x)$是**cumulative distribution function(CDF)**，概率密度函数$f(x)$是**probability density function(PDF)**
 
-![cdf-and-pdf](http://ac-cf2bfs1v.clouddn.com/onJpBW4CUFRVNrczhI65EKdFpijBWulJhIlMDM4e.gif)
+![cdf-and-pdf](http://lc-cf2bfs1v.cn-n1.lcfile.com/onJpBW4CUFRVNrczhI65EKdFpijBWulJhIlMDM4e.gif)
 
 刚才说到的均匀分布概率密度函数$f(x)$如下
 
 $$f(x)=\begin{cases}\frac{1}{b - a} & \mathrm{for}\ a \le x \le b, \\[8pt]0 & \mathrm{for}\ x<a\ \mathrm{or}\ x>b\end{cases}$$
 
-![updf](http://ac-cf2bfs1v.clouddn.com/3W9Akqo0JOA3HrVDKsds21gyciF5OYuoM8uEH0FK.png)
+![updf](http://lc-cf2bfs1v.cn-n1.lcfile.com/3W9Akqo0JOA3HrVDKsds21gyciF5OYuoM8uEH0FK.png)
 
 概率分布函数$F(x)$如下
 
 $$F(x)=\begin{cases} 0 & \text{for } x < a \\ \frac{x-a}{b-a} & \text{for } x \in [a,b) \\ 1 & \text{for } x \ge b \end{cases}$$
 
-![ucdf](http://ac-cf2bfs1v.clouddn.com/kusNq24QblMIjLvFBqwAfjuKm35jjmBdHSUTLoV6.png)
+![ucdf](http://lc-cf2bfs1v.cn-n1.lcfile.com/kusNq24QblMIjLvFBqwAfjuKm35jjmBdHSUTLoV6.png)
 
 期望为$\tfrac{1}{2}(a+b)$，方差为$\tfrac{1}{12}(b-a)^2$
 
@@ -133,7 +133,7 @@ $$F(x)=\begin{cases} 0 & \text{for } x < a \\ \frac{x-a}{b-a} & \text{for } x \i
 
 $$f(x) = \frac{1}{\sqrt{2\pi\sigma^2} } e^{ -\frac{(x-\mu)^2}{2\sigma^2} }$$
 
-![npdf](http://ac-cf2bfs1v.clouddn.com/8l9L1w7pTo65D1GHiCcnmepjkOvNToEW7vvHoCEs.png)
+![npdf](http://lc-cf2bfs1v.cn-n1.lcfile.com/8l9L1w7pTo65D1GHiCcnmepjkOvNToEW7vvHoCEs.png)
 
 标准正态分布中，$\mu=0,\sigma=1$，$f(x) = \frac{1}{\sqrt{2\pi} } e^{ -\frac{x^2}{2} }$
 
@@ -177,11 +177,11 @@ plt.show()
 
 得到如下结果
 
-![Exponential-distribution](http://ac-cf2bfs1v.clouddn.com/g6NeFRxo2lc28HRkKDWKllpYKrScRzUaipK3afsl.png)
+![Exponential-distribution](http://lc-cf2bfs1v.cn-n1.lcfile.com/g6NeFRxo2lc28HRkKDWKllpYKrScRzUaipK3afsl.png)
 
 对比维基百科里面标准的指数分布
 
-![epdf](http://ac-cf2bfs1v.clouddn.com/t2kFCElqe6QqlOTccctN4o3caR2q53Ad2UF8cNiB.png)
+![epdf](http://lc-cf2bfs1v.cn-n1.lcfile.com/t2kFCElqe6QqlOTccctN4o3caR2q53Ad2UF8cNiB.png)
 
 那么为什么$F^{-1}(U)$会服从$F$给出的分布呢？其实很好证明，$P(F^{-1}(U) \le x)$，两边同时取$F$得到$P(F^{-1}(U) \le x)=P(U \le F(x))$，根据均匀分布的定义$P(U < y) = y$，所以$P(U \le F(x)) = F(x)$，即$P(F^{-1}(U) \le x)=F(x)$，刚好是随机变量服从某个分布的定义，证毕~
 
@@ -221,7 +221,7 @@ $$\int\!\!\!\int\limits_D {f(x,y)dxdy}  = \int\!\!\!\int\limits_D {f(r\cos \thet
 
 这个方法有的时候也称接收-拒绝采样，使用场景是有些函数$p(x)$太复杂在程序中没法直接采样，那么可以设定一个程序可抽样的分布$q(x)$比如正态分布等等，然后按照一定的方法拒绝某些样本，达到接近$p(x)$分布的目的：
 
-![rejection-sampling](http://ac-cf2bfs1v.clouddn.com/q5UDjegq496sJpkua7rmAhS0jqj8VIB96s4Y5scb.png)
+![rejection-sampling](http://lc-cf2bfs1v.cn-n1.lcfile.com/q5UDjegq496sJpkua7rmAhS0jqj8VIB96s4Y5scb.png)
 
 具体操作如下，设定一个方便抽样的函数$q(x)$，以及一个常量$k$，使得$p(x)$总在$kq(x)$的下方。（参考上图）
 
@@ -232,7 +232,7 @@ $$\int\!\!\!\int\limits_D {f(x,y)dxdy}  = \int\!\!\!\int\limits_D {f(r\cos \thet
 
 证明过程就不细说了，知道怎么用就行了，感兴趣的可以看看这个文档
 
-- [Acceptance-Rejection Method](http://ac-cf2bfs1v.clouddn.com/eS5xc2TSUPdjJwn3phQV7h6knPXXAQ0oRr4aSlLQ.pdf)
+- [Acceptance-Rejection Method](http://lc-cf2bfs1v.cn-n1.lcfile.com/eS5xc2TSUPdjJwn3phQV7h6knPXXAQ0oRr4aSlLQ.pdf)
 
 不过在高维的情况下，拒绝采样会出现两个问题，第一是合适的$q$分布比较难以找到，第二是很难确定一个合理的$k$值。这两个问题会造成图中灰色区域的面积变大，从而**导致拒绝率很高，无用计算增加**。
 
@@ -278,7 +278,7 @@ plt.show()
 
 得到结果如下图所示
 
-![clt-normal-distribution](http://ac-cf2bfs1v.clouddn.com/CYBGCrbMfmDk9vmzXsgxbSTfU0VzDhlfLhFXXzdI.png)
+![clt-normal-distribution](http://lc-cf2bfs1v.cn-n1.lcfile.com/CYBGCrbMfmDk9vmzXsgxbSTfU0VzDhlfLhFXXzdI.png)
 
 可以看到，`n=1`时其实就是均匀分布，`n=2`时有正态分布的样子了，但不够平滑，随着`n`逐渐增大，直方图轮廓越来越接近正态分布了~因此利用中心极限定理暴力生成服从正态分布的随机数是可行的
 
@@ -290,7 +290,7 @@ plt.show()
 
 正态分布的概率分布函数(CDF)如下图所示，
 
-![ncdf](http://ac-cf2bfs1v.clouddn.com/XMOSOlOIBnVMf2nkIhxTIfrr65e9A8HPmRSG3gXB.png)
+![ncdf](http://lc-cf2bfs1v.cn-n1.lcfile.com/XMOSOlOIBnVMf2nkIhxTIfrr65e9A8HPmRSG3gXB.png)
 
 在`y`轴上产生服从(0,1)均匀分布的随机数，水平向右投影到曲线上，然后垂直向下投影到`x`轴，这样在`x`轴上就得到了正态分布。
 
@@ -318,7 +318,7 @@ plt.show()
 
 结果如下图所示，
 
-![inverse-transform](http://ac-cf2bfs1v.clouddn.com/qPb1d5zfQTBiLTq9ab1JhH9GWwXUtaxctIPgoBNd.png)
+![inverse-transform](http://lc-cf2bfs1v.cn-n1.lcfile.com/qPb1d5zfQTBiLTq9ab1JhH9GWwXUtaxctIPgoBNd.png)
 
 以上两个方法虽然方便也容易理解，但是效率实在太低，并不实用，那么在实际中到底是如何生成正态分布的呢？
 
@@ -398,7 +398,7 @@ plt.show()
 
 得到的结果如下图所示，
 
-![box-muller-normal](http://ac-cf2bfs1v.clouddn.com/ttH9VqVRETCjLdgo5La9scS4EiwNCvvkYIBYasYb.png)
+![box-muller-normal](http://lc-cf2bfs1v.cn-n1.lcfile.com/ttH9VqVRETCjLdgo5La9scS4EiwNCvvkYIBYasYb.png)
 
 这里抽样次数达到1千万次，1秒左右就完成了，速度比暴力生成正态分布要快的多~
 
@@ -410,7 +410,7 @@ ps:由于`Box–Muller`算法一次性生成了两个独立且服从正态分布
 
 当然有，这就是`Ziggurat`算法，不仅可以用于快速生成正态分布，还可以生成指数分布等等。其基本思想就是利用**拒绝采样**，其高效的秘密在于构造了一个非常精妙的$q(x)$，看下面这张图
 
-![Ziggurat-Algorithm](http://ac-cf2bfs1v.clouddn.com/kTdfiX2721zq9YzlyE8qzxvlBlLpUPR6YzVrlocB.png)
+![Ziggurat-Algorithm](http://lc-cf2bfs1v.cn-n1.lcfile.com/kTdfiX2721zq9YzlyE8qzxvlBlLpUPR6YzVrlocB.png)
 
 如果为了方便，我们当然可以直接使用一个均匀分布，也就是一个矩形，但是这样的话，矩形与正态分布曲线间的距离很大，容易造成**拒绝率很高，无用计算增加**，高效也就无从谈起了
 
@@ -425,13 +425,13 @@ ps:由于`Box–Muller`算法一次性生成了两个独立且服从正态分布
 
 可以看出，为了提高效率，`Ziggurat`算法中使用了许多技巧性的东西，这在其`C`代码实现中更加明显，使用了与运算和字节等各种小技巧，代码就不在这里贴了，感兴趣可以看看下面几个版本，`C`版本的追求的是极致的速度，每个矩形的边界已经提前计算好了。`C#`版本中的注释非常详细，`Java`版的基本与`C#`一致，但是效率一般。
 
-- [C](http://ac-cf2bfs1v.clouddn.com/SJBmCG5khBNH0sRRi2EJB6WPp3xRlqEcyY2M7GJD.c)
-- [C#](http://ac-cf2bfs1v.clouddn.com/PtpTppkFFe7lNDG0yuMcY0d2mDyX03BdkECB28E0.cs)
-- [Java](http://ac-cf2bfs1v.clouddn.com/M9ryG8dCNft3VBvUisrQ9ysa3f3XEb1rX0rj545r.java)
+- [C](http://lc-cf2bfs1v.cn-n1.lcfile.com/SJBmCG5khBNH0sRRi2EJB6WPp3xRlqEcyY2M7GJD.c)
+- [C#](http://lc-cf2bfs1v.cn-n1.lcfile.com/PtpTppkFFe7lNDG0yuMcY0d2mDyX03BdkECB28E0.cs)
+- [Java](http://lc-cf2bfs1v.cn-n1.lcfile.com/M9ryG8dCNft3VBvUisrQ9ysa3f3XEb1rX0rj545r.java)
 
 最后对比一下`Ziggurat`算法与`Box-muller`算法的效率
 
-![speed-up](http://ac-cf2bfs1v.clouddn.com/Rz5BI3C5Qh0a0gjbF710wCAw9GsyhdF6fEUinGgz.png)
+![speed-up](http://lc-cf2bfs1v.cn-n1.lcfile.com/Rz5BI3C5Qh0a0gjbF710wCAw9GsyhdF6fEUinGgz.png)
 
 # 0x06 总结
 
@@ -441,13 +441,13 @@ ps:由于`Box–Muller`算法一次性生成了两个独立且服从正态分布
 
 # 0x07 参考资料
 
-- [大数定律与中心极限定理](http://ac-cf2bfs1v.clouddn.com/71ErfPP72vdJRcCTIcC9iOVnAPEOVFDveKI1JMO1.pdf)
+- [大数定律与中心极限定理](http://lc-cf2bfs1v.cn-n1.lcfile.com/71ErfPP72vdJRcCTIcC9iOVnAPEOVFDveKI1JMO1.pdf)
 - [Jacobian 矩陣與行列式](https://ccjou.wordpress.com/2012/11/26/jacobian-%E7%9F%A9%E9%99%A3%E8%88%87%E8%A1%8C%E5%88%97%E5%BC%8F/)
 - [从随机过程到马尔科夫链蒙特卡洛方法](http://www.cnblogs.com/daniel-D/p/3388724.html)
-- [随机数产生原理](http://ac-cf2bfs1v.clouddn.com/uPcW0ce2E0FIDIt53mLwHGJ5s6xTadE4mqVCpsWd.ppt)
+- [随机数产生原理](http://lc-cf2bfs1v.cn-n1.lcfile.com/uPcW0ce2E0FIDIt53mLwHGJ5s6xTadE4mqVCpsWd.ppt)
 - [Transformed Random Variables](http://www.mathematik.uni-ulm.de/numerik/teaching/ss09/NumFin/Script/chap2_4-2_5.pdf)
 - [Box-Muller Transform Normality](http://math.stackexchange.com/questions/1005236/box-muller-transform-normality)
-- [The Ziggurat Method for Generating Random Variables](http://ac-cf2bfs1v.clouddn.com/nNPPeDafleeRW3U073UA4mPbYiAxhgb0soziU5Uo.pdf)
+- [The Ziggurat Method for Generating Random Variables](http://lc-cf2bfs1v.cn-n1.lcfile.com/nNPPeDafleeRW3U073UA4mPbYiAxhgb0soziU5Uo.pdf)
 - [The Ziggurat Algorithm for Random Gaussian Sampling](http://heliosphan.org/zigguratalgorithm/zigguratalgorithm.html)
 
 

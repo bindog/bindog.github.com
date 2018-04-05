@@ -32,11 +32,11 @@ tags:
 
 关于CNN模型的可解释问题，很早就有人开始研究了，姑且称之为CNN可视化吧。比较经典的有两个方法，反卷积(Deconvolution)和导向反向传播(Guided-backpropagation)，通过它们，我们能够一定程度上“看到”CNN模型中较深的卷积层所学习到的一些特征。当然这两个方法也衍生出了其他很多用途，以反卷积为例，它在图像语义分割中有着非常重要的作用。从本质上说，反卷积和导向反向传播的基础都是反向传播，其实说白了就是对输入进行求导，三者唯一的区别在于反向传播过程中经过ReLU层时对梯度的不同处理策略。在这篇[论文](https://arxiv.org/pdf/1412.6806.pdf)中有着非常详细的说明，如下图所示：
 
-![diff](http://ac-cf2bfs1v.clouddn.com/eec03f3347b4bbfe2c9e.png)
+![diff](http://lc-cf2bfs1v.cn-n1.lcfile.com/eec03f3347b4bbfe2c9e.png)
 
 虽然过程上的区别看起来没有非常微小，但是在最终的效果上却有很大差别。如下图所示：
 
-![compare_effect](http://ac-cf2bfs1v.clouddn.com/d3a78959f7bd98e45484.png)
+![compare_effect](http://lc-cf2bfs1v.cn-n1.lcfile.com/d3a78959f7bd98e45484.png)
 
 使用普通的反向传播得到的图像噪声较多，基本看不出模型的学到了什么东西。使用反卷积可以大概看清楚猫和狗的轮廓，但是有大量噪声在物体以外的位置上。导向反向传播基本上没有噪声，特征很明显的集中猫和狗的身体部位上。
 
@@ -48,27 +48,27 @@ tags:
 
 大家在电视上应该都看过热成像仪生成的图像，就像下面这张图片。
 
-![热成像仪](http://ac-cf2bfs1v.clouddn.com/b1d76465decdfdd82485.jpg)
+![热成像仪](http://lc-cf2bfs1v.cn-n1.lcfile.com/b1d76465decdfdd82485.jpg)
 
 图像中动物或人因为散发出热量，所以能够清楚的被看到。接下来要介绍的CAM(Class Activation Mapping)产生的CAM图与之类似，当我们需要模型解释其分类的原因时，它以热力图（Saliency Map，我不知道怎么翻译最适合，叫热力图比较直观一点）的形式展示它的决策依据，如同在黑夜中告诉我们哪有发热的物体。
 
 对一个深层的卷积神经网络而言，通过多次卷积和池化以后，它的最后一层卷积层包含了最丰富的空间和语义信息，再往下就是全连接层和softmax层了，其中所包含的信息都是人类难以理解的，很难以可视化的方式展示出来。所以说，要让卷积神经网络的对其分类结果给出一个合理解释，必须要充分利用好最后一个卷积层。
 
-![CNN](http://ac-cf2bfs1v.clouddn.com/75fc645a087a1c3e6548.png)
+![CNN](http://lc-cf2bfs1v.cn-n1.lcfile.com/75fc645a087a1c3e6548.png)
 
 CAM借鉴了很著名的论文*[Network in Network](https://arxiv.org/abs/1312.4400)*中的思路，利用GAP(Global Average Pooling)替换掉了全连接层。可以把GAP视为一个特殊的average pool层，只不过其pool size和整个特征图一样大，其实说白了就是求每张特征图所有像素的均值。
 
-![CNN_GAP](http://ac-cf2bfs1v.clouddn.com/e4a636f667f277cedc74.png)
+![CNN_GAP](http://lc-cf2bfs1v.cn-n1.lcfile.com/e4a636f667f277cedc74.png)
 
 GAP的优点在NIN的论文中说的很明确了：由于没有了全连接层，输入就不用固定大小了，因此可支持任意大小的输入；此外，引入GAP更充分的利用了空间信息，且没有了全连接层的各种参数，鲁棒性强，也不容易产生过拟合；还有很重要的一点是，在最后的 mlpconv层(也就是最后一层卷积层)强制生成了和目标类别数量一致的特征图，经过GAP以后再通过softmax层得到结果，这样做就给每个特征图赋予了很明确的意义，也就是categories confidence maps。如果你当时不理解这个categories confidence maps是个什么东西，结合CAM应该就能很快理解。
 
 我们重点看下经过GAP之后与输出层的连接关系(暂不考虑softmax层)，实质上也是就是个全连接层，只不过没有了偏置项，如图所示：
 
-![GAP_output](http://ac-cf2bfs1v.clouddn.com/2173d395c485a58a4b66.png)
+![GAP_output](http://lc-cf2bfs1v.cn-n1.lcfile.com/2173d395c485a58a4b66.png)
 
 从图中可以看到，经过GAP之后，我们得到了最后一个卷积层每个特征图的均值，通过加权和得到输出(实际中是softmax层的输入)。需要注意的是，对每一个类别C，每个特征图$k$的均值都有一个对应的$w$，记为$w_k^c$。CAM的基本结构就是这样了，下面就是和普通的CNN模型一样训练就可以了。训练完成后才是重头戏：我们如何得到一个用于解释分类结果的热力图呢？其实非常简单，比如说我们要解释为什么分类的结果是羊驼，我们把羊驼这个类别对应的所有$w_k^c$取出来，求出它们与自己对应的特征图的加权和即可。由于这个结果的大小和特征图是一致的，我们需要对它进行上采样，叠加到原图上去，如下所示。
 
-![heatmap_sum](http://ac-cf2bfs1v.clouddn.com/42e1796d2fab354daf80.png)
+![heatmap_sum](http://lc-cf2bfs1v.cn-n1.lcfile.com/42e1796d2fab354daf80.png)
 
 这样，CAM以热力图的形式告诉了我们，模型是重点通过哪些像素确定这个图片是羊驼了。
 
@@ -86,15 +86,15 @@ $$L_{Grad-CAM}^c=ReLU(\sum\limits_k\alpha_k^cA^k)$$
 
 Grad-CAM的整体结构如下图所示：
 
-![Grad-CAM结构](http://ac-cf2bfs1v.clouddn.com/531c1d38e0a0ddaf9553.jpg)
+![Grad-CAM结构](http://lc-cf2bfs1v.cn-n1.lcfile.com/531c1d38e0a0ddaf9553.jpg)
 
 注意这里和CAM的另一个区别是，Grad-CAM对最终的加权和加了一个ReLU，加这么一层ReLU的原因在于我们只关心**对类别$c$有正影响的那些像素点**，如果不加ReLU层，最终可能会带入一些属于其它类别的像素，从而影响解释的效果。使用Grad-CAM对分类结果进行解释的效果如下图所示：
 
-![effect1](http://ac-cf2bfs1v.clouddn.com/2318799bf6bcc13e5218.png)
+![effect1](http://lc-cf2bfs1v.cn-n1.lcfile.com/2318799bf6bcc13e5218.png)
 
 除了直接生成热力图对分类结果进行解释，Grad-CAM还可以与其他经典的模型解释方法如导向反向传播相结合，得到更细致的解释。
 
-![effect2](http://ac-cf2bfs1v.clouddn.com/9c1076aee75f1d4a98ef.png)
+![effect2](http://lc-cf2bfs1v.cn-n1.lcfile.com/9c1076aee75f1d4a98ef.png)
 
 这样就很好的解决了反卷积和导向反向传播对类别不敏感的问题。当然，Grad-CAM的神奇之处还不仅仅局限在对图片分类的解释上，任何与图像相关的深度学习任务，只要用到了CNN，就可以用Grad-CAM进行解释，如图像描述(Image Captioning)，视觉问答(Visual Question Answering)等，所需要做的只不过是把$y^c$换为对应模型中的那个值即可。限于篇幅，本文就不展开了，更多细节，强烈建议大家去读读[论文](https://arxiv.org/abs/1610.02391)，包括Grad-CAM与CAM权重等价的证明也在论文中。如果你只是想在自己的模型中使用Grad-CAM，可以参考这个[链接](https://github.com/Ankush96/grad-cam.tensorflow)，熟悉tensorflow的话实现起来真的非常简单，一看就明白。
 
@@ -116,7 +116,7 @@ Grad-CAM的整体结构如下图所示：
 
 如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
 
-![](http://ac-cf2bfs1v.clouddn.com/bf93ca21e51fb4b0e7ca.png)
+![](http://lc-cf2bfs1v.cn-n1.lcfile.com/bf93ca21e51fb4b0e7ca.png)
 
 ## 参考资料
 

@@ -27,15 +27,15 @@ tags:
 
 现在用谷歌搜索出来的结果是这个样子的
 
-![google_searchweibo](http://ac-cf2bfs1v.clouddn.com/dEMKkjjsC8EblRJcVirVVTy3MqqYgDMC5ppCMLR2.PNG)
+![google_searchweibo](http://lc-cf2bfs1v.cn-n1.lcfile.com/dEMKkjjsC8EblRJcVirVVTy3MqqYgDMC5ppCMLR2.PNG)
 
 和之前的对比一下
 
-![google weibo](http://ac-cf2bfs1v.clouddn.com/nwOvun2VS6nDBCXzG2BKWnqXQBfQMuwnhmHwwbGg.png)
+![google weibo](http://lc-cf2bfs1v.cn-n1.lcfile.com/nwOvun2VS6nDBCXzG2BKWnqXQBfQMuwnhmHwwbGg.png)
 
 百度同样也被ban了
 
-![baidu_searchweibo](http://ac-cf2bfs1v.clouddn.com/IlT3vezrVSMOqWIVkiP7O7k2jPsp4u7K5a3Xse52.PNG)
+![baidu_searchweibo](http://lc-cf2bfs1v.cn-n1.lcfile.com/IlT3vezrVSMOqWIVkiP7O7k2jPsp4u7K5a3Xse52.PNG)
 
 快照里同样也是空的
 

@@ -35,7 +35,7 @@ tags:
 
 Timsort算法是Tim Peters于2002年提出的一个排序算法（以自己名字命名的……），相比其他排序算法算是后起之秀了。我们评价一个排序算法的好坏要从许多方面衡量，看看下面这张图
 
-![timsort table](http://ac-cf2bfs1v.clouddn.com/R8G8J47WqlbKxfBg0GhKVfrl4t7L1ziVRuI44JxD.png)
+![timsort table](http://lc-cf2bfs1v.cn-n1.lcfile.com/R8G8J47WqlbKxfBg0GhKVfrl4t7L1ziVRuI44JxD.png)
 
 其他乱七八糟的排序算法就不看了（也看不懂……），看看那些眼熟的排序算法，快排虽然平均时间复杂度非常好，但是在最优、最坏时间复杂度以及算法的稳定性上来说都不如Timsort
 
@@ -51,7 +51,7 @@ Timsort算法是Tim Peters于2002年提出的一个排序算法（以自己名�
 
 Timsort排序算法中定义数组中的有序片段为run，每个run都要求单调递增或严格单调递减（保证算法的稳定性），如下图所示
 
-![timsort run](http://ac-cf2bfs1v.clouddn.com/Sz4j8uaEeaXpqP7pPFk5Ai34rRb7JB7WQshFObFR.png)
+![timsort run](http://lc-cf2bfs1v.cn-n1.lcfile.com/Sz4j8uaEeaXpqP7pPFk5Ai34rRb7JB7WQshFObFR.png)
 
 抛开一些细节，Timsort排序算法可以概括成两步：
 
@@ -67,23 +67,23 @@ Timsort排序算法中定义数组中的有序片段为run，每个run都要求�
 
 下面以一个实例进行说明，这个例子中我们设置minrun=4，也就是说run的最小长度不能小于4。每划分出一个run就将其入栈，如下图所示
 
-![timsort_ex1](http://ac-cf2bfs1v.clouddn.com/PquHM1PEmayUineexR5E0ISpswmccbyTkII8KxTg.png)
+![timsort_ex1](http://lc-cf2bfs1v.cn-n1.lcfile.com/PquHM1PEmayUineexR5E0ISpswmccbyTkII8KxTg.png)
 
 注意，此时栈顶的run是不满足约束条件的，因为此时runLen[0] < runLen[1]，所以要对这两个run进行归并，当然这个过程使用的是归并排序。
 
 如果遇到有序片段长度小于minrun，则要进行补齐，如下图所示
 
-![timsort_ex2](http://ac-cf2bfs1v.clouddn.com/Mx0Q90icYl3PtWFqKiMaILvYuGvaTanJVPYRcEo0.png)
+![timsort_ex2](http://lc-cf2bfs1v.cn-n1.lcfile.com/Mx0Q90icYl3PtWFqKiMaILvYuGvaTanJVPYRcEo0.png)
 
 注意，此时栈顶run是满足约束条件的，10 > 5 + 4，5 > 4，因此不需要进行归并。
 
 最后数组元素个数不足minrun了，只能作为一个run了
 
-![timsort_ex3](http://ac-cf2bfs1v.clouddn.com/T4gmjp698bTRAPQ9ly38keWyEiFlslbuWvVhJfFO.png)
+![timsort_ex3](http://lc-cf2bfs1v.cn-n1.lcfile.com/T4gmjp698bTRAPQ9ly38keWyEiFlslbuWvVhJfFO.png)
 
 此时栈顶的run又不满足约束条件了，5 < 4 + 2，所以需要进行归并。后续过程如下图所示
 
-![timsort_ex4](http://ac-cf2bfs1v.clouddn.com/2aGbjhj1fDGDkkmPoJ8UigkQQwDnq8wN6TmnqceC.png)
+![timsort_ex4](http://lc-cf2bfs1v.cn-n1.lcfile.com/2aGbjhj1fDGDkkmPoJ8UigkQQwDnq8wN6TmnqceC.png)
 
 这样排序过程就完成了~有的同学可能会有疑问，为什么要有那个奇怪的约束条件呢？每次入栈的时候直接进行归并不行吗？这主要是考虑到归并排序的效率问题，因为将一个长序列和一个短序列进行归并排序从效率和代价的角度来看是不划算的，而两个长度均衡的序列进行归并排序时才是比较合理的也比较高效的。
 
@@ -91,7 +91,7 @@ Timsort排序算法中定义数组中的有序片段为run，每个run都要求�
 
 为了更直观的理解Timsor看法的过程，可以看看下面这张git图，是不是与我们刚才描述的算法过程基本一致呢？
 
-![demo](http://ac-cf2bfs1v.clouddn.com/kGmWwAijwtoxIYCpytEs9HpqeL6yRxCuYINBkv6U.gif)
+![demo](http://lc-cf2bfs1v.cn-n1.lcfile.com/kGmWwAijwtoxIYCpytEs9HpqeL6yRxCuYINBkv6U.gif)
 
 还有一个台湾高三学生讲解Timsort算法的视频，里面介绍了不少我们忽略的细节问题
 
@@ -101,7 +101,7 @@ Timsort排序算法中定义数组中的有序片段为run，每个run都要求�
     jwplayer.logo="/assets/images/favicon-16.png";
     jwplayer("Buffonneedle").setup({
         file: "http://bindog.qiniudn.com/formal-method/timsort.mp4",
-        image: "http://ac-cf2bfs1v.clouddn.com/m79fA5YHJRRoTR7qLG8DTKwnCjBJ6NT1jzDrTnlq.png",
+        image: "http://lc-cf2bfs1v.cn-n1.lcfile.com/m79fA5YHJRRoTR7qLG8DTKwnCjBJ6NT1jzDrTnlq.png",
         width: 640,
         height: 480
     });
@@ -222,7 +222,7 @@ for n in ns:
 
 国外的这个技术团队在论文中算出了最坏情况下用到栈的大小，并画出了一张表
 
-![timsort_stacksize](http://ac-cf2bfs1v.clouddn.com/DL0zVCnptpw4JK1dUdOVritDqjMc4uLWtp3ULC8C.png)
+![timsort_stacksize](http://lc-cf2bfs1v.cn-n1.lcfile.com/DL0zVCnptpw4JK1dUdOVritDqjMc4uLWtp3ULC8C.png)
 
 第二行表示最坏情况下需要用到栈的大小，第三行表示Timsort算法实际给出的栈大小（见上文JDK源码）。有意思的是在Array长度为65536时，最初Java中Timsort设定栈的长度为19，但是后来有人报告了[Bug](http://bugs.java.com/view_bug.do?bug_id=8011944)，也就是说这个Bug在实际中是出现过的。然而Java开源社区的程序员可能无法定位这个Bug的根源，只好从表面解决这个问题，在后来的更新中把栈的大小改成了24……（不过确实也解决了问题）但是隐患依然存在的，可以看到在Array长度为67108864时，最坏情况下用到的栈大小41，而Java中Timsort设定的长度为40。所以只要精心构造一个Array，就能触发这个Bug。然而如本文开头所说，Java开源社区的程序员依然不从根本上解决问题，还是用老办法，增加栈的大小……（老子就会这一个技能，不服你来咬我啊）
 
@@ -341,21 +341,21 @@ private void newMergeCollapse() {
 
 所以形式化方法一个非常重要的市场就是航空航天领域，去年在新加坡举行的第19届形式化方法国际研讨会上，有两个来自中国的团队进行了汇报，巧合的是他们汇报的题目都与玉兔月球车相关，一个与月球软着陆控制相关，另一个与玉兔月球车控制系统相关。而我有幸在其他场合聆听过其中用形式化方法验证玉兔控制系统那个团队的报告，切实感受到形式化方法的强大与复杂。
 
-![fm2014](http://ac-cf2bfs1v.clouddn.com/00jfm7HE6Ac1BoThwcgfCFnj0hxYYBCdxlOQLaXA.png)
+![fm2014](http://lc-cf2bfs1v.cn-n1.lcfile.com/00jfm7HE6Ac1BoThwcgfCFnj0hxYYBCdxlOQLaXA.png)
 
 下图是玉兔月球车控制系统的一个简化版本（真实系统中有30多个应用任务），这里只列出6种
 
-![lunar_com](http://ac-cf2bfs1v.clouddn.com/BBTWCnSeUjPGqzTdIuQz5OV2aH54lDoYSfXeLH22.png)
+![lunar_com](http://lc-cf2bfs1v.cn-n1.lcfile.com/BBTWCnSeUjPGqzTdIuQz5OV2aH54lDoYSfXeLH22.png)
 
 图中左侧主要是一些任务，中间的是消息队列（包括发送队列和接收队列），右侧是CAN bus总线，控制命令和传感器数据都是通过它传递的。具体的含义见下表：
 
-![lunar_table](http://ac-cf2bfs1v.clouddn.com/b7c58s1N1UQVlGtoU4npxjjnUCnavIRw5RPMGe8J.png)
+![lunar_table](http://lc-cf2bfs1v.cn-n1.lcfile.com/b7c58s1N1UQVlGtoU4npxjjnUCnavIRw5RPMGe8J.png)
 
 注意从Task1到Task6的优先级是依次递减的，Task1的优先级为6，Task6的优先级为1。
 
 Task5是一个周期性请求数据的任务，预期能4ms接收到完整的遥测数据，如下图所示
 
-![task5_com](http://ac-cf2bfs1v.clouddn.com/FHBCYJm86hEUVMloRcuzjXOuRsAzSUyBFow4PVdF.png)
+![task5_com](http://lc-cf2bfs1v.cn-n1.lcfile.com/FHBCYJm86hEUVMloRcuzjXOuRsAzSUyBFow4PVdF.png)
 
 在正常情况下，发送数据1帧，接收数据6帧。这一过程耗时1×0.192(Task3Send)+0.5(IMU响应时间)+6×0.192(Task5)=1.844ms，预设的4ms等待时间是足够的。但是在几年的开发和测试过程中，开发人员偶然观察到几次“遥测超时错误”：即预计能够在4ms内完成的Task5发生超时，未能获取到完整数据。
 
@@ -363,11 +363,11 @@ Task5是一个周期性请求数据的任务，预期能4ms接收到完整的遥
 
 然后又是形式化方法出场了，大家请看下面几张图
 
-![zdj_0](http://ac-cf2bfs1v.clouddn.com/BsYzVsR5x9EV5Dok8xfwx6miX0MjwBzL1N8rOo7E.png)
+![zdj_0](http://lc-cf2bfs1v.cn-n1.lcfile.com/BsYzVsR5x9EV5Dok8xfwx6miX0MjwBzL1N8rOo7E.png)
 
-![zdj_1](http://ac-cf2bfs1v.clouddn.com/H02lVaN5g7IVfOhsOrk1TpQNgEiHUUBrzjMm6gCn.png)
+![zdj_1](http://lc-cf2bfs1v.cn-n1.lcfile.com/H02lVaN5g7IVfOhsOrk1TpQNgEiHUUBrzjMm6gCn.png)
 
-![zdj_2](http://ac-cf2bfs1v.clouddn.com/9PkJOlb21k3BjG82f65QPsxTl6fwzM4Upq8cpx1G.png)
+![zdj_2](http://lc-cf2bfs1v.cn-n1.lcfile.com/9PkJOlb21k3BjG82f65QPsxTl6fwzM4Upq8cpx1G.png)
 
 关于这些图不想说太多（此处省略一万字……），有人说这不是自动机嘛，没错，自动机本来就是形式化方法中非常重要的一部分。第一个图是抢占式任务的时间自动机模型，对应Task1，第二个图是周期性任务的时间自动机模型，对应是Task2、Task5和Task6，第三个图是偶发任务的时间自动机模型，对应Task3、Task4
 

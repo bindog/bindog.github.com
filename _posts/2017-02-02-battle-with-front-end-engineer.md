@@ -102,7 +102,7 @@ cookie变化(Linux版Chrome有效 Version 59.0.3071.115 (Official Build) (64-bit
 
 其中keyinformation是我们需要采集的内容，这时即可采用标签断点的方式快速定位到相应的Javascript代码段，方法非常简单，在审查元素的选项卡最下方有一个断点选项，如图所示
 
-![标签断点三个选项](http://ac-cf2bfs1v.clouddn.com/e6d02624018934dae6d7.png)
+![标签断点三个选项](http://lc-cf2bfs1v.cn-n1.lcfile.com/e6d02624018934dae6d7.png)
 
 根据实际情况选择相应的断点，对刚才我们所举的例子，选择第一项即可。然后在网页上进行操作，当有Javascript代码尝试修改该标签及其子孙结点时就会断下，这样我们就定位到关键代码了。
 
@@ -110,7 +110,7 @@ cookie变化(Linux版Chrome有效 Version 59.0.3071.115 (Official Build) (64-bit
 
 事件断点的类型就非常丰富了，基本你能想到的断点都包含在内，如下图所示。做前端开发的同学应该会比较熟悉这些功能。
 
-![事件断点截图](http://ac-cf2bfs1v.clouddn.com/d21580918c63f3ae9950.png)
+![事件断点截图](http://lc-cf2bfs1v.cn-n1.lcfile.com/d21580918c63f3ae9950.png)
 
 对于爬虫工程师而言，主要关注`Script`和`XHR`这两个选项下的事件就行了。`XHR`不用多说，即`XMLHttpRequest`，大家一般也比较关注它，很多关键数据都是通过它拿到的，与`XHR`相关的操作这里基本都囊括了。
 

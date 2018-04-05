@@ -33,7 +33,7 @@ tags:
 
 假设有9个岛屿(为了方便说明，即使岛屿数量未知，按照这个方法也是可行的)，一字排开，植物学家来到某个岛屿后，不仅可以了解当前岛屿的植物数量，还可以了解相邻岛屿的植物数量。植物学家只能从当前岛屿移动到相邻岛屿。假设这9个岛屿的植物数量分布如下：
 
-![植物数量分布](http://ac-cf2bfs1v.clouddn.com/0cbfb780dc8137e9.PNG)
+![植物数量分布](http://lc-cf2bfs1v.cn-n1.lcfile.com/0cbfb780dc8137e9.PNG)
 
 精通MCMC的统计学者向植物学家建议用`M-H算法`算法的思想，通过“两步随机试探法”来决定考察路线和停留时间。植物学家到达某岛屿后，由于岛屿是一字排开，所以面临三种选择（三个状态）：一是继续停留在岛屿上（保持原状态）；二是到临近左面岛屿（转移到前状态）；三是到临近右面岛屿（转移到后状态）。这三种状态可以转化为两种随机选择：一是去或留，二是左或右。但`M-H算法`突破常理，用“逆向思维”来确定选择过程，先确定左或右，再决定去或留（究其原因可能是先基于左或右岛的情况，再与当前岛屿比较，最后决定是走还是留）。“两步随机试探法”的具体实施过程如下：
 
@@ -44,7 +44,7 @@ tags:
 
 通过程序模拟，下图是植物学家的移动路线和最终在每个岛屿上停留的时间分布
 
-![路线和时间分布](http://ac-cf2bfs1v.clouddn.com/c71f1dd0e628dd63.png)
+![路线和时间分布](http://lc-cf2bfs1v.cn-n1.lcfile.com/c71f1dd0e628dd63.png)
 
 可以看到最终科学家们在每个岛屿停留时间的分布与每个到植物数量的分布是一致的，这就是MCMC方法的神奇之处~
 
@@ -114,7 +114,7 @@ plot_beta(0.5, 0.6)
 
 结果如下图所示
 
-![beta_mcmc](http://ac-cf2bfs1v.clouddn.com/945805f2e2cc3d4a.png)
+![beta_mcmc](http://lc-cf2bfs1v.cn-n1.lcfile.com/945805f2e2cc3d4a.png)
 
 
 # 0x03 高维积分
@@ -123,7 +123,7 @@ plot_beta(0.5, 0.6)
 
 关于如何用MCMC方法求积分，统计之都上早有一些文章进行了介绍，如邓一硕的[蒙特卡洛方法与定积分计算](http://cos.name/2010/03/monte-carlo-method-to-compute-integration/)，所以本文不再重复叙述，只列举一个“高维积分”的例子，下图是高数中多重积分的一个例子，用MC方法就非常简单直观
 
-![三重积分](http://ac-cf2bfs1v.clouddn.com/3fa19634d3d98690.PNG)
+![三重积分](http://lc-cf2bfs1v.cn-n1.lcfile.com/3fa19634d3d98690.PNG)
 
 {% highlight python %}
 import random
@@ -151,7 +151,7 @@ print multidimi/100000.0
 
 斯坦福统计学教授Persi Diaconis是一位传奇式的人物，统计之都上有关于他的介绍，[Persi Diaconis (1)](http://cos.name/2012/08/persi-diaconis-1/)，[Persi Diaconis(2)](http://cos.name/2012/09/persi-diaconis2/). 下面要讲的这个故事，是Diaconis 在他的文章The Markov Chain Monte Carlo Revolution中给出的破译犯人密码的例子。 一天，一位研究犯罪心理学的心理医生来到斯坦福拜访Diaconis。他带来了一个囚犯所写的密码信息。他希望Diaconis帮助他把这个密码中的信息找出来。 这个密码里的每个符号应该对应着某个字母，但是如何把这些字母准确地找出来呢？Diaconis和他的学生Marc采用了一种叫做MCMC（马尔科夫链蒙特卡洛）的方法解决了这个问题。
 
-![凯撒密码](http://ac-cf2bfs1v.clouddn.com/93d23123d7b53b4a.jpg)
+![凯撒密码](http://lc-cf2bfs1v.cn-n1.lcfile.com/93d23123d7b53b4a.jpg)
 
 是不是联想到了福尔摩斯里面跳舞的小人？这其实是一个非常典型的凯撒密码，手工用频率分析法，尝试不同的组合，观察结果是否有意义可以解决这个问题。但是除了部分高频字母，大部分字母的出现频率是差不多的，而且与文本内容有关，这样需要尝试的组合非常多，而且需要人为的判断结果是否有意义。
 
@@ -161,7 +161,7 @@ print multidimi/100000.0
 
 Diaconis和他的学生Marc按照这个思路对密文进行解密，程序大概跑了2000多步，得到的信息就已经有意义了，下图给出解密后的结果：
 
-![答案](http://ac-cf2bfs1v.clouddn.com/27d99a0c841e2345.jpg)
+![答案](http://lc-cf2bfs1v.cn-n1.lcfile.com/27d99a0c841e2345.jpg)
 
 说了这么多，动手实践一下，下面是一个凯撒密码的例子：
 
@@ -341,7 +341,7 @@ print "ACTUAL DECRYPTION KEY:",decryption_key
 
 其算法流程图如下所示：
 
-![模拟退火流程](http://ac-cf2bfs1v.clouddn.com/b6877f21d865bc5f.jpg)
+![模拟退火流程](http://lc-cf2bfs1v.cn-n1.lcfile.com/b6877f21d865bc5f.jpg)
 
 可以看到，这个算法思想与MCMC方法是非常相似的，如果没有那个以一定概率接受新解的步骤，那么就是单纯的贪心算法，很容易陷入局部最优解。而当我们了解了MCMC方法之后就可以知道，正是这个步骤保证了采样结果符合目标分布，使算法不会陷于局部最优解，能够找到全局最优或近似全局最优解.
 
