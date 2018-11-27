@@ -2,7 +2,7 @@
 author: 宾狗
 date: 2018-11-27 10:32+08:00
 layout: post
-title: "在TVM中实现Instance_Norm层"
+title: "在TVM中实现Instance Normalization层"
 description: ""
 mathjax: true
 categories:
@@ -19,6 +19,11 @@ tags:
 TVM不用多解释了，深度学习领域的编译器，直接从其他框架训练好的模型编译到目标平台上的可执行代码，速度和显存的都有大幅优化，该项目目前由DMLC组维护，正在快速迭代中。
 
 原先我组的模型线上部署都是采用Caffe2+ONNX的形式，近来想进一步控制成本，TVM无疑能够满足我们的需求。但是，由于我组最近使用的模型se_resnet_101_ibn_a中包含了一个`instance_norm`和`batch_norm`融合的特殊结构(IBN结构可参考该[论文](https://arxiv.org/abs/1807.09441))，而目前TVM暂不支持`instance_norm`，所以只能自己来进行实现了。
+
+
+
+
+
 
 考虑到`instance_norm`和`batch_norm`比较类似，所以最初的计划是从`batch_norm`入手，找出TVM源码中所有`batch_norm`出现过的地方，然后模仿一下，应该就能很轻松的实现`instance_norm`(当然后面的事实证明这真是太天真了)
 
