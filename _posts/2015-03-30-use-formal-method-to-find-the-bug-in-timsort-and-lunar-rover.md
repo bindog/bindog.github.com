@@ -388,6 +388,10 @@ Task5是一个周期性请求数据的任务，预期能4ms接收到完整的遥
 
 就目前而言，形式化方法的门槛过高，很难将其大规模应用。但可以想像，如果有一天，形式化方法能够在漏洞挖掘、互联网安全等领域普及，必将引发席卷计算机安全领域的风暴。
 
+如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
+
+![](/assets/images/qrcode.png)
+
 # 0x07 参考资料
 
 1. [Proving that Android’s, Java’s and Python’s sorting algorithm is broken (and showing how to fix it)](http://envisage-project.eu/proving-android-java-and-python-sorting-algorithm-is-broken-and-how-to-fix-it/)

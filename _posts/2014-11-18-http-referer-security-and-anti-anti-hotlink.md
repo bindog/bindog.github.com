@@ -117,3 +117,7 @@ document.getElementById('noreferer').innerHTML = ReferrerKiller.imageHtml('http:
 本篇博客中的Referer和上一篇博客中涉及到的User-Agent都与HTTP协议有关。当遇到一些与底层协议相关的问题时，如果对其不了解，往往只能束手无策或者要浪费很多时间。
 
 因此，即便`Python`提供了非常强大的功能，花时间去了解HTTP协议依然是十分必要的。
+
+如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
+
+![](/assets/images/qrcode.png)

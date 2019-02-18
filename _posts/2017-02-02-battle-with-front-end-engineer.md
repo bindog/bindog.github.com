@@ -194,6 +194,9 @@ function breakOn(obj, propertyName, mode, func) {
 
 还有的同学想知道这么多神奇的小脚本上哪里去找，这就要经常去Google或者Github上淘金了，我再提供一个收集了很多有用小脚本的网站：[DevTools Snippets](http://bgrins.github.io/devtools-snippets/)，里面包含了一些诸如以表格形式显示当面页面HTTP请求头或者cookie等功能的小脚本，有兴趣的同学可以收藏起来。
 
+如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
+
+![](/assets/images/qrcode.png)
 
 ## 参考资料
 

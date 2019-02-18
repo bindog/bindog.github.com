@@ -179,7 +179,7 @@ Linux的堆内存管理可谓博大精深，过于复杂的理论和实现细节
 
 如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱~
 
-![打赏](http://lc-cf2bfs1v.cn-n1.lcfile.com/bf93ca21e51fb4b0e7ca.png)
+![](/assets/images/qrcode.png)
 
 <!--在下一篇文章中我会放出代码，有非常详尽的注释-->
 

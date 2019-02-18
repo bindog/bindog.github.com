@@ -392,6 +392,10 @@ used_memory_lua:31744
 3. 原作者开发的`pressure`是一个非常有意义的探索，但能否在实际中大规模应用还有很长的路要走
 4. `Redis`是一个非常强大的Key-Value存储系统，现在很多大型系统架构都在用~
 
+如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
+
+![](/assets/images/qrcode.png)
+
 ##扩展阅读
 
 * [Unix Pipes 管道原稿](http://coolshell.cn/articles/1351.html)

@@ -98,7 +98,7 @@ tags:
 
 如果觉得本文对你有帮助，请打赏我一杯咖啡钱~
 
-![打赏](http://lc-cf2bfs1v.cn-n1.lcfile.com/bf93ca21e51fb4b0e7ca.png)
+![](/assets/images/qrcode.png)
 
 ## 参考资料
 

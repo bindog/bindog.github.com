@@ -134,7 +134,9 @@ indianbrewedsmk.rutwistedtransistoreekl.biz
 
 当黑客都开始研究机器学习技术了，我们又有什么理由落后呢？
 
+如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
 
+![](/assets/images/qrcode.png)
 
 # 参考资料
 

@@ -95,3 +95,7 @@ tags:
 其实优化有的时候并非想像中那么复杂，一个好的优化一定是简单而优雅的。就像本文介绍的对称删除法，虽然本质上来说属于一种“用空间换时间”的方法，但这不是重点，它的核心思想就是两个字——对称
 
 本文的最后再次说明，本文介绍的算法出自[1000x Faster Spelling Correction algorithm](http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/)，在GitHub有[C#源码](https://github.com/wolfgarbe/symspell)可供参考。
+
+如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
+
+![](/assets/images/qrcode.png)

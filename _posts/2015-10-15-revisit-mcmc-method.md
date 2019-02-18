@@ -349,6 +349,9 @@ print "ACTUAL DECRYPTION KEY:",decryption_key
 
 MCMC方法不仅是一种引领近代贝叶斯分析复兴的方法，更重要的是一种思维方式的革新。这一点对于非数学专业的研究人员更是一个启示，从有限到无限，从小规模到大数据，从精确计算到算法模拟，这告诉我们：兵无常势，水无常形，大数据时代就要以大数据的思维来思考和分析。
 
+如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
+
+![](/assets/images/qrcode.png)
 
 # 0x07 参考资料
 - [My Tryst With MCMC Algorithms](http://mlwhiz.com/blog/2015/08/19/MCMC_Algorithms_Beta_Distribution/)

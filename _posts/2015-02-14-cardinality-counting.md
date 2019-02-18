@@ -280,6 +280,11 @@ All sciences are, in the abstract, mathematics.
 >
 All judgements are, in their rationale, statistics.
 
+
+如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
+
+![](/assets/images/qrcode.png)
+
 # 0x04 参考文献
 
  - [解读Cardinality Estimation算法（第一部分：基本概念）](http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html)

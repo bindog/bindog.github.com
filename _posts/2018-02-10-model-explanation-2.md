@@ -64,7 +64,7 @@ LIME除了能够对图像的分类结果进行解释外，还可以应用到自�
 
 如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
 
-![](http://lc-cf2bfs1v.cn-n1.lcfile.com/bf93ca21e51fb4b0e7ca.png)
+![](/assets/images/qrcode.png)
 
 
 ## 参考资料
