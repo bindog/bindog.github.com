@@ -136,7 +136,7 @@ indianbrewedsmk.rutwistedtransistoreekl.biz
 
 如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
 
-![](/assets/images/qrcode.png)
+![](http://lc-cf2bfs1v.cn-n1.lcfile.com/184650991fae74643fd0.png)
 
 # 参考资料
 

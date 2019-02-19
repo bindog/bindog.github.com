@@ -414,7 +414,7 @@ $$O=\sum_{(i,j) \in E}w_{ij}(p(e_{ij}=1)+\sum_{k=1}^M\ _{E_{j_k}\sim P_n(j)}\gam
 
 希望有更多的有志青年不要为浮躁的大环境所影响，踊跃跳进数据可视化的大坑之中！如果本文能够在跳坑之路上助你一臂之力，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
 
-![](/assets/images/qrcode.png)
+![](http://lc-cf2bfs1v.cn-n1.lcfile.com/184650991fae74643fd0.png)
 
 # 0x07 参考资料
 

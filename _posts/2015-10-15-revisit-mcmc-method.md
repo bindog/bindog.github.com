@@ -351,7 +351,7 @@ MCMC方法不仅是一种引领近代贝叶斯分析复兴的方法，更重要�
 
 如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
 
-![](/assets/images/qrcode.png)
+![](http://lc-cf2bfs1v.cn-n1.lcfile.com/184650991fae74643fd0.png)
 
 # 0x07 参考资料
 - [My Tryst With MCMC Algorithms](http://mlwhiz.com/blog/2015/08/19/MCMC_Algorithms_Beta_Distribution/)
