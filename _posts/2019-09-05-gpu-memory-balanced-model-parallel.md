@@ -24,9 +24,8 @@ tags:
 
 相关的资料可以参考以下的几个页面：
 
-- 干货 | 格灵深瞳首席科学家张徳兵：如何进行上亿类的人脸识别？(https://zhuanlan.zhihu.com/p/35968767)
-- 极市分享|张德兵&小美：分布式人脸识别及工业级运用经验
-(https://zhuanlan.zhihu.com/p/42983504)
+- [干货 | 格灵深瞳首席科学家张徳兵：如何进行上亿类的人脸识别？](https://zhuanlan.zhihu.com/p/35968767)
+- [极市分享|张德兵&小美：分布式人脸识别及工业级运用经验](https://zhuanlan.zhihu.com/p/42983504)
 
 ## 0x00 什么是模型并行？
 
@@ -130,7 +129,7 @@ def stable_softmax(x):
 
 更多细节大家直接看代码就好了：
 
-```Python
+```python
 class ModelParallelCrossEntropy(nn.Module):
     def __init__(self):
         super(ModelParallelCrossEntropy, self).__init__()
@@ -275,7 +274,7 @@ python train.py --gpus=0,1,2,3 --data_path=/your/data/path --num_classes=3000000
 
 如果不使用model_parallel选项的话，肯定会报OOM错误，大家也可以自行对比一下与朴素的模型并行相比在显存占用上的区别。
 
-项目地址：https://github.com/bindog/pytorch-model-parallel
+项目地址：[https://github.com/bindog/pytorch-model-parallel](https://github.com/bindog/pytorch-model-parallel)
 
 
 如果觉得本文对您有帮助，欢迎打赏我一杯咖啡钱~
