@@ -41,7 +41,7 @@ $$l_{tri}=\max (\Vert x_a - x_p \Vert - \Vert x_a - x_n \Vert + \alpha, 0)$$
 
 ## 0x01 一点点理论分析
 
-我们回到triplet loss当中三元组的基本形式，首先约定一些符号（与上面提到的那篇论文保持一致），假定训练集样本总量为$N$，定义同类别样本集合$S=\\{(i,j)|y_i=y_j\\}_{i,j\in \\{1,\cdots N\\}}$，那么最基本的triplet loss表达式形式如下（为了简化问题，我们暂时忽略了margin这一项）
+我们回到triplet loss当中三元组的基本形式，首先约定一些符号（与上面提到的那篇论文保持一致），假定训练集样本总量为$N$，定义同类别样本集合$S = \\{(i,j)|y_i = y_j \\}_{i,j\in \\{1,\cdots N \\}}$，那么最基本的triplet loss表达式形式如下（为了简化问题，我们暂时忽略了margin这一项）
 
 $$L_t(T,S)=\sum\limits_{(i,j)\in S,(i,k)\notin S,i,j,k\in\{1,\cdots,N\}}l_t(x_i,x_j,x_k) \tag{1}$$
 
