@@ -41,13 +41,13 @@ $$l_{tri}=\max (\Vert x_a - x_p \Vert - \Vert x_a - x_n \Vert + \alpha, 0)$$
 
 ## 0x01 一点点理论分析
 
-我们回到triplet loss当中三元组的基本形式，首先约定一些符号（与上面提到的那篇论文保持一致），假定训练集样本总量为$N$，定义同类别样本集合$S = \{(i,j) \mid y_i = y_j \}_{i,j\in \{1,\cdots N \}}$，那么最基本的triplet loss表达式形式如下（为了简化问题，我们暂时忽略了margin这一项）
+我们回到triplet loss当中三元组的基本形式，首先约定一些符号（与上面提到的那篇论文保持一致），假定训练集样本总量为$N$，定义同类别样本集合$S = \\{(i,j) \mid y_i = y_j \\}_{i,j\in \\{1,\cdots N \\}}$，那么最基本的triplet loss表达式形式如下（为了简化问题，我们暂时忽略了margin这一项）
 
 $$L_t(T,S)=\sum\limits_{(i,j)\in S,(i,k)\notin S,i,j,k\in\{1,\cdots,N\}}l_t(x_i,x_j,x_k) \tag{1}$$
 
 $$l_t(x_i,x_j,x_k)=\Vert x_i-x_j \Vert - \Vert x_i - x_k \Vert \tag{2}$$
 
-直接对上面两个式子做变换是比较困难的，如果假定每一个类别都有自己的一个类中心$c_m$，当然这个类中心和所有的样本处于同一个embedding空间，$\mathcal{C}=\{c_m\}_{m=1}^C$，其中$c_m\in \mathbb{R}^D$
+直接对上面两个式子做变换是比较困难的，如果假定每一个类别都有自己的一个类中心$c_m$，当然这个类中心和所有的样本处于同一个embedding空间，$\mathcal{C}=\\{c_m\\}_{m=1}^C$，其中$c_m\in \mathbb{R}^D$
 
 通过引入这样一个辅助的类中心点，我们可以利用三角不等式写出如下式子：
 
@@ -77,13 +77,13 @@ $$L_d(T,S)=G\sum\limits_{i=1}^N(\Vert x_i-c_{y_i} \Vert - \frac{1}{3(C-1)}\sum\l
 
 ![human_face_loss.png](https://i.loli.net/2019/10/23/eMzO1xw9q4vK7dT.png)
 
-一般分类问题当中，我们有一个共识就是最后全连接层的权重$W$，其每一列实际上表示的是正是对应类别的类中心点，尤其是在上述魔改softmax下；对所有属于类别$c$的样本$\\{x_i|y_i=c\\}_{i\in\\{1,\cdots,N\\}}$，需要满足$W_cx_i$最大，实际上就是要求二者夹角最小；而对所有属于类别不属于$c$的样本$\\{x_j|y_j\neq c\\}_{j\in\\{1,\cdots,N\\}}$，则需要满足$W_cx_j$尽可能小，也就是要求二者夹角尽可能大，至少要比$W_c$与$x_i$类内最大夹角要大。文字描述起来不太直观，直接上公式
+一般分类问题当中，我们有一个共识就是最后全连接层的权重$W$，其每一列实际上表示的是正是对应类别的类中心点，尤其是在上述魔改softmax下；对所有属于类别$c$的样本$\\{x_i \mid y_i=c\\}_{i\in\\{1,\cdots,N\\}}$，需要满足$W_cx_i$最大，实际上就是要求二者夹角最小；而对所有属于类别不属于$c$的样本$\\{x_j \mid y_j\neq c\\}_{j\in\\{1,\cdots,N\\}}$，则需要满足$W_cx_j$尽可能小，也就是要求二者夹角尽可能大，至少要比$W_c$与$x_i$类内最大夹角要大。文字描述起来不太直观，直接上公式
 
 $$\begin{align*} L_i &= -\log (\frac{e^{W_{y_i}x_i+b_{y_i}}}{\sum_je^{W_jx_i+b_j}}) \\ &=-\log (\frac{e^{\Vert W_{y_i}\Vert\Vert x_i\Vert\cos (\theta_{y_i},i)+b_{y_i}}}{\sum_j e^{\Vert W_j\Vert\Vert x_i\Vert\cos (\theta_j,i)+b_j}}) \end{align*} \tag{7}$$
 
 由于在魔改系列的softmax当中，一般都会提前进行norm操作，所以$\Vert W_i\Vert$和$\Vert x_i\Vert$的值均为1，偏置$b$在很多情况下也会被舍弃，所以我们唯一需要考虑的就是$\cos\theta$这一项，也就是要考虑样本和对应权重的夹角。观察分子和分母之间的关系，显然同类之间夹角越小($\cos\theta$越大)，不同类之间夹角越大($\cos\theta$越小)，分类的效果越好。然而普通的softmax这样分类就比较简单了，很容易收敛，得到的决策边界也就不是特别严格。所以为了提高分类效果，各种魔改softmax出现了，有的是把分子的$\cos\theta$变成$\cos m\theta$，有的是把$\cos\theta$变成$\cos\theta-m$，等等不一而足；总之无非就是想增加一下分类的难度，让决策边界变的更为紧凑。
 
-最终能够满足条件的$W_c$其实也就是样本embedding集合$\\{x_i|y_i=c\\}_{i\in\\{1,\cdots,N\\}}$的类中心点了。
+最终能够满足条件的$W_c$其实也就是样本embedding集合$\\{x_i \mid y_i=c\\}_{i\in\\{1,\cdots,N\\}}$的类中心点了。
 
 对比式(6)和式(7)我们发现，二者都涉及到了类中心centroid，只不过在triplet loss上界版中我们是显示的指定，而在softmax中是隐式的等同于权重$W$，差异无非是一个使用了余弦距离，而另外一个使用了欧式距离，实际上在做了归一化的情况下，余弦距离和欧式距离是等价的（只有系数上的差异）。所以总的来看，triplet loss与魔改softmax之间并没有什么本质上的区别。
 
