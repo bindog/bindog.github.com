@@ -77,7 +77,7 @@ $$L_d(T,S)=G\sum\limits_{i=1}^N(\Vert x_i-c_{y_i} \Vert - \frac{1}{3(C-1)}\sum\l
 
 ![human_face_loss.png](https://i.loli.net/2019/10/23/eMzO1xw9q4vK7dT.png)
 
-一般分类问题当中，我们有一个共识就是最后全连接层的权重$W$，其每一列实际上表示的是正是对应类别的类中心点，尤其是在上述魔改softmax下；对所有属于类别$c$的样本$\\{x_i \mid y_i=c\\}_{i\in\\{1,\cdots,N\\}}$，需要满足$W_cx_i$最大，实际上就是要求二者夹角最小；而对所有属于类别不属于$c$的样本$\\{x_j \mid y_j\neq c\\}_{j\in\\{1,\cdots,N\\}}$，则需要满足$W_cx_j$尽可能小，也就是要求二者夹角尽可能大，至少要比$W_c$与$x_i$类内最大夹角要大。文字描述起来不太直观，直接上公式
+一般分类问题当中，我们有一个共识就是最后全连接层的权重$W$，其每一列实际上表示的是正是对应类别的类中心点，尤其是在上述魔改softmax下；对所有属于类别$c$的样本$\\{x_i \mid y_i=c\\}_{i\in\\{1,\cdots,N\\}}$，需要满足$W_c \cdot x_i$最大，实际上就是要求二者夹角最小；而对所有属于类别不属于$c$的样本$\\{x_j \mid y_j \neq c\\}_{j \in \\{1,\cdots,N \\}}$，则需要满足$W_c \cdot x_j$尽可能小，也就是要求二者夹角尽可能大，至少要比$W_c$与$x_i$类内最大夹角要大。文字描述起来不太直观，直接上公式
 
 $$\begin{align*} L_i &= -\log (\frac{e^{W_{y_i}x_i+b_{y_i}}}{\sum_je^{W_jx_i+b_j}}) \\ &=-\log (\frac{e^{\Vert W_{y_i}\Vert\Vert x_i\Vert\cos (\theta_{y_i},i)+b_{y_i}}}{\sum_j e^{\Vert W_j\Vert\Vert x_i\Vert\cos (\theta_j,i)+b_j}}) \end{align*} \tag{7}$$
 
