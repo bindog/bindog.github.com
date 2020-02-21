@@ -2,7 +2,7 @@
 author: 宾狗
 date: 2019-09-05 12:25+08:00
 layout: post
-title: "显存均衡的模型并行(PyTorch实现)"
+title: "如何支撑上亿类别的人脸训练？——显存均衡的模型并行(PyTorch实现)"
 description: ""
 mathjax: true
 categories:
