@@ -4,7 +4,7 @@ date: 2020-04-12 13:12+08:00
 layout: post
 title: "混合精度训练与模型并行适配"
 description: ""
-mathjax: false
+mathjax: true
 categories:
 - 工程
 tags:
