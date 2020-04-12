@@ -25,6 +25,8 @@ tags:
 
 
 
+
+
 ## 混合精度训练
 
 如果训练使用的框架是pytorch，那么首选的应该是N厂的[apex](https://github.com/NVIDIA/apex)，经过好几年的迭代，目前的apex使用起来已经非常傻瓜，基本上能用的trick全都已经集成了，看一遍`README`里面的示例就知道怎么改造自己的程序了。
@@ -35,15 +37,15 @@ tags:
 
 - FP32 master copy of weights，这个方法起因是大数加小数会引起的误差，我们知道浮点数在计算机中的表示是指数和尾数的形式，在计算过程中包含对阶、尾数运算、规格化、舍入处理、溢出判断几个步骤，而在对阶过程中，若两数相差较大，很容易产生误差。FP32的表示范围较宽，而FP16表示范围较小，因此有一些在FP32表示范围下不会出现问题的加减运算，在FP16下就会出现误差，由此诞生了这样一个方法：即在前向传播和反向传播过程中，使用的均为FP16，而在`optimizer.step()`这一步中，将梯度转换为FP32，并与FP32 master copy of weight做运算更新权重，下一次前向计算时，再从FP32 master copy of weight中取值转换为FP16计算，重复上述过程。图示如下：
 
-  ![](https://i.loli.net/2020/04/12/VGm3iktBTg8OyEf.png)
+  ![](https://i.loli.net/2020/04/12/xcwCI83Du2V1Ybv.png)
 
 - loss scaling，这个方法是通过统计得出来的，据论文作者观察，大量梯度的值集中在如下的这个区间内，几乎浪费了FP16一半以上的表示范围，同时有大量值出现了下溢的情况，直接变为0。
 
-![](https://i.loli.net/2020/04/12/z2oyCcLNXURTfax.png)
+  ![](https://i.loli.net/2020/04/12/VGm3iktBTg8OyEf.png)
 
-所以有必要人为的对梯度进行放大，充分利用FP16的表示空间，这正是loss scaling的目的，对最终的loss乘以一定的scale(可设置为一个常数，可根据实际情况统计得出，也可动态调整)，根据链式求导法则，我们实际上对计算链路中所有的梯度均做了放大。接下的步骤就是与第一个方法相结合，将scale后的FP16梯度复制成FP32再做unscale，最后与FP32 master copy of weights累加即可。整个过程如下所示：
+  所以有必要人为的对梯度进行放大，充分利用FP16的表示空间，这正是loss scaling的目的，对最终的loss乘以一定的scale(可设置为一个常数，可根据实际情况统计得出，也可动态调整)，根据链式求导法则，我们实际上对计算链路中所有的梯度均做了放大。接下的步骤就是与第一个方法相结合，将scale后的FP16梯度复制成FP32再做unscale，最后与FP32 master copy of weights累加即可。整个过程如下所示：
 
-![](https://i.loli.net/2020/04/12/xcwCI83Du2V1Ybv.png)
+  ![](https://i.loli.net/2020/04/12/8mXai2BuQWRTAFs.png)
 
 上述内容是对于底层实现原理层面的解释，在使用上apex封装的非常傻瓜了，使用样例如下所示：
 
@@ -83,7 +85,7 @@ pytorch官方文档中有专门的一篇[教程](https://pytorch.org/tutorials/b
 
 文章开始说的模型并行的问题主要是由于scale_loss引起的（如果不使用scale_loss是可以正常收敛的，但是最终效果会差一些），根据前面的原理讲解我们知道：scale_loss是通过链式求导法则将最后乘在loss上的scale反向传播到整个网络中的梯度中去的，而我之前那个版本实现的backward是有问题的，假定了loss是整个计算图的最后一个操作，并未考虑到scale这种情况，导致整个网络中的梯度并没有被放大，训练也就无法进行下去（非常羞愧……）；解决过程并不复杂，核心在于理解backward的机制和参数含义，在之前的那篇文章中提到过，**forward的返回值要与backward的参数一一对应，forward的参数要与backward的返回值一一对应**，如下图所示：
 
-![](https://i.loli.net/2020/04/12/8mXai2BuQWRTAFs.png)
+![](https://i.loli.net/2020/04/12/z2oyCcLNXURTfax.png)
 
 那么在`ModelParallelCrossEntropy`这个`Function`中，我们之前忽略掉的backward的输入参数loss_grad到底是什么？结合前面的描述和配图，仔细思考一下就清楚了：forward时最终输出的是loss，而在混合精度训练情况下后面还有一步，即`scaled_loss=loss*scale`，那么backward时，`loss_grad=d(scaled_loss)/d(loss)=scale`；所以在计算完梯度后，根据链式求导法则，我们需要把原梯度乘上scale才能保证结果的正确性，修复了这里在混合精度下即可正常收敛了。
 
