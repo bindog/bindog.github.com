@@ -20,6 +20,11 @@ tags:
 
 混合精度训练出现了有好几年的时间了，由于前东家的卡是老古董的GTX 1080 Ti，不支持FP16，一直没有时间真正用起来。刚好最近有朋友反馈混合精度训练在之前的[模型并行](https://github.com/bindog/pytorch-model-parallel)上有点问题，所以跟进研究了一下
 
+大多数的深度学习模型使用的是32位单精度浮点数（FP32）来进行训练，而混合精度训练的方法则通过16位浮点数（FP16）进行深度学习模型训练，从而减少了训练深度学习模型所需的内存，同时由于FP16的运算比FP32运算更快，从而也进一步提高了硬件效率。
+
+
+
+
 
 
 
@@ -98,7 +103,7 @@ pytorch官方文档中有专门的一篇[教程](https://pytorch.org/tutorials/b
 
 ## 总结
 
-本次改进的更新仍在原来的[repo](https://github.com/bindog/pytorch-model-parallel)下，后续有更好的思路我也会持续更新，也欢迎大家提issue
+本次改进的更新仍在原来的[repo](https://github.com/bindog/pytorch-model-parallel/tree/apex_debug)`apex_debug`分支下，后续有更好的思路我也会持续更新，也欢迎大家提issue
 
 
 如果觉得本文对您有帮助，欢迎打赏我一杯奶茶钱~
