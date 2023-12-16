@@ -35,7 +35,7 @@ tags:
 
 既然文章的开头提到了从加密的网络流量中识别恶意软件，我们先来看看这个论文的作者是如何考虑这个问题的，他们发现，在TLS握手阶段（该过程是不加密的），恶意软件所表现出的特征与正常的应用有较大区别。典型的TLS握手过程如下图所示：
 
- ![TLS握手](http://lc-cf2bfs1v.cn-n1.lcfile.com/c2b77878cd03e8fab2da.png)
+ ![TLS握手](https://github.com/bindog/bindog.github.com/assets/8023481/b1722618-e71b-4d61-95fb-3a4cb93b2978)
  
 在握手的第一阶段，客户端需要告诉服务端自身所支持的协议版本、加密和压缩算法等信息，在这个过程中，正常的应用（用户能够按时更新）使用高强度加密算法和最新的TLS库，而恶意软件所使用的往往是一些较老版本协议或强度较低的加密算法。以此作为主要特征，加上网络流量本身的信息如总字节数大小、源端口与目的端口、持续时间以及网络流中包的长度和到达次序等作为辅助特征，利用机器学习算法即可训练得到一个分类模型。
 
@@ -45,7 +45,7 @@ tags:
 
 早期的一些DGA算法所产生的域名有着比较高的辨识度，例如下面这些域名
 
- ![早期DGA](http://lc-cf2bfs1v.cn-n1.lcfile.com/f7d9e554ad482d2884c9.png)
+ ![早期DGA](https://github.com/bindog/bindog.github.com/assets/8023481/2832af7a-12d5-4fb9-809b-a48622dcc679)
 
 给我们的直观感受就是英文字母随机出现，而且不是常见的单词或拼音的组合，而且很难“念”出来。事实上这些特征可以用马尔可夫模型和n-gram分布很好的描述出来，早就有相应的算法实现，识别的效果也非常不错。然而，很快就出现了一些升级版的DGA算法，如下面的这个域名
 
@@ -56,11 +56,11 @@ indianbrewedsmk.rutwistedtransistoreekl.biz
 
 更有甚者，在今年的BSidesLV 2016上，有人提出了一种基于深度学习的DGA算法——[DeepDGA](https://arxiv.org/pdf/1610.01969v1.pdf)，将Alexa上收录的知名网站域名作为训练数据，送入LSTM模型和生成对抗网络(GAN, Generative Adversarial Networks)训练，最终生成的随机域名效果拔群。如下图所示(左侧是给定的输入)
 
- ![DeepDGA生成的域名](http://lc-cf2bfs1v.cn-n1.lcfile.com/0608169a369b5537d8bc.png)
+ ![DeepDGA生成的域名](https://github.com/bindog/bindog.github.com/assets/8023481/dd5f5177-ae94-4639-b1a1-078aa73a2c19)
 
 从字符的分布情况上来看，也与正常网站的域名基本一致
 
-![DeepDGA的字符分布](http://lc-cf2bfs1v.cn-n1.lcfile.com/fb63521b368c07413e50.png)
+![DeepDGA的字符分布](https://github.com/bindog/bindog.github.com/assets/8023481/5fa9a5be-32ab-49e8-8811-58cadeec1523)
  
 随着深度学习技术的普及，或许在不久的将来安全研究人员就可以“惊喜的”发现某个勒索软件家族开始采用这种高端的域名生成算法了……
 
@@ -78,13 +78,13 @@ indianbrewedsmk.rutwistedtransistoreekl.biz
 
 但正当一票又一票研究小组努力“刷榜”的时候，另一些人总是能看的更远一些。谷歌的Szegedy研究员就发现，基于深度学习的图像识别技术可能并不如我们相像的那么靠谱，利用一些简单的trick即可将其轻松欺骗。如下图所示：
 
-![被错误识别的熊猫](http://lc-cf2bfs1v.cn-n1.lcfile.com/c7799d155122f91e7f00.png)
+![被错误识别的熊猫](https://github.com/bindog/bindog.github.com/assets/8023481/b95dcaa9-b670-4fb6-9e78-ca86a98a9303)
 
 这两幅图在我们正常人眼中并没有太大区别，但是对图像识别系统，左图能够正确的识别为熊猫，右图却识别成了长臂猿，而且是99.3%的置信度
 
 而更为诡异的是一些在我们人类看起来毫无意义的图片，却被图像识别系统“正确”的识别了出来。比如下面这些例子
 
-![被欺骗的图像识别系统](http://lc-cf2bfs1v.cn-n1.lcfile.com/facc9470f9ccadc5d7e6.png)
+![被欺骗的图像识别系统](https://github.com/bindog/bindog.github.com/assets/8023481/623ff7e6-7f3a-45db-b0f0-223c10a52409)
 
 
 # 0x05 一起躺枪的自动驾驶
@@ -97,11 +97,11 @@ indianbrewedsmk.rutwistedtransistoreekl.biz
 
 正如这起事件暴露出来的问题，当车身周围传感器和车前的毫米波雷达都失灵时(当然该案例中这传感器和毫米波雷达并未失灵，而是由于毫米波雷达安装过低，未能感知到底盘较高的卡车)，唯一能依靠的输入就是车窗前方的高清摄像头。我们来看看事发当时的街景现场
 
-![现场](http://lc-cf2bfs1v.cn-n1.lcfile.com/6ec609e98a16761066a3.png)
+![现场](https://github.com/bindog/bindog.github.com/assets/8023481/ecd79b43-2d97-40cf-85f5-07107fc4d55f)
 
 以及被撞的卡车样式(注意白色车身上什么标致都没有)
 
-![白色卡车](http://lc-cf2bfs1v.cn-n1.lcfile.com/2f161722b2fc4642c7e5.png)
+![白色卡车](https://github.com/bindog/bindog.github.com/assets/8023481/16fc5992-0fad-4ae9-acea-a411db7c5e4b)
 
 由于车前的高清摄像头为长焦镜头，当白色拖挂卡车进入视觉区域内的时候，摄像头只能看到悬浮在地面上的卡车中部，而无法看见整个车辆，加上当时阳光强烈(蓝天白云)，使得自动驾驶统无法识别出障碍物是一辆卡车，而更像是飘在天上的云。再加上当时特斯拉车主正在玩游戏，完全没有注意到前方的这个卡车，最终导致悲剧发生。
 
@@ -115,7 +115,7 @@ indianbrewedsmk.rutwistedtransistoreekl.biz
 
 来自加州大学伯克利分校的Carlini等人发现一些语言助手如`Google Now`和`Siri`都有可能理解一些人类无法辨识的“噪音”，并将其解析为指令进行执行。其实原理并不难理解，人工生成这种邪恶的噪音流程如下
 
-![](http://lc-cf2bfs1v.cn-n1.lcfile.com/cc94d427d28a1e523ed4.png)
+![](https://github.com/bindog/bindog.github.com/assets/8023481/242bb08a-d292-4959-a36e-a87e2954833b)
 
 如图所示，这是一个反复迭代的过程。我们首先通过抽取正常语音中关键特征，再做一次“逆向特征”合成语音并加入一些噪音作为候选，并将其分别给语音识别系统和正常人播放试听，直到得到一个语音识别系统可以识别而人类无法辨识的邪恶噪音。
 
