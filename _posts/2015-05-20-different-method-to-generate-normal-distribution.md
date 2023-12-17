@@ -113,19 +113,19 @@ protected int next(int bits) {
 
 看下面这张图也非常清楚，概率分布函数$F(x)$是**cumulative distribution function(CDF)**，概率密度函数$f(x)$是**probability density function(PDF)**
 
-![cdf-and-pdf](http://lc-cf2bfs1v.cn-n1.lcfile.com/onJpBW4CUFRVNrczhI65EKdFpijBWulJhIlMDM4e.gif)
+![cdf-and-pdf](https://github.com/bindog/bindog.github.com/assets/8023481/119e9151-f67f-41bd-a421-7c400710022b)
 
 刚才说到的均匀分布概率密度函数$f(x)$如下
 
 $$f(x)=\begin{cases}\frac{1}{b - a} & \mathrm{for}\ a \le x \le b, \\[8pt]0 & \mathrm{for}\ x<a\ \mathrm{or}\ x>b\end{cases}$$
 
-![updf](http://lc-cf2bfs1v.cn-n1.lcfile.com/3W9Akqo0JOA3HrVDKsds21gyciF5OYuoM8uEH0FK.png)
+![updf](https://github.com/bindog/bindog.github.com/assets/8023481/26f0369a-1ebe-495c-8fb6-e81431b1bbd3)
 
 概率分布函数$F(x)$如下
 
 $$F(x)=\begin{cases} 0 & \text{for } x < a \\ \frac{x-a}{b-a} & \text{for } x \in [a,b) \\ 1 & \text{for } x \ge b \end{cases}$$
 
-![ucdf](http://lc-cf2bfs1v.cn-n1.lcfile.com/kusNq24QblMIjLvFBqwAfjuKm35jjmBdHSUTLoV6.png)
+![ucdf](https://github.com/bindog/bindog.github.com/assets/8023481/e7bf6b58-6414-40d8-92b9-5b9987a19e67)
 
 期望为$\tfrac{1}{2}(a+b)$，方差为$\tfrac{1}{12}(b-a)^2$
 
@@ -133,7 +133,7 @@ $$F(x)=\begin{cases} 0 & \text{for } x < a \\ \frac{x-a}{b-a} & \text{for } x \i
 
 $$f(x) = \frac{1}{\sqrt{2\pi\sigma^2} } e^{ -\frac{(x-\mu)^2}{2\sigma^2} }$$
 
-![npdf](http://lc-cf2bfs1v.cn-n1.lcfile.com/8l9L1w7pTo65D1GHiCcnmepjkOvNToEW7vvHoCEs.png)
+![npdf](https://github.com/bindog/bindog.github.com/assets/8023481/ea3cc974-e9ca-44f2-b78f-b20e78d75491)
 
 标准正态分布中，$\mu=0,\sigma=1$，$f(x) = \frac{1}{\sqrt{2\pi} } e^{ -\frac{x^2}{2} }$
 
