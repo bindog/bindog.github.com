@@ -221,7 +221,7 @@ $$\int\!\!\!\int\limits_D {f(x,y)dxdy}  = \int\!\!\!\int\limits_D {f(r\cos \thet
 
 这个方法有的时候也称接收-拒绝采样，使用场景是有些函数$p(x)$太复杂在程序中没法直接采样，那么可以设定一个程序可抽样的分布$q(x)$比如正态分布等等，然后按照一定的方法拒绝某些样本，达到接近$p(x)$分布的目的：
 
-![rejection-sampling](http://lc-cf2bfs1v.cn-n1.lcfile.com/q5UDjegq496sJpkua7rmAhS0jqj8VIB96s4Y5scb.png)
+![rejection-sampling](https://github.com/bindog/bindog.github.com/assets/8023481/e94f551c-cdea-4f21-8d65-decbf8c17c40)
 
 具体操作如下，设定一个方便抽样的函数$q(x)$，以及一个常量$k$，使得$p(x)$总在$kq(x)$的下方。（参考上图）
 
@@ -278,7 +278,7 @@ plt.show()
 
 得到结果如下图所示
 
-![clt-normal-distribution](http://lc-cf2bfs1v.cn-n1.lcfile.com/CYBGCrbMfmDk9vmzXsgxbSTfU0VzDhlfLhFXXzdI.png)
+![clt-normal-distribution](https://github.com/bindog/bindog.github.com/assets/8023481/1b86be71-cfa9-41c1-ae84-4c29631dff44)
 
 可以看到，`n=1`时其实就是均匀分布，`n=2`时有正态分布的样子了，但不够平滑，随着`n`逐渐增大，直方图轮廓越来越接近正态分布了~因此利用中心极限定理暴力生成服从正态分布的随机数是可行的
 
@@ -290,7 +290,7 @@ plt.show()
 
 正态分布的概率分布函数(CDF)如下图所示，
 
-![ncdf](http://lc-cf2bfs1v.cn-n1.lcfile.com/XMOSOlOIBnVMf2nkIhxTIfrr65e9A8HPmRSG3gXB.png)
+![ncdf](https://github.com/bindog/bindog.github.com/assets/8023481/e8c03bc2-62a1-47b0-8c13-377ee9f8df62)
 
 在`y`轴上产生服从(0,1)均匀分布的随机数，水平向右投影到曲线上，然后垂直向下投影到`x`轴，这样在`x`轴上就得到了正态分布。
 
@@ -318,7 +318,7 @@ plt.show()
 
 结果如下图所示，
 
-![inverse-transform](http://lc-cf2bfs1v.cn-n1.lcfile.com/qPb1d5zfQTBiLTq9ab1JhH9GWwXUtaxctIPgoBNd.png)
+![inverse-transform](https://github.com/bindog/bindog.github.com/assets/8023481/1453210d-015c-4ef0-8049-6e6944bfe058)
 
 以上两个方法虽然方便也容易理解，但是效率实在太低，并不实用，那么在实际中到底是如何生成正态分布的呢？
 
@@ -398,7 +398,7 @@ plt.show()
 
 得到的结果如下图所示，
 
-![box-muller-normal](http://lc-cf2bfs1v.cn-n1.lcfile.com/ttH9VqVRETCjLdgo5La9scS4EiwNCvvkYIBYasYb.png)
+![box-muller-normal](https://github.com/bindog/bindog.github.com/assets/8023481/e449bcce-f0f7-4d29-8cba-15c29b35435f)
 
 这里抽样次数达到1千万次，1秒左右就完成了，速度比暴力生成正态分布要快的多~
 
@@ -410,7 +410,7 @@ ps:由于`Box–Muller`算法一次性生成了两个独立且服从正态分布
 
 当然有，这就是`Ziggurat`算法，不仅可以用于快速生成正态分布，还可以生成指数分布等等。其基本思想就是利用**拒绝采样**，其高效的秘密在于构造了一个非常精妙的$q(x)$，看下面这张图
 
-![Ziggurat-Algorithm](http://lc-cf2bfs1v.cn-n1.lcfile.com/kTdfiX2721zq9YzlyE8qzxvlBlLpUPR6YzVrlocB.png)
+![Ziggurat-Algorithm](https://github.com/bindog/bindog.github.com/assets/8023481/1499add7-9a52-4d89-b088-74bf7d97d5b4)
 
 如果为了方便，我们当然可以直接使用一个均匀分布，也就是一个矩形，但是这样的话，矩形与正态分布曲线间的距离很大，容易造成**拒绝率很高，无用计算增加**，高效也就无从谈起了
 
@@ -431,7 +431,7 @@ ps:由于`Box–Muller`算法一次性生成了两个独立且服从正态分布
 
 最后对比一下`Ziggurat`算法与`Box-muller`算法的效率
 
-![speed-up](http://lc-cf2bfs1v.cn-n1.lcfile.com/Rz5BI3C5Qh0a0gjbF710wCAw9GsyhdF6fEUinGgz.png)
+![speed-up](https://github.com/bindog/bindog.github.com/assets/8023481/277ec751-0744-454a-9712-a2baeec355d8)
 
 # 0x06 总结
 
