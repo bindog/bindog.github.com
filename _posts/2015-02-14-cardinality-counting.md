@@ -283,7 +283,7 @@ All judgements are, in their rationale, statistics.
 
 如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
 
-![](/assets/images/qrcode.png)
+![](/assets/images/qrcode.jpg)
 
 # 0x04 参考文献
 
