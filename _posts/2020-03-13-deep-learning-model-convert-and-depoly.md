@@ -256,4 +256,4 @@ ONNX实际只是一套标准，里面只不过存储了网络的拓扑结构和�
 
 如果觉得本文对您有帮助，欢迎打赏我一杯咖啡钱~
 
-![](http://lc-cf2bfs1v.cn-n1.lcfile.com/184650991fae74643fd0.png)
+![](/assets/images/qrcode.png)

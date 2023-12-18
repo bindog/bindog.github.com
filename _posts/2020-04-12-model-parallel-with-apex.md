@@ -100,7 +100,7 @@ pytorch官方文档中有专门的一篇[教程](https://pytorch.org/tutorials/b
 
 如果觉得本文对您有帮助，欢迎打赏我一杯奶茶钱~
 
-![](http://lc-cf2bfs1v.cn-n1.lcfile.com/184650991fae74643fd0.png)
+![](/assets/images/qrcode.png)
 
 ## 参考文献
 

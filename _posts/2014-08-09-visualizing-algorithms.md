@@ -467,4 +467,4 @@ OK，到这里原文的主要内容就结束了，后面就是一些心灵鸡汤
 
 如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
 
-![](http://lc-cf2bfs1v.cn-n1.lcfile.com/184650991fae74643fd0.png)
+![](/assets/images/qrcode.png)

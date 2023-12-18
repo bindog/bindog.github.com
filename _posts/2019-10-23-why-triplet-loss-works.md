@@ -105,7 +105,7 @@ $$\begin{align*} L_i &= -\log (\frac{e^{W_{y_i}x_i+b_{y_i}}}{\sum_je^{W_jx_i+b_j
 
 如果觉得本文对您有帮助，欢迎打赏我一杯咖啡钱~
 
-![](http://lc-cf2bfs1v.cn-n1.lcfile.com/184650991fae74643fd0.png)
+![](/assets/images/qrcode.png)
 
 ## 参考文献
 

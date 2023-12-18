@@ -116,7 +116,7 @@ Grad-CAM的整体结构如下图所示：
 
 如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
 
-![](http://lc-cf2bfs1v.cn-n1.lcfile.com/184650991fae74643fd0.png)
+![](/assets/images/qrcode.png)
 
 ## 参考资料
 

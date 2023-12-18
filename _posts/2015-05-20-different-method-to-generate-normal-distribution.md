@@ -441,7 +441,7 @@ ps:由于`Box–Muller`算法一次性生成了两个独立且服从正态分布
 
 如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
 
-![](http://lc-cf2bfs1v.cn-n1.lcfile.com/184650991fae74643fd0.png)
+![](/assets/images/qrcode.png)
 
 # 0x07 参考资料
 

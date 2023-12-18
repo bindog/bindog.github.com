@@ -390,7 +390,7 @@ Task5是一个周期性请求数据的任务，预期能4ms接收到完整的遥
 
 如果你觉得本文对你有帮助，欢迎打赏我一杯咖啡钱，支持我写出更多好文章~
 
-![](http://lc-cf2bfs1v.cn-n1.lcfile.com/184650991fae74643fd0.png)
+![](/assets/images/qrcode.png)
 
 # 0x07 参考资料
 
