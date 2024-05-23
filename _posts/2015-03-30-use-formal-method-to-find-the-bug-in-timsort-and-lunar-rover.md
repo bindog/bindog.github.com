@@ -1,4 +1,4 @@
----
+![image](https://github.com/bindog/bindog.github.com/assets/8023481/91b26923-fee9-4d6f-97f3-350dba4a1d41)![image](https://github.com/bindog/bindog.github.com/assets/8023481/c7d4e348-d338-4915-8260-9e8eac66320c)---
 author: 宾狗
 date: 2015-03-30 10:12+08:00
 layout: post
@@ -341,21 +341,21 @@ private void newMergeCollapse() {
 
 所以形式化方法一个非常重要的市场就是航空航天领域，去年在新加坡举行的第19届形式化方法国际研讨会上，有两个来自中国的团队进行了汇报，巧合的是他们汇报的题目都与玉兔月球车相关，一个与月球软着陆控制相关，另一个与玉兔月球车控制系统相关。而我有幸在其他场合聆听过其中用形式化方法验证玉兔控制系统那个团队的报告，切实感受到形式化方法的强大与复杂。
 
-![fm2014](http://lc-cf2bfs1v.cn-n1.lcfile.com/00jfm7HE6Ac1BoThwcgfCFnj0hxYYBCdxlOQLaXA.png)
+![fm2014](https://github.com/bindog/bindog.github.com/assets/8023481/3cf2a04d-aa7c-48da-a554-a9540935d8f7)
 
 下图是玉兔月球车控制系统的一个简化版本（真实系统中有30多个应用任务），这里只列出6种
 
-![lunar_com](http://lc-cf2bfs1v.cn-n1.lcfile.com/BBTWCnSeUjPGqzTdIuQz5OV2aH54lDoYSfXeLH22.png)
+![lunar_com](https://github.com/bindog/bindog.github.com/assets/8023481/a49be8ff-44b7-4141-9e05-2a581f52ae35)
 
 图中左侧主要是一些任务，中间的是消息队列（包括发送队列和接收队列），右侧是CAN bus总线，控制命令和传感器数据都是通过它传递的。具体的含义见下表：
 
-![lunar_table](http://lc-cf2bfs1v.cn-n1.lcfile.com/b7c58s1N1UQVlGtoU4npxjjnUCnavIRw5RPMGe8J.png)
+![lunar_table](https://github.com/bindog/bindog.github.com/assets/8023481/1c834961-e693-4796-8c44-ad66bbdb9b75)
 
 注意从Task1到Task6的优先级是依次递减的，Task1的优先级为6，Task6的优先级为1。
 
 Task5是一个周期性请求数据的任务，预期能4ms接收到完整的遥测数据，如下图所示
 
-![task5_com](http://lc-cf2bfs1v.cn-n1.lcfile.com/FHBCYJm86hEUVMloRcuzjXOuRsAzSUyBFow4PVdF.png)
+![task5_com](https://github.com/bindog/bindog.github.com/assets/8023481/cf738652-c3de-427c-b185-b7d77346bdb6)
 
 在正常情况下，发送数据1帧，接收数据6帧。这一过程耗时1×0.192(Task3Send)+0.5(IMU响应时间)+6×0.192(Task5)=1.844ms，预设的4ms等待时间是足够的。但是在几年的开发和测试过程中，开发人员偶然观察到几次“遥测超时错误”：即预计能够在4ms内完成的Task5发生超时，未能获取到完整数据。
 
@@ -363,11 +363,11 @@ Task5是一个周期性请求数据的任务，预期能4ms接收到完整的遥
 
 然后又是形式化方法出场了，大家请看下面几张图
 
-![zdj_0](http://lc-cf2bfs1v.cn-n1.lcfile.com/BsYzVsR5x9EV5Dok8xfwx6miX0MjwBzL1N8rOo7E.png)
+![zdj_0](https://github.com/bindog/bindog.github.com/assets/8023481/3f54f12e-c58f-4198-96d4-a907022433d1)
 
-![zdj_1](http://lc-cf2bfs1v.cn-n1.lcfile.com/H02lVaN5g7IVfOhsOrk1TpQNgEiHUUBrzjMm6gCn.png)
+![zdj_1](https://github.com/bindog/bindog.github.com/assets/8023481/f8447e70-732f-4c27-b24e-e2c53836544a)
 
-![zdj_2](http://lc-cf2bfs1v.cn-n1.lcfile.com/9PkJOlb21k3BjG82f65QPsxTl6fwzM4Upq8cpx1G.png)
+![zdj_2](https://github.com/bindog/bindog.github.com/assets/8023481/050164b8-bb58-4bad-8d4a-19f0e55fc0ba)
 
 关于这些图不想说太多（此处省略一万字……），有人说这不是自动机嘛，没错，自动机本来就是形式化方法中非常重要的一部分。第一个图是抢占式任务的时间自动机模型，对应Task1，第二个图是周期性任务的时间自动机模型，对应是Task2、Task5和Task6，第三个图是偶发任务的时间自动机模型，对应Task3、Task4
 
