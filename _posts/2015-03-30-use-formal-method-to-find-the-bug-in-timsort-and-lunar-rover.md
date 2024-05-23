@@ -1,4 +1,4 @@
-![image](https://github.com/bindog/bindog.github.com/assets/8023481/91b26923-fee9-4d6f-97f3-350dba4a1d41)![image](https://github.com/bindog/bindog.github.com/assets/8023481/c7d4e348-d338-4915-8260-9e8eac66320c)---
+---
 author: 宾狗
 date: 2015-03-30 10:12+08:00
 layout: post
@@ -89,24 +89,9 @@ Timsort排序算法中定义数组中的有序片段为run，每个run都要求�
 
 当然这里我们忽略了许多细节问题，如minrun的长度计算，插入排序和归并排序具体实现中的一些技巧。更多关于Timsort排序算法的细节请参考[OpenJDK 源代码阅读之 TimSort](http://blog.csdn.net/on_1y/article/details/30109975)
 
-为了更直观的理解Timsort算法的过程，可以看看下面这张git图，是不是与我们刚才描述的算法过程基本一致呢？
+为了更直观的理解Timsort算法的过程，可以看看下面这张gif动画图，是不是与我们刚才描述的算法过程基本一致呢？
 
-![demo](http://lc-cf2bfs1v.cn-n1.lcfile.com/kGmWwAijwtoxIYCpytEs9HpqeL6yRxCuYINBkv6U.gif)
-
-还有一个台湾高三学生讲解Timsort算法的视频，里面介绍了不少我们忽略的细节问题
-
-<script src="/assets/jwplayer/jwplayer.js"></script>
-<center><div id="Buffonneedle" align="center"></div></center>
-<script type="text/javascript">
-    jwplayer.logo="/assets/images/favicon-16.png";
-    jwplayer("Buffonneedle").setup({
-        file: "http://bindog.qiniudn.com/formal-method/timsort.mp4",
-        image: "http://lc-cf2bfs1v.cn-n1.lcfile.com/m79fA5YHJRRoTR7qLG8DTKwnCjBJ6NT1jzDrTnlq.png",
-        width: 640,
-        height: 480
-    });
-</script>
-
+![demo](https://github.com/bindog/bindog.github.com/assets/8023481/1f6c87b6-41aa-42a9-8565-d0a48c30e704)
 
 
 # 0x03 Timsort中的Bug
@@ -222,7 +207,7 @@ for n in ns:
 
 国外的这个技术团队在论文中算出了最坏情况下用到栈的大小，并画出了一张表
 
-![timsort_stacksize](http://lc-cf2bfs1v.cn-n1.lcfile.com/DL0zVCnptpw4JK1dUdOVritDqjMc4uLWtp3ULC8C.png)
+![timsort_stacksize](https://github.com/bindog/bindog.github.com/assets/8023481/6a980f6f-4bf7-4fb2-8ad5-5ca689c724d4)
 
 第二行表示最坏情况下需要用到栈的大小，第三行表示Timsort算法实际给出的栈大小（见上文JDK源码）。有意思的是在Array长度为65536时，最初Java中Timsort设定栈的长度为19，但是后来有人报告了[Bug](http://bugs.java.com/view_bug.do?bug_id=8011944)，也就是说这个Bug在实际中是出现过的。然而Java开源社区的程序员可能无法定位这个Bug的根源，只好从表面解决这个问题，在后来的更新中把栈的大小改成了24……（不过确实也解决了问题）但是隐患依然存在的，可以看到在Array长度为67108864时，最坏情况下用到的栈大小41，而Java中Timsort设定的长度为40。所以只要精心构造一个Array，就能触发这个Bug。然而如本文开头所说，Java开源社区的程序员依然不从根本上解决问题，还是用老办法，增加栈的大小……（老子就会这一个技能，不服你来咬我啊）
 
